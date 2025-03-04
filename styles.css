@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Montserrat", "Helvetica", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: #f5ff37;
+  padding: 20px 40px;
+}
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+.logo svg {
+  width: 40px;
+  height: 40px;
+  fill: #333;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  pointer-events: all;
+  position: relative;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  font-weight: 500;
+  transition: font-weight 0.3s ease-in-out;
+}
+nav ul li a:hover {
+  font-weight: 700;
+}
+
+.hero {
+  background-color: #f5ff37;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  padding: 100px 0;
+  text-align: left;
+  color: rgba(51, 51, 51, 0.7);
+}
+.hero h1 {
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.hero h2 {
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+.hero p {
+  color: #333;
+  font-size: 24px;
+  line-height: 1.6;
+  max-width: 900px;
+  font-weight: 400;
+}
+
+.empty-section {
+  background-color: #333;
+  height: 150px;
+}
+
+.portfolio {
+  padding: 60px 0;
+  background-color: #f4f4f4;
+  text-align: center;
+}
+.portfolio h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+.portfolio .portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+.portfolio .portfolio-grid .portfolio-item {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.portfolio .portfolio-grid .portfolio-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.portfolio .portfolio-grid .portfolio-item h3 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+.portfolio .portfolio-grid .portfolio-item p {
+  font-size: 16px;
+  color: #777;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/*# sourceMappingURL=styles.css.map */

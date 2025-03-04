@@ -1,0 +1,194 @@
+@use "sass:color";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+$primary-color: #333;
+$secondary-color: #f4f4f4;
+$accent-color: #f5ff37;
+$font-stack: 'Montserrat', 'Helvetica',sans-serif;
+
+// Font Sizes
+$font-size-small: 14px;
+$font-size-base: 16px;
+$font-size-medium: 18px;
+$font-size-large: 24px;
+$font-size-xlarge: 32px;
+$font-size-xxlarge: 36px;
+
+// Line Heights
+$line-height-small: 1.3;
+$line-height-base: 1.5;
+$line-height-large: 1.6;
+$line-height-xlarge: 1.8;
+
+// Global styles
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+    font-family: $font-stack;
+    margin: 0;
+    padding: 0;
+    background-color: $secondary-color;
+    color: $primary-color;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+// Header and Hero Section
+header {
+  display: flex;
+  justify-content: space-between; // Logo on the left, nav on the right
+  align-items: center;
+  width: 100%;
+  background: $accent-color;
+  padding: 20px 40px;
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 40px;
+    height: 40px;
+    fill: $primary-color; // Styling the logo (a simple circle)
+  }
+}
+
+nav {
+  display: flex;
+  align-items: center;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px; // Adds space between menu items
+}
+
+
+nav ul li {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  pointer-events: all;
+  position: relative;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: $primary-color;
+  font-size: $font-size-medium;
+  font-weight: 500;
+  transition: font-weight 0.3s ease-in-out;
+
+  &:hover {
+    font-weight: 700;
+  }
+}
+
+// Hero Section Styles
+.hero {
+  background-color: $accent-color;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  padding: 100px 0;
+  text-align: left;
+  color: rgba($primary-color, 0.7);
+
+  h1 {
+    font-size: $font-size-medium;
+    line-height: $line-height-base;
+    font-weight: 500;
+  }
+
+  h2 {
+    font-size: $font-size-large;
+    line-height: $line-height-base;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  p {
+    color: $primary-color;
+    font-size: $font-size-large;
+    line-height: $line-height-large;
+    max-width: 900px;
+    font-weight: 400;
+  }
+}
+
+// Empty Section Styles
+.empty-section {
+  background-color: $primary-color;
+  height: 150px;  // This section can be filled with content later
+}
+
+// Portfolio Section Styles
+.portfolio {
+  padding: 60px 0;
+  background-color: $secondary-color;
+  text-align: center;
+
+  h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+
+    .portfolio-item {
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+
+      img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      h3 {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 20px 0;
+      }
+
+      p {
+        font-size: 16px;
+        color: #777;
+      }
+    }
+  }
+}
+
+// Footer Styles
+footer {
+  background-color: $primary-color;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  margin-top: 40px;
+}

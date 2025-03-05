@@ -8,3 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Message sent successfully!");
   });
 });
+document.querySelectorAll('.project-item').forEach(item => {
+  const description = item.querySelector('.description');
+  const descriptionHeight = description.offsetHeight; // Get the height of the description
+  const projectName = item.querySelector('.project-name');
+
+  item.addEventListener('mouseenter', () => {
+    projectName.style.transform = `translateY(calc(-${descriptionHeight}px))`;
+  });
+
+  item.addEventListener('mouseleave', () => {
+    projectName.style.transform = 'translateY(0)';
+  });
+});

@@ -109,7 +109,7 @@ nav ul li a {
   position: relative;
   z-index: 1;
   text-align: left;
-  padding: 100px 0;
+  padding: 50px 0 100px 0;
   text-align: left;
   color: rgba($primary-color, 0.7);
 
@@ -122,16 +122,16 @@ nav ul li a {
   h2 {
     font-size: $font-size-large;
     line-height: $line-height-base;
-    margin-bottom: 20px;
-    font-weight: 500;
+    margin-bottom: 60px;
+    font-weight: 400;
   }
 
   p {
     color: $primary-color;
     font-size: $font-size-large;
-    line-height: $line-height-large;
+    line-height: $line-height-base;
     max-width: 900px;
-    font-weight: 400;
+    font-weight: 500;
   }
 }
 

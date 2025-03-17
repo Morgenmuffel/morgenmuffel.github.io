@@ -4,7 +4,7 @@
 $primary-color: #333;
 $secondary-color: #f5f5f5;
 $accent-color: #f5ff37;
-$font-stack: 'Montserrat', 'Helvetica',sans-serif;
+$font-stack: 'Montserrat', 'Helvetica', sans-serif;
 
 // Font Sizes
 $font-size-small: 14px;
@@ -21,96 +21,19 @@ $line-height-large: 1.6;
 $line-height-xlarge: 1.8;
 
 // Global styles
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
     font-family: $font-stack;
-    margin: 0;
-    padding: 0;
     background-color: $secondary-color;
     color: $primary-color;
 }
 
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 0;
-}
-
 // Header and Hero Section
 header {
-  display: flex;
-  justify-content: space-between; // Logo on the left, nav on the right
-  align-items: center;
-  width: 100%;
   background: $accent-color;
-  padding: 20px 40px;
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
 }
 
-
-.logo {
-  display: flex;
-  align-items: center;
-
-  svg {
-    width: 40px;
-    height: 40px;
-    fill: $primary-color; // Styling the logo (a simple circle)
-  }
-}
-
-nav {
-  display: flex;
-  align-items: center;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 20px; // Adds space between menu items
-}
-
-
-nav ul li {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  pointer-events: all;
-  position: relative;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: $primary-color;
-  font-size: $font-size-medium;
-  font-weight: 500;
-  transition: font-weight 0.3s ease-in-out;
-
-  &:hover {
-    font-weight: 700;
-  }
-}
-
-// Hero Section Styles
 .hero {
   background-color: $accent-color;
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  padding: 50px 0 100px 0;
-  text-align: left;
   color: rgba($primary-color, 0.7);
 
   h1 {
@@ -138,33 +61,17 @@ nav ul li a {
 // Empty Section Styles
 .empty-section {
   background-color: $primary-color;
-  height: 150px;  // This section can be filled with content later
+  height: 150px;
 }
 
-
+// Projects Grid
+// Portfolio Grid
 .projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(470px, 1fr)); // Responsive grid with min-width of 250px
-  gap: 48px; // Space between grid items
-
   .project-item {
-    background-color: #f9f9f9;
+    aspect-ratio: 3 / 2; // 1:2 aspect ratio (horizontal)
+    border: none ;
     border-radius: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden; // Ensures the image doesn't overflow the rounded corners
     position: relative;
-    aspect-ratio: 1 / 1; // Makes the items square
-
-    .project-link {
-      text-decoration: none; // Remove underline
-      color: inherit; // Inherit text color
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end; // Align content to the bottom
-      height: 100%;
-      position: relative;
-      z-index: 1; // Ensure the link is above the image
-    }
 
     .image-wrapper {
       position: absolute;
@@ -177,80 +84,220 @@ nav ul li a {
       img {
         width: 100%;
         height: 100%;
-        object-fit: cover; // Ensures the image covers the entire area
-        filter: grayscale(80%); // 80% black and white
-        transition: transform 0.3s ease, filter 0.3s ease;
+        object-fit: cover; // Image fills the card
       }
+    }
 
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba($secondary-color, 0.2); // 20% grey color overlay
-        mix-blend-mode: multiply; // Blend the overlay with the image
-        transition: background-color 0.3s ease;
-      }
-    }
-    .project-name,
-    .description {
-      position: relative;
-      z-index: 1; // Ensures text appears above the image
-      color: #fff; // White text for better contrast
-      padding: 20px;
-      margin: 0;
-      background: rgba(0, 0, 0, 0.6); // Semi-transparent background for text
-      transition: transform 0.3s ease;
-    }
-    .project-name {
-      font-size: $font-size-large;
-      font-weight: 500;
-      margin-bottom: 0; // Remove margin to align with description
-      transform: translateY(0); // Start at the bottom
-    }
-    .description {
-      font-size: 1em;
-      transform: translateY(100%); // Hide description by default
+    .project-text {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      opacity: 0; // Hide description by default
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      margin-top: 0;
-      line-height: $line-height-base;
-      padding-top: 0;
-      padding-bottom: 30px;
+      background: rgba(0, 0, 0, 0.8); // Dark semi-transparent background
+      padding: 20px;
+      color: white;
+     .card-title {
+        font-size: 1.25rem; // Adjust font size as needed
+        font-weight: 500;
+        margin-bottom: 8px; // Space between title and description
+      }
+
+      .card-text {
+        font-size: 1rem; // Adjust font size as needed
+        margin-bottom: 0; // Remove default margin
+      }
     }
 
-    .description {
-      font-size: 1em;
-    }
     &:hover {
       .image-wrapper img {
-        filter: grayscale(0%); // Restore original color on hover
-        transform: scale(1.02); // Slight zoom-in effect
+        transform: scale(1.05); // Slight zoom on hover
+        transition: transform 0.3s ease;
       }
-
-      .image-wrapper::after {
-        background-color: rgba($accent-color, 0); // Remove accent color overlay on hover
-      }
-
-      .description {
-        transform: translateY(0); // Show description
-        opacity: 1; // Fade in description
-      }
-
     }
+  }
+}
+// Project Hero Section
+.project-hero {
+  background-size: cover; // Ensures the image covers the entire area
+  background-position: center; // Centers the image
+  background-repeat: no-repeat; // Prevents the image from repeating
+  height: 60vh; // Adjust the height as needed
+  color: white; // Text color
+  display: flex;
+  align-items: center; // Vertically center content
+  justify-content: center; // Horizontally center content
+
+  .container {
+    text-align: center; // Center-align text and buttons
+  }
+
+  .project-title {
+    font-size: $font-size-xxlarge; // Adjust as needed
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // Optional: Add text shadow for better readability
+  }
+
+  .project-subtitle {
+    font-size: $font-size-large; // Adjust as needed
+    font-weight: 400;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); // Optional: Add text shadow for better readability
+    margin-bottom: 2rem; // Add space between subtitle and buttons
+  }
+
+  .btn-container {
+    display: flex;
+    gap: 1rem; // Space between buttons
+    justify-content: center; // Center buttons horizontally
+  }
+}
+
+// Custom Button Styles
+.btn.btn-accent {
+  background-color: $accent-color; // Use the accent color
+  color: $primary-color; // Text color
+  border: none; // Remove default border
+  padding: 0.75rem 1.5rem; // Adjust padding
+  font-size: $font-size-medium; // Adjust font size
+  font-weight: 500; // Medium font weight
+  transition: background-color 0.3s ease, transform 0.3s ease; // Smooth transitions
+
+  // Hover State
+  &:hover {
+    background-color: color.adjust($accent-color, $lightness: -12%); // Darken the accent color
+    color: $primary-color;
+  }
+
+  // Active State
+  &:active {
+    background-color: color.adjust($accent-color, $lightness: -15%); // Darken further
+    color: $primary-color;
+  }
+
+  // Focus State
+  &:focus {
+    background-color: $accent-color; // Darken further
+    box-shadow: 0 0 0 0.1rem rgba($primary-color, 0.5); // Add focus ring
+    color: $primary-color;
+  }
+}
+// Text Section
+.text-section {
+  .section-title {
+    font-size: $font-size-xlarge;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .section-text {
+    font-size: $font-size-medium;
+    line-height: $line-height-large;
+  }
+}
+
+.carousel-section {
+  position: relative;
+  overflow: hidden;
+
+  .carousel {
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+
+  .carousel-item {
+    flex: 0 0 auto;
+    width: 25%; // Default: Show 4 items
+    transition: transform 0.5s ease-in-out;
+    padding: 10px;
+
+    img {
+      max-height: 400px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    z-index: 10;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .carousel-item {
+      width: 33.33%; // Show 3 items on medium screens
+    }
+  }
+
+  @media (max-width: 768px) {
+    .carousel-item {
+      width: 50%; // Show 2 items on small screens
+    }
+  }
+
+  @media (max-width: 480px) {
+    .carousel-item {
+      width: 100%; // Show 1 item on extra small screens
+    }
+  }
+}
+
+// Mosaic Grid Section
+.mosaic-grid {
+  .row {
+    padding-top: 4rem; // Responsive padding top
+    padding-bottom: 4rem; // Responsive padding bottom
+
+    @media (max-width: 768px) {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+  }
+
+  .mosaic-title {
+    font-size: $font-size-xlarge; // Adjust as needed
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .mosaic-text {
+    font-size: $font-size-medium; // Adjust as needed
+    line-height: $line-height-large;
+    color: rgba($primary-color, 0.8);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px; // Optional: Add rounded corners
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Optional: Add shadow
   }
 }
 // Footer Styles
 footer {
   background-color: $primary-color;
   color: #fff;
-  padding: 20px;
-  text-align: center;
-  margin-top: 40px;
 }

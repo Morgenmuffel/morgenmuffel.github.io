@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Yulia Vilenskiy | Portfolio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
 </head>
 <body>
-  <header>
-    <div class="container">
+  <header class="py-3">
+    <div class="container d-flex justify-content-between align-items-center">
       <div class="logo">
         <svg width="40" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 30">
           <!-- Define Gradient -->
@@ -50,88 +51,110 @@
               <circle cx="27" cy="28" r="2" fill="black"/>
               <circle cx="35" cy="23" r="2" fill="black"/>
             </g>
-
         </svg>
       </div>
 
       <nav>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
+        <ul class="list-unstyled d-flex gap-3 mb-0">
+          <li><a href="#home" class="text-dark text-decoration-none">Home</a></li>
+          <li><a href="#about" class="text-dark text-decoration-none">About</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <section class="hero">
+  <section class="hero py-5">
     <div class="container">
-      <h1>I'm Yulia Vilenskiy</h1>
-      <h2>ML/AI Engineer | UX Designer</h2>
-      <p>
+      <h1 class="fs-5">I'm Yulia Vilenskiy</h1>
+      <h2 class="fs-3 mb-4">ML/AI Engineer | UX Designer</h2>
+      <p class="fs-5">
         Data Science, ML, and AI Bootcamp graduate, with a B.Sc. in Computer Engineering and 10+ years of experience in Product Design and Development of complex B2B applications and user-centric, data-driven solutions. Analytical mindset, fast learning, and innovative approach.
         Ready to leverage my skills in data science, visual storytelling, and stakeholder management to create impactful solutions.
       </p>
     </div>
   </section>
 
-  <section class="empty-section">
+  <section class="empty-section bg-dark py-5">
     <!-- Empty Section -->
   </section>
 
-  <div class="container">
-    <h2>Portfolio</h2>
-    <div class="projects-grid">
-      <div class="project-item">
-      <a href="bedtime-storyai.html" class="project-link">
-        <div class="image-wrapper">
-        <img src="assets/Bedtime-StoryAI.png" alt="Project 1">
+  <div class="container py-5">
+    <h2 class="mb-4">Portfolio</h2>
+    <div class="row row-cols-1 row-cols-md-2 g-4 projects-grid">
+      <div class="col">
+        <div class="project-item card h-100 border-0 rounded-0">
+          <a href="bedtime-storyai.html" class="project-link text-decoration-none text-white">
+            <div class="image-wrapper">
+              <img src="assets/Bedtime-StoryAI.png" alt="Project 1" class="img-fluid">
+            </div>
+            <div class="project-text position-absolute bottom-0 start-0 w-100 p-3">
+              <h3 class="card-title mb-1">AI Bedtime Story Generator</h3>
+              <p class="card-text mb-0">Generates a bedtime story for a 3-year-old using Whisper and speech recognition - in your language</p>
+            </div>
+          </a>
         </div>
-        <h3 class="project-name">AI Bedtime story Generator</h3>
-        <p class="description">Generates a bedtime story for a 3 years old using Wisperer and speach recognition - in your language</p>
-      </a>
       </div>
-      <div class="project-item">
-        <a href="ab_testing.html" class="project-link">
-          <div class="image-wrapper">
-          <img src="assets/abtesting.png" alt="Project 1">
-          </div>
-          <h3 class="project-name">A/B testing</h3>
-          <p class="description">Data analysis of a marketing campaign A/B test: CPP, CR, CTR performance metrics</p>
-        </a>
-      </div>
-      <div class="project-item">
-      <a href="locationdata.html" class="project-link">
-        <div class="image-wrapper">
-        <img src="assets/UX-hero2.jpg" alt="Project 2">
+      <div class="col">
+        <div class="project-item card h-100 border-0 rounded-0">
+          <a href="ab_testing.html" class="project-link text-decoration-none text-white">
+            <div class="image-wrapper">
+              <img src="assets/abtesting.png" alt="Project 1" class="img-fluid">
+            </div>
+            <div class="project-text position-absolute bottom-0 start-0 w-100 p-3">
+              <h3 class="card-title mb-1">A/B testing</h3>
+              <p class="card-text mb-0">Data analysis of a marketing campaign A/B test: CPP, CR, CTR performance metrics</p>
+            </div>
+          </a>
         </div>
-        <h3 class="project-name">Visual Location Analisis Data Tool</h3>
-        <p class="description">Interactive Data Tool for property developers.</p>
-      </a>
       </div>
-      <div class="project-item">
-      <a href="clustered.html" class="project-link">
-        <div class="image-wrapper">
-        <img src="assets/UX-hero3.png" alt="Project 3">
+      <div class="col">
+        <div class="project-item card h-100 border-0 rounded-0">
+          <a href="locationdata.html" class="project-link text-decoration-none text-white">
+            <div class="image-wrapper">
+              <img src="assets/UX-hero2.jpg" alt="Project 2" class="img-fluid">
+            </div>
+            <div class="project-text position-absolute bottom-0 start-0 w-100 p-3">
+              <h3 class="card-title mb-1">Visual Location Analysis Data Tool</h3>
+              <p class="card-text mb-0">Interactive Data Tool for property developers.</p>
+            </div>
+          </a>
         </div>
-        <h3 class="project-name">Clustered - mobile networking app </h3>
-        <p class="description">App that helps to develop valuable connections with other professionals.</p>
-      </a>
       </div>
-      <div class="project-item">
-        <a href="movimage.html" class="project-link">
-          <div class="image-wrapper">
-          <img src="assets/UX-hero4.jpg" alt="Project 3">
-          </div>
-          <h3 class="project-name">Video Assets Management and Analytics</h3>
-          <p class="description">Video Manager, Video Analytics tool and Player.</p>
-        </a>
+      <div class="col">
+        <div class="project-item card h-100 border-0 rounded-0">
+          <a href="clustered.html" class="project-link text-decoration-none text-white">
+            <div class="image-wrapper">
+              <img src="assets/UX-hero3.png" alt="Project 3" class="img-fluid">
+            </div>
+            <div class="project-text position-absolute bottom-0 start-0 w-100 p-3">
+              <h3 class="card-title mb-1">Clustered - mobile networking app</h3>
+              <p class="card-text mb-0">App that helps to develop valuable connections with other professionals.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col">
+        <div class="project-item card h-100 border-0 rounded-0">
+          <a href="movimage.html" class="project-link text-decoration-none text-white">
+            <div class="image-wrapper">
+              <img src="assets/UX-hero4.jpg" alt="Project 3" class="img-fluid">
+            </div>
+            <div class="project-text position-absolute bottom-0 start-0 w-100 p-3">
+              <h3 class="card-title mb-1">Video Assets Management and Analytics</h3>
+              <p class="card-text mb-0">Video Manager, Video Analytics tool and Player.</p>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
-    </div>
+  </div>
 
-  <footer>
-    <p>&copy; 2025 Yulia Vilenskiy</p>
+  <footer class="bg-dark text-white py-3">
+    <p class="mb-0 text-center">&copy; 2025 Yulia Vilenskiy</p>
   </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

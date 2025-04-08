@@ -63,7 +63,10 @@ header {
   background-color: $primary-color;
   height: 150px;
 }
-
+.projects-grid .project-item.main-project {
+  outline: 10px solid $accent-color;
+  outline-offset: -2px;
+}
 // Projects Grid
 // Portfolio Grid
 .projects-grid {
@@ -72,6 +75,11 @@ header {
     border: none ;
     border-radius: 0;
     position: relative;
+
+    &.main-project {
+        outline: 6px solid $accent-color;
+        outline-offset: -2px;
+    }
 
     .image-wrapper {
       position: absolute;

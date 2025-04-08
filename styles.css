@@ -37,11 +37,20 @@ header {
   height: 150px;
 }
 
+.projects-grid .project-item.main-project {
+  outline: 10px solid #f5ff37;
+  outline-offset: -2px;
+}
+
 .projects-grid .project-item {
   aspect-ratio: 3/2;
   border: none;
   border-radius: 0;
   position: relative;
+}
+.projects-grid .project-item.main-project {
+  outline: 6px solid #f5ff37;
+  outline-offset: -2px;
 }
 .projects-grid .project-item .image-wrapper {
   position: absolute;

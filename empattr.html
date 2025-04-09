@@ -57,18 +57,24 @@
 
       <nav>
         <ul class="list-unstyled d-flex gap-3 mb-0">
-          <li><a href="index.html" class="text-dark text-decoration-none">Home</a></li>
-          <li><a href="about.html" class="text-dark text-decoration-none">About</a></li>
+          <li><a href="/" class="text-dark text-decoration-none">Home</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="project-hero" style="background: linear-gradient(135deg, #1a1a60, #533483, #b8387e);">
+  <section class="project-hero" style="background:
+                                          linear-gradient(
+                                            to bottom right,
+                                            rgba(0, 0, 0, 0.9),
+                                            rgba(0, 0, 0, 0.6)
+                                          ),
+                                          url('assets/bg.jpg') no-repeat center center;
+                                        background-size: cover;">
     <div class="container">
-      <h1 class="project-title">AI Bedtime Story Generator</h1>
-      <p class="project-subtitle">Generates a bedtime story for a 3-year-old using Whisperer and speech recognition - in your language.</p>
+      <h1 class="project-title">Employee Attrition Risk Prediction Microservice</h1>
+      <p class="project-subtitle">This end-to-end machine learning service predicts employee attrition risk using Gradient Boosting Survival Analysis (GBSA). Designed for HR teams, it identifies at-risk employees with interpretable explanations, enabling targeted retention efforts.</p>
       <div class="btn-container">
         <!-- View on GitHub Button -->
         <a href="https://github.com/Morgenmuffel/employee-attrition" class="btn btn-accent" target="_blank" rel="noopener noreferrer">
@@ -83,25 +89,109 @@
   </section>
   <!-- Text Section -->
   <section class="text-section py-5">
-    <div class="container">
-      <h2 class="section-title">Bedtime Story Generation and Voice Over Application</h2>
-      <p class="section-text">
-        This is a Flask (Python) based web application that generates a bedtime story for my 3 years old son, based on voice instructions about the content/title of the story.<br>
-        It uses OpenAI whisperer and gpt-4o-mini model to transcribe the prompt and to generate the story, and performs a voice-over of the generated sory using ElevenLabs' text-to-speech API.<br>
-        The story is generated in the language of the prompt, the voice over is performed by a calming female voice, and the story always ends with everyone getting tired and going to bed! :)
-      </p>
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+          <!-- Technical Implementation Section -->
+          <section class="mb-5">
+            <h2 class="mb-4">Technical Implementation</h2>
+
+            <div class="mb-4">
+              <h3 class="mb-3">1. Machine Learning Core</h3>
+              <h4 class="mb-2">Survival Modeling:</h4>
+              <ul>
+                <li class="mb-2">Trained Gradient Boosting Survival model to estimate time-to-attrition probabilities</li>
+                <li class="mb-2">Evaluated with concordance index (C-index) achieving [X]% on test data</li>
+                <li class="mb-2">SHAP (Kernel Explainer) for feature importance visualization</li>
+                <li>Interactive survival curves for top-N high-risk employees</li>
+              </ul>
+            </div>
+
+            <div class="mb-4">
+              <h3 class="mb-3">2. Deployment & Infrastructure</h3>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <h4>Backend</h4>
+                  <ul class="list-unstyled">
+                    <li>FastAPI microservice</li>
+                    <li>Docker</li>
+                    <li>Google Cloud Run</li>
+                  </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <h4>Frontend</h4>
+                  <ul class="list-unstyled">
+                    <li>Streamlit dashboard</li>
+                  </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <h4>Data Pipeline</h4>
+                  <ul class="list-unstyled">
+                    <li>Google Cloud Storage (GCS)</li>
+                    <li>CSV upload processing</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h3 class="mb-3">3. Future Roadmap</h3>
+              <ul>
+                <li>Synthetic data generation for scenario testing</li>
+                <li>Auto-retraining pipeline with MLFlow and Databricks</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Skills Section -->
+          <section class="mb-3">
+            <h2 class="mb-4">Skills Demonstrated</h2>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <h4>Advanced ML</h4>
+                <ul class="list-unstyled">
+                  <li>Survival Analysis</li>
+                  <li>C-index Evaluation</li>
+                  <li>SHAP Explainability</li>
+                </ul>
+              </div>
+              <div class="col-md-4 mb-3">
+                <h4>MLOps</h4>
+                <ul class="list-unstyled">
+                  <li>FastAPI</li>
+                  <li>Docker</li>
+                  <li>Cloud Run</li>
+                </ul>
+              </div>
+              <div class="col-md-4 mb-3">
+                <h4>Data Engineering</h4>
+                <ul class="list-unstyled">
+                  <li>GCS Integration</li>
+                  <li>Auto-retraining</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- Impact Section -->
+          <section>
+            <h2 class="mb-3">Impact</h2>
+            <ul>
+              <li class="mb-2">Reduces turnover costs through early risk identification</li>
+              <li class="mb-2">Explainable service builds HR trust in predictions</li>
+              <li>Production-ready system demonstrates full ML lifecycle ownership</li>
+            </ul>
+          </section>
+
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="image-grid-section bg-dark py-5">
     <div class="image-grid">
-      <img src="assets/Bedtime-StoryAI.png" alt="Image 1">
-      <img src="assets/aistory2e.png" alt="Image 2">
-      <img src="assets/aistory3e.png" alt="Image 3">
-      <img src="assets/aistory3egen.png" alt="Image 4">
-      <img src="assets/aistory4.png" alt="Image 5">
-      <img src="assets/aistory2r.png" alt="Image 6">
-      <img src="assets/aistory3r.png" alt="Image 7">
+      <img src="assets/empattr.jpg" alt="Image 1">
     </div>
   </section>
 

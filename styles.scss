@@ -58,10 +58,41 @@ header {
   }
 }
 
-// Empty Section Styles
-.empty-section {
-  background-color: $primary-color;
-  height: 150px;
+// Info Section Styles
+.info-section {
+  background:
+    linear-gradient(
+      to bottom right,
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.6)
+    ),
+    url('assets/bg.jpg') no-repeat center center;
+  background-size: cover;
+
+  .email-icon {
+    position: relative;
+    top: 2px;
+    height: 24px;
+  }
+  p, h2 {
+    color: $secondary-color;
+  }
+  h2 {
+
+    font-size: $font-size-large;
+    line-height: $line-height-base;
+    margin-bottom: 60px;
+    font-weight: 300;
+
+  }
+
+  p {
+    font-size: $font-size-medium;
+    line-height: $line-height-large;
+    max-width: 900px;
+    font-weight: 400;
+    margin-bottom: 40px;
+  }
 }
 .projects-grid .project-item.main-project {
   outline: 10px solid $accent-color;

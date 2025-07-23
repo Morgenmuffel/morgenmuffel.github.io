@@ -1,0 +1,69 @@
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer frame -->
+  <rect x="20" y="20" width="560" height="560" fill="none" stroke="#333" stroke-width="2"/>
+  
+  <!-- Balance card -->
+  <rect x="40" y="80" width="520" height="80" fill="none" stroke="#333" stroke-width="1"/>
+  
+  <!-- Action buttons -->
+  <rect x="40" y="180" width="80" height="60" fill="none" stroke="#333" stroke-width="1"/>
+  <rect x="140" y="180" width="80" height="60" fill="none" stroke="#333" stroke-width="1"/>
+  <rect x="240" y="180" width="80" height="60" fill="none" stroke="#333" stroke-width="1"/>
+  <rect x="340" y="180" width="100" height="60" fill="none" stroke="#333" stroke-width="1"/>
+  
+  <!-- Recent transactions card -->
+  <rect x="40" y="260" width="520" height="300" fill="none" stroke="#333" stroke-width="1"/>
+  
+  <!-- View All button -->
+  <rect x="250" y="520" width="100" height="30" fill="none" stroke="#333" stroke-width="1"/>
+  
+  <!-- Logout button -->
+  <rect x="480" y="35" width="70" height="25" fill="none" stroke="#333" stroke-width="1"/>
+  
+  <!-- Header text -->
+  <text x="40" y="50" font-family="Arial, sans-serif" font-size="14">Welcome, John Doe</text>
+  <text x="40" y="70" font-family="Arial, sans-serif" font-size="12" fill="#666">Account: ACC1234567890</text>
+  <text x="515" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Logout</text>
+  
+  <!-- Balance section -->
+  <text x="300" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">CURRENT BALANCE</text>
+  <text x="300" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold">€1,247.50</text>
+  <text x="300" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">Account created: Jan 15, 2025</text>
+  
+  <!-- Action buttons text -->
+  <text x="80" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="18">+</text>
+  <text x="80" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10">Deposit</text>
+  
+  <text x="180" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="18">-</text>
+  <text x="180" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10">Withdraw</text>
+  
+  <text x="280" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="18">⇄</text>
+  <text x="280" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10">Transfer</text>
+  
+  <text x="390" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="18">📊</text>
+  <text x="390" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10">AI Insights</text>
+  
+  <!-- Recent transactions header -->
+  <text x="300" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">RECENT TRANSACTIONS</text>
+  
+  <!-- Transaction 1 -->
+  <text x="60" y="320" font-family="Arial, sans-serif" font-size="12">📍 Grocery shopping at Rewe</text>
+  <text x="350" y="320" font-family="Arial, sans-serif" font-size="12">🏷️Food</text>
+  <text x="480" y="320" font-family="Arial, sans-serif" font-size="12">-€45.50</text>
+  <text x="60" y="335" font-family="Arial, sans-serif" font-size="10" fill="#666">Jan 18, 2025 • AI: 95%</text>
+  
+  <!-- Transaction 2 -->
+  <text x="60" y="370" font-family="Arial, sans-serif" font-size="12">💰 Salary deposit</text>
+  <text x="350" y="370" font-family="Arial, sans-serif" font-size="12">🏷️Income</text>
+  <text x="480" y="370" font-family="Arial, sans-serif" font-size="12">+€2000</text>
+  <text x="60" y="385" font-family="Arial, sans-serif" font-size="10" fill="#666">Jan 15, 2025 • AI: 98%</text>
+  
+  <!-- Transaction 3 -->
+  <text x="60" y="420" font-family="Arial, sans-serif" font-size="12">☕ Coffee at Starbucks</text>
+  <text x="350" y="420" font-family="Arial, sans-serif" font-size="12">🏷️Food</text>
+  <text x="480" y="420" font-family="Arial, sans-serif" font-size="12">-€4.50</text>
+  <text x="60" y="435" font-family="Arial, sans-serif" font-size="10" fill="#666">Jan 14, 2025 • AI: 92%</text>
+  
+  <!-- View All button text -->
+  <text x="300" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">View All</text>
+</svg>

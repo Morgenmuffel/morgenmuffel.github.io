@@ -1,0 +1,317 @@
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Study — Clustered</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link id="all-fonts-link-font-geist" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap"><style id="all-fonts-style-font-geist">.font-geist { font-family: 'Geist', sans-serif !important; }</style><link id="all-fonts-link-font-roboto" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap"><style id="all-fonts-style-font-roboto">.font-roboto { font-family: 'Roboto', sans-serif !important; }</style><link id="all-fonts-link-font-montserrat" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"><style id="all-fonts-style-font-montserrat">.font-montserrat { font-family: 'Montserrat', sans-serif !important; }</style><link id="all-fonts-link-font-poppins" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"><style id="all-fonts-style-font-poppins">.font-poppins { font-family: 'Poppins', sans-serif !important; }</style><link id="all-fonts-link-font-playfair" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&display=swap"><style id="all-fonts-style-font-playfair">.font-playfair { font-family: 'Playfair Display', serif !important; }</style><link id="all-fonts-link-font-instrument-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&display=swap"><style id="all-fonts-style-font-instrument-serif">.font-instrument-serif { font-family: 'Instrument Serif', serif !important; }</style><link id="all-fonts-link-font-merriweather" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap"><style id="all-fonts-style-font-merriweather">.font-merriweather { font-family: 'Merriweather', serif !important; }</style><link id="all-fonts-link-font-bricolage" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&display=swap"><style id="all-fonts-style-font-bricolage">.font-bricolage { font-family: 'Bricolage Grotesque', sans-serif !important; }</style><link id="all-fonts-link-font-jakarta" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"><style id="all-fonts-style-font-jakarta">.font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }</style><link id="all-fonts-link-font-manrope" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"><style id="all-fonts-style-font-manrope">.font-manrope { font-family: 'Manrope', sans-serif !important; }</style><link id="all-fonts-link-font-space-grotesk" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"><style id="all-fonts-style-font-space-grotesk">.font-space-grotesk { font-family: 'Space Grotesk', sans-serif !important; }</style><link id="all-fonts-link-font-work-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap"><style id="all-fonts-style-font-work-sans">.font-work-sans { font-family: 'Work Sans', sans-serif !important; }</style><link id="all-fonts-link-font-pt-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap"><style id="all-fonts-style-font-pt-serif">.font-pt-serif { font-family: 'PT Serif', serif !important; }</style><link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style><link id="all-fonts-link-font-space-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap"><style id="all-fonts-style-font-space-mono">.font-space-mono { font-family: 'Space Mono', monospace !important; }</style><link id="all-fonts-link-font-quicksand" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"><style id="all-fonts-style-font-quicksand">.font-quicksand { font-family: 'Quicksand', sans-serif !important; }</style><link id="all-fonts-link-font-nunito" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap"><style id="all-fonts-style-font-nunito">.font-nunito { font-family: 'Nunito', sans-serif !important; }</style></head>
+  <body class="antialiased min-h-screen" style="font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; --color-primary-base:#2E5BDA; --color-primary-subtle:#EBF0FF; --color-primary-emphasis:#1B3BA8; --color-neutral-900:#1A2332; --color-neutral-700:#475569; --color-neutral-400:#94A3B8; --color-neutral-200:#E2E8F0; --color-neutral-50:#F8FAFC; --color-neutral-0:#FFFFFF; --color-accent-teal:#00D4B4; --color-accent-coral:#FF6B6B; --dark-gradient-bg: radial-gradient(900px 380px at 20% -10%, rgba(220,91,218,0.15), transparent 60%), radial-gradient(800px 360px at 80% 110%, rgba(0,212,180,0.18), transparent 60%), linear-gradient(180deg, rgba(15,23,42,0.85), rgba(30,41,59,0.90)); --dark-gradient-bg-subtle: radial-gradient(900px 380px at 20% -10%, rgba(220,91,218,0.06), transparent 60%), radial-gradient(800px 360px at 80% 110%, rgba(0,212,180,0.08), transparent 60%), linear-gradient(180deg, rgba(15,23,42,0.35), rgba(30,41,59,0.40)); background: var(--color-neutral-0); color: var(--color-neutral-900);">
+
+    <!-- Animated Background (Spline) -->
+    <div aria-hidden="true" class="fixed inset-0 h-screen w-full pointer-events-none">
+      <iframe src="https://my.spline.design/glasswave-UJxPNnCbIoAYyQy8jnzwzS9q" frameborder="0" width="100%" height="100%" class="w-full h-full pointer-events-none"></iframe>
+    </div>
+    <!-- Fixed white rectangle in bottom-right foreground -->
+    <div aria-hidden="true" class="fixed bottom-4 right-4 w-40 h-24 pointer-events-none" style="background: white; "></div>
+
+    <!-- Subtle Background Overlay (light, brand accents) -->
+    <div aria-hidden="true" class="fixed inset-0 -z-10 pointer-events-none">
+      <div class="w-full h-full opacity-80" style="
+        background:
+          radial-gradient(900px 400px at 20% -5%, rgba(46,91,218,0.10), transparent 60%),
+          radial-gradient(800px 380px at 80% 0%, rgba(0,212,180,0.10), transparent 60%),
+          radial-gradient(700px 360px at 50% 100%, rgba(255,107,107,0.06), transparent 60%),
+          linear-gradient(180deg, rgba(248,250,252,0.85), rgba(255,255,255,0.92));
+      "></div>
+      <div class="absolute inset-x-0 top-0 h-px" style="background: linear-gradient(90deg, rgba(46,91,218,0.15), rgba(0,212,180,0.10), rgba(255,107,107,0.10));"></div>
+    </div>
+
+    <!-- Floating Glass Header -->
+    <header class="fixed z-50 md:px-6 pr-4 pl-4 top-4 right-0 left-0">
+      <div class="max-w-6xl mx-auto rounded-2xl border shadow-lg backdrop-blur-md" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+        <div class="flex md:px-6 pt-3 pr-4 pb-3 pl-4 items-center justify-between">
+          <!-- Brand -->
+          <a href="/" class="flex items-center gap-3 group" aria-label="Home">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center shadow-sm ring-1" style="background: var(--color-primary-subtle); ring-color: var(--color-neutral-200);">
+              <svg width="28" height="27" viewBox="0 0 35 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.7295 8.23021C13.8197 7.06598 6.90978 10.3223 0 17.9997C6.90993 25.6774 13.8196 28.9327 20.7295 27.7683L24 21.4997L20.5898 19.5095C20.0696 20.4002 19.1059 20.9997 18 20.9997C16.3432 20.9997 15.0001 19.6565 15 17.9997C15.0002 16.343 16.3433 14.9997 18 14.9997C19.1052 14.9997 20.0684 15.5992 20.5889 16.489L24 14.4997L20.7295 8.23021ZM12.6016 12.0964C11.003 13.5591 10.0001 15.6623 10 17.9997C10 20.337 11.0033 22.4394 12.6016 23.9021C9.90917 22.8194 7.09116 20.9021 4.14648 17.9997C7.09127 15.0973 9.90908 13.179 12.6016 12.0964Z" fill="url(#paint0_radial_901_482)"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M31 9.5L25 16.5L18 3L31 9.5Z" fill="url(#paint1_linear_901_482)"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M32.5 26.5L25.5 18.5L18.5 32L32.5 26.5Z" fill="url(#paint2_linear_901_482)"/>
+                <path d="M18 6C19.6569 6 21 4.65685 21 3C21 1.34315 19.6569 0 18 0C16.3431 0 15 1.34315 15 3C15 4.65685 16.3431 6 18 6Z" fill="#1B3BA8"/>
+                <path d="M19 34C20.1046 34 21 33.1046 21 32C21 30.8954 20.1046 30 19 30C17.8954 30 17 30.8954 17 32C17 33.1046 17.8954 34 19 34Z" fill="#1B3BA8"/>
+                <path d="M26.1816 18L33.5 27L20.5898 19.5068C20.0699 20.3986 19.1067 21 18 21C16.3431 21 15 19.6569 15 18C15 16.3431 16.3431 15 18 15C19.1049 15 20.0673 15.599 20.5879 16.4883L30 11L26.1816 18Z" fill="url(#paint3_linear_901_482)"/>
+                <path d="M31 14C33.2091 14 35 12.2091 35 10C35 7.79086 33.2091 6 31 6C28.7909 6 27 7.79086 27 10C27 12.2091 28.7909 14 31 14Z" fill="#1B3BA8"/>
+                <path d="M32.5 29C33.8807 29 35 27.8807 35 26.5C35 25.1193 33.8807 24 32.5 24C31.1193 24 30 25.1193 30 26.5C30 27.8807 31.1193 29 32.5 29Z" fill="#1B3BA8"/>
+                <defs>
+                <radialGradient id="paint0_radial_901_482" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(18 18) rotate(126.87) scale(7.5 9.00085)">
+                <stop stop-color="#2E5BDA"/>
+                <stop offset="1" stop-color="#1B3BA8"/>
+                </radialGradient>
+                <linearGradient id="paint1_linear_901_482" x1="18.5" y1="3.48333" x2="29.7218" y2="12.0638" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#2E5BDA"/>
+                <stop offset="1" stop-color="#2E5BDA" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="paint2_linear_901_482" x1="18.5" y1="32.0167" x2="29.7218" y2="23.4362" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#2E5BDA"/>
+                <stop offset="1" stop-color="#2E5BDA" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="paint3_linear_901_482" x1="16" y1="17.9995" x2="26.1816" y2="17.9995" gradientUnits="userSpaceOnUse">
+                <stop offset="0.341346" stop-color="#2E5BDA" stop-opacity="0"/>
+                <stop offset="0.903846" stop-color="#2E5BDA"/>
+                </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <span class="text-sm md:text-base font-medium tracking-tight group-hover:opacity-90 transition-opacity">Yulia Vilensky <span class="hidden md:inline">| Senior Product Designer</span></span>
+          </a>
+
+          <!-- Nav -->
+          <nav class="hidden md:flex items-center gap-7 text-sm">
+
+          </nav>
+
+          <!-- CTA -->
+          <div class="flex items-center gap-3">
+            <a href="/" class="hidden sm:inline-flex items-center gap-2 transition-all hover:shadow-sm text-sm font-medium rounded-md pt-2 pr-3.5 pb-2 pl-3.5" style="background: var(--color-primary-base); color: white;">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home lucide-layout-dashboard w-[16px] h-[16px]" data-icon-replaced="true" style="color: rgb(255, 255, 255); width: 16px; height: 16px;"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+  Home
+</a>
+            <a href="/#contact" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-all hover:shadow-sm border" style="border-color: var(--color-neutral-200); color: var(--color-primary-emphasis); background: white;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="mail" class="lucide lucide-mail w-4 h-4"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+              Contact
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- Hero: Full-width image, centered text -->
+      <section id="case-hero" class="relative">
+        <div class="w-full">
+          <figure class="relative overflow-hidden reveal-on-scroll transition-all duration-700" style="opacity: 1; transform: translateY(0px);">
+            <img src="assets/clustered-cover.jpg" alt="Clustered hero" class="w-full object-cover" style="min-height: 420px; max-height: 700px;">
+            <figcaption class="absolute top-0 right-0 bottom-0 left-0">
+              <div class="sm:px-6 flex h-full max-w-7xl mr-auto ml-auto pr-5 pl-5 items-end pb-8 md:pb-16 lg:pb-20">
+                <div class="flex flex-col items-center text-center w-full">
+                  <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-widest rounded-full pt-1 pr-3 pb-1 pl-3 shadow" style="color: white; background: var(--color-primary-base);">
+                    Clustered
+                  </span>
+                  <h1 class="sm:text-5xl md:text-6xl text-3xl font-semibold tracking-tight mt-3 px-4 py-2" style="color: rgb(0, 123, 154); background: rgba(255, 195, 86, 0.5); text-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px;">Network smarter, not harder</h1>
+                </div>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Scenario and Problem Section -->
+      <section id="scenario" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div class="lg:col-span-4">
+              <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">Scenario</h2>
+            </div>
+            <div class="lg:col-span-8">
+              <div class="prose max-w-none">
+                <p class="text-base sm:text-lg" style="color: var(--color-neutral-700);">
+                  Networking is essential for both business success and long-term career progression. Professionals attend relevant conferences and networking events in an attempt to develop valuable connections.
+                </p>
+
+                <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">Problem</h3>
+                <p class="mt-2 text-base" style="color: var(--color-neutral-700);">
+                  People are frequently struggling with face-to-face communication: for millennials, used to digital communication, networking can be a lonely and awkward endeavor. But even for extroverts, meeting like-minded people at events and building meaningful connections that go beyond just handing over your business card can be very tiresome. It's a time-consuming guesswork that requires preliminary research.
+                </p>
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  Besides that, with 100+ business and networking events happening every week, it's hard to tell what's worth attending. Choosing the right networking settings requires significant effort.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-10 h-px w-full" style="background: linear-gradient(90deg, rgba(226,232,240,1), rgba(226,232,240,0));"></div>
+        </div>
+      </section>
+
+      <!-- Solution Section with Image -->
+      <section id="solution" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <!-- Image + caption -->
+            <div class="lg:col-span-7">
+              <figure class="reveal-on-scroll overflow-hidden" style="background: white; opacity: 0; transform: translateY(8px);">
+                <img src="assets/9ZFj46BLZ0K0ZOHk.png" alt="Initial state of the Main Feed" class="w-full h-auto object-contain">
+              </figure>
+              <figcaption class="text-[15px] sm:text-base mt-4 font-medium leading-relaxed" style="color: var(--color-neutral-700);">
+                Initial state of the Main Feed - still no clusters
+              </figcaption>
+            </div>
+            <!-- Text -->
+            <div class="lg:col-span-5">
+              <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">Solution</h2>
+              <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                Clustered is an app designed to help you develop valuable connections with other professionals. By providing you with a tailor-made networking experience, Clustered matches you with people who complement your skills, goals, and passions, helping to increase your chances of building real relationships and boosting the value of your network.
+              </p>
+              <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                The main concept of the app is the Cluster: a group of 3-5 people matched based on answers to a brief set of questionnaires about personality, goals, attributes, and professional challenges.
+              </p>
+              <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                Once the user is matched with her first Cluster, she is able to connect with the other members and share ideas/values/needs. The Cluster will have the option to attend curated events together and organise in-person meetups. The event suggestions are personalized based on the Cluster's common goals, challenges, and availability.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Differentiation and Background Section -->
+      <section id="differentiation" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <!-- Text (left, smaller column) -->
+            <div class="lg:col-span-5">
+              <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">Differentiation</h2>
+              <p class="mt-3 text-base sm:text-lg" style="color: var(--color-neutral-700);">
+                Other networking apps don't provide a personalised networking experience; instead, they purely serve as event platforms or only offer peer-to-peer matching without facilitating networking.
+              </p>
+
+              <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">Background</h3>
+              <p class="mt-2 text-base" style="color: var(--color-neutral-700);">
+                Clustered founders have successfully organized several networking events for women in Berlin, where attendees were manually matched into clusters after completing the questionnaire during registration. After an event, they filled out feedback surveys.
+              </p>
+            </div>
+            <!-- Image + caption (right, larger column) -->
+            <div class="lg:col-span-7">
+              <figure class="reveal-on-scroll overflow-hidden" style="background: white; opacity: 0; transform: translateY(8px);">
+                <img src="assets/F4bZ9YbJefhQ1aRb.png" alt="Multiple clusters" class="w-full h-auto object-contain">
+              </figure>
+              <figcaption class="text-[15px] sm:text-base mt-4 font-medium leading-relaxed" style="color: var(--color-neutral-700);">
+                It's possible to request multiple clusters on different topics and/or for different events
+              </figcaption>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- My Role and Tools Section -->
+      <section id="my-role" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <!-- Image + caption (left, larger column) -->
+            <div class="lg:col-span-7">
+              <figure class="reveal-on-scroll overflow-hidden" style="background: white; opacity: 0; transform: translateY(8px);">
+                <img src="assets/y0p3Om3g0xQdH9yc.png" alt="Attend events together" class="w-full h-auto object-contain">
+              </figure>
+              <figcaption class="text-[15px] sm:text-base mt-4 font-medium leading-relaxed" style="color: var(--color-neutral-700);">
+                Attend events together with your cluster, or request to be clustered for the event
+              </figcaption>
+            </div>
+            <!-- Text (right, smaller column) -->
+            <div class="lg:col-span-5">
+              <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">My role</h2>
+              <ul class="mt-3 text-base space-y-2" style="color: var(--color-neutral-700);">
+                <li>• Work with the founding team on product strategy</li>
+                <li>• Research data analysis</li>
+                <li>• User Journey Map: two possible roadmaps for the app</li>
+                <li>• IA and User flows</li>
+                <li>• Wireframes & Prototyping</li>
+                <li>• UI Design</li>
+                <li>• Branding/Pattern Illustration/Icons design</li>
+                <li>• Micro-copy along a copywriter</li>
+                <li>• Usability Testing, User Surveys</li>
+              </ul>
+
+              <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">Tools</h3>
+              <ul class="mt-3 text-base space-y-2" style="color: var(--color-neutral-700);">
+                <li>• <strong>Figma</strong> - Design and prototyping</li>
+                <li>• <strong>Zeplin</strong> - Design system and export for dev</li>
+                <li>• <strong>Framer</strong> - Prototyping special interactions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="mt-24 relative">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6">
+        <div class="rounded-2xl border ring-1 overflow-hidden" style="border-color: var(--color-neutral-200); ring-color: var(--color-neutral-200); background: rgba(255,255,255,0.75);">
+          <div class="sm:px-8 pt-8 pr-6 pb-8 pl-6">
+              <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div class="">
+                  <div class="inline-flex items-center gap-2 text-sm uppercase tracking-widest rounded-full px-3 py-1 border" style="border-color: var(--color-neutral-200); color: var(--color-primary-emphasis); background: linear-gradient(90deg, rgba(0,212,180,0.12), rgba(46,91,218,0.08));">
+                    Thanks for visiting
+                  </div>
+                  <h3 class="mt-3 text-xl font-semibold tracking-tight">Let's build the next wave of AI UX</h3>
+                  <p class="mt-1.5 text-sm" style="color: var(--color-neutral-700);">Available for roles in Conversational &amp; Agentic AI, Design Systems, and complex SaaS.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                  <a href="/#contact" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-all hover:shadow-sm" style="background: var(--color-primary-base); color: white;">
+                    Contact
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                  </a>
+
+                  <a href="https://www.linkedin.com/in/yulia-vilensky/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 transition hover:shadow-sm text-sm ring-1 rounded-md pt-2 pr-3 pb-2 pl-3" style="background: white; ring-color: var(--color-neutral-200); color: var(--color-primary-emphasis);" aria-label="LinkedIn profile">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="linkedin" class="lucide lucide-linkedin w-4.5 h-4.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    LinkedIn
+                  </a>
+                  <a href="https://github.com/Morgenmuffel" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium border transition-all hover:shadow-sm" style="border-color: var(--color-neutral-200); background: white; color: var(--color-primary-emphasis);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="github" class="lucide lucide-github w-[24px] h-[24px]" data-icon-replaced="true" style="width: 24px; height: 24px; color: rgb(27, 59, 168);"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                    GitHub
+                  </a>
+                </div>
+              </div>
+
+              <div class="mt-6 pt-6 border-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" style="border-color: var(--color-neutral-200);">
+                <p class="text-xs" style="color: var(--color-neutral-700);">© <span id="year">2025</span> Senior Product Designer — Conversational &amp; Agentic AI.</p>
+                <div class="flex items-center gap-3">
+                  <a href="#top" class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-all hover:shadow-sm" style="border: 1px solid var(--color-neutral-200); background: white; color: var(--color-primary-emphasis);">
+                    Back to top
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up" class="lucide lucide-arrow-up w-3.5 h-3.5"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Initialize icons
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+
+      // Current year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Reveal-on-scroll helper
+      const revealItems = document.querySelectorAll('.reveal-on-scroll');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const el = entry.target;
+            if (entry.isIntersecting) {
+              el.classList.add('transition-all','duration-700');
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0)';
+            } else {
+              el.style.opacity = '0';
+              el.style.transform = 'translateY(8px)';
+            }
+          });
+        }, { threshold: 0.12 });
+        revealItems.forEach((el) => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(8px)';
+          io.observe(el);
+        });
+      }
+    </script>
+
+</body></html>

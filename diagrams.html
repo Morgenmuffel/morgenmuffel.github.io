@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversational Flows</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .flow-node {
+            transition: all 0.3s ease;
+        }
+        .flow-node:hover {
+            transform: scale(1.05);
+        }
+        .decision-node {
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-7xl mx-auto space-y-12">
+        <!-- Header -->
+        <div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Conversational Flow Design</h1>
+            <p class="text-gray-600 mb-8">6 Primary conversation flows with 12+ behavioral techniques</p>
+        </div>
+
+        <!-- Legend -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="font-semibold text-gray-700 mb-4">Flow Node Types</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-12 h-8 rounded bg-blue-100 border-2 border-blue-400 flex-shrink-0"></div>
+                    <span class="text-sm text-gray-600">User Input</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-12 h-12 bg-gray-800 decision-node flex-shrink-0"></div>
+                    <span class="text-sm text-gray-600">Decision</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-12 h-8 rounded bg-yellow-100 border-2 border-yellow-400 flex-shrink-0"></div>
+                    <span class="text-sm text-gray-600">Tool Call</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-12 h-8 rounded bg-green-100 border-2 border-green-400 flex-shrink-0"></div>
+                    <span class="text-sm text-gray-600">Response</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-12 h-8 rounded bg-pink-100 border-2 border-pink-400 flex-shrink-0"></div>
+                    <span class="text-sm text-gray-600">Motivation</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-12 h-8 rounded bg-red-100 border-2 border-red-400 flex-shrink-0"></div>
+                    <span class="text-sm text-gray-600">Error</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flow 1: Schedule Query → Suggestion -->
+        <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">Flow 1: Schedule Query → Suggestion</h2>
+            <p class="text-sm text-gray-600 mb-6">User asks about schedule, no breaks exist → Agent suggests optimal times</p>
+
+            <div class="overflow-x-auto">
+                <div class="flex items-center gap-3 min-w-max pb-4">
+                    <!-- User Input -->
+                    <div class="flow-node">
+                        <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 w-44">
+                            <div class="font-semibold text-blue-900 text-sm mb-1">User Input</div>
+                            <p class="text-xs text-blue-800">"What's my schedule tomorrow?"</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Parse Date -->
+                    <div class="flow-node">
+                        <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 w-48">
+                            <div class="font-semibold text-yellow-900 text-sm mb-1">Tool Call</div>
+                            <p class="text-xs text-yellow-800">parse_natural_date()</p>
+                            <p class="text-xs text-yellow-700">→ "2025-10-21"</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Schedule Intelligence -->
+                    <div class="flow-node">
+                        <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 w-52">
+                            <div class="font-semibold text-yellow-900 text-sm mb-1">Tool Call</div>
+                            <p class="text-xs text-yellow-800">schedule_intelligence_agent()</p>
+                            <p class="text-xs text-yellow-700">Analyzes calendar + suggests</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Decision -->
+                    <div class="flow-node relative w-28 h-28">
+                        <div class="absolute inset-0 bg-gray-800 decision-node flex items-center justify-center">
+                            <p class="text-white text-xs font-bold text-center px-2">Breaks exist?</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Motivation -->
+                    <div class="flow-node">
+                        <div class="bg-pink-100 border-2 border-pink-400 rounded-lg p-3 w-48">
+                            <div class="font-semibold text-pink-900 text-sm mb-1">Motivation</div>
+                            <p class="text-xs text-pink-800"><strong>Scarcity + Social Proof</strong></p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Response -->
+                    <div class="flow-node">
+                        <div class="bg-green-100 border-2 border-green-400 rounded-lg p-3 w-60">
+                            <div class="font-semibold text-green-900 text-sm mb-1">Response</div>
+                            <p class="text-xs text-green-800">"You have 5 meetings tomorrow with no breaks. How about 10:30 AM, 2 PM, and 4:15 PM?"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                <p class="text-sm text-blue-800"><strong>Output Type:</strong> ScheduleWithSuggestions</p>
+                <p class="text-xs text-blue-700 mt-1">Stores pending_suggestions, awaits confirmation</p>
+            </div>
+        </div>
+
+        <!-- Flow 2: Specific Times → Conflict Resolution -->
+        <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">Flow 2: Specific Times → Conflict Resolution</h2>
+            <p class="text-sm text-gray-600 mb-6">User requests specific times, conflicts detected → Agent suggests alternatives</p>
+
+            <div class="overflow-x-auto">
+                <div class="flex items-center gap-3 min-w-max pb-4">
+                    <!-- User Input -->
+                    <div class="flow-node">
+                        <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 w-44">
+                            <div class="font-semibold text-blue-900 text-sm mb-1">User Input</div>
+                            <p class="text-xs text-blue-800">"Schedule breaks at 10, 2, and 4"</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Parse Times -->
+                    <div class="flow-node">
+                        <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 w-48">
+                            <div class="font-semibold text-yellow-900 text-sm mb-1">Tool Call</div>
+                            <p class="text-xs text-yellow-800">parse_break_times()</p>
+                            <p class="text-xs text-yellow-700">→ [10:00, 14:00, 16:00]</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Conflict Check -->
+                    <div class="flow-node">
+                        <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 w-48">
+                            <div class="font-semibold text-yellow-900 text-sm mb-1">Tool Call</div>
+                            <p class="text-xs text-yellow-800">conflict_checker()</p>
+                            <p class="text-xs text-yellow-700">Checks 15-min buffers</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Decision -->
+                    <div class="flow-node relative w-28 h-28">
+                        <div class="absolute inset-0 bg-gray-800 decision-node flex items-center justify-center">
+                            <p class="text-white text-xs font-bold text-center px-2">Conflicts found?</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Find Alternatives -->
+                    <div class="flow-node">
+                        <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 w-52">
+                            <div class="font-semibold text-yellow-900 text-sm mb-1">Tool Call</div>
+                            <p class="text-xs text-yellow-800">find_alternative_times()</p>
+                            <p class="text-xs text-yellow-700">Suggests 1 PM or 3 PM</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Motivation -->
+                    <div class="flow-node">
+                        <div class="bg-pink-100 border-2 border-pink-400 rounded-lg p-3 w-44">
+                            <div class="font-semibold text-pink-900 text-sm mb-1">Motivation</div>
+                            <p class="text-xs text-pink-800"><strong>Choice Architecture</strong></p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Response -->
+                    <div class="flow-node">
+                        <div class="bg-green-100 border-2 border-green-400 rounded-lg p-3 w-60">
+                            <div class="font-semibold text-green-900 text-sm mb-1">Response</div>
+                            <p class="text-xs text-green-800">"I can schedule 10 AM and 4 PM. Your 2 PM conflicts - try 1 PM or 3 PM?"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                <p class="text-sm text-blue-800"><strong>Output Type:</strong> SuggestAlternatives</p>
+                <p class="text-xs text-blue-700 mt-1">Stores no_conflict_breaks + alternatives</p>
+            </div>
+        </div>
+
+        <!-- Flow 3: Confirmation → Execution -->
+        <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">Flow 3: Confirmation → Execution</h2>
+            <p class="text-sm text-gray-600 mb-6">User confirms pending suggestions → Agent executes scheduling</p>
+
+            <div class="overflow-x-auto">
+                <div class="flex items-center gap-3 min-w-max pb-4">
+                    <!-- User Input -->
+                    <div class="flow-node">
+                        <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 w-36">
+                            <div class="font-semibold text-blue-900 text-sm mb-1">User Input</div>
+                            <p class="text-xs text-blue-800">"Yes, schedule them"</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Decision -->
+                    <div class="flow-node relative w-28 h-28">
+                        <div class="absolute inset-0 bg-gray-800 decision-node flex items-center justify-center">
+                            <p class="text-white text-xs font-bold text-center px-2">Pending suggestions?</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Execute -->
+                    <div class="flow-node">
+                        <div class="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-3 w-48">
+                            <div class="font-semibold text-yellow-900 text-sm mb-1">Tool Call</div>
+                            <p class="text-xs text-yellow-800">execute_calendar_operations()</p>
+                            <p class="text-xs text-yellow-700">Creates events via API</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Motivation -->
+                    <div class="flow-node">
+                        <div class="bg-pink-100 border-2 border-pink-400 rounded-lg p-3 w-44">
+                            <div class="font-semibold text-pink-900 text-sm mb-1">Motivation</div>
+                            <p class="text-xs text-pink-800"><strong>Positive Feedback</strong></p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Response -->
+                    <div class="flow-node">
+                        <div class="bg-green-100 border-2 border-green-400 rounded-lg p-3 w-52">
+                            <div class="font-semibold text-green-900 text-sm mb-1">Response</div>
+                            <p class="text-xs text-green-800">"Perfect! Scheduled your breaks at 10:30 AM, 2 PM, 4:15 PM 🧘"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                <p class="text-sm text-blue-800"><strong>Output Type:</strong> SchedulingComplete</p>
+                <p class="text-xs text-blue-700 mt-1">Clears conversation history</p>
+            </div>
+        </div>
+
+        <!-- Flow 4: Missing Info → Clarification -->
+        <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">Flow 4: Missing Info → Clarification</h2>
+            <p class="text-sm text-gray-600 mb-6">Request lacks required information → Agent requests clarification</p>
+
+            <div class="overflow-x-auto">
+                <div class="flex items-center gap-3 min-w-max pb-4">
+                    <!-- User Input -->
+                    <div class="flow-node">
+                        <div class="bg-blue-100 border-2 border-blue-400 rounded-lg p-3 w-36">
+                            <div class="font-semibold text-blue-900 text-sm mb-1">User Input</div>
+                            <p class="text-xs text-blue-800">"Schedule 3 breaks"</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Decision -->
+                    <div class="flow-node relative w-28 h-28">
+                        <div class="absolute inset-0 bg-gray-800 decision-node flex items-center justify-center">
+                            <p class="text-white text-xs font-bold text-center px-2">Date mentioned?</p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Motivation -->
+                    <div class="flow-node">
+                        <div class="bg-pink-100 border-2 border-pink-400 rounded-lg p-3 w-44">
+                            <div class="font-semibold text-pink-900 text-sm mb-1">Motivation</div>
+                            <p class="text-xs text-pink-800"><strong>Soft Call-to-Action</strong></p>
+                        </div>
+                    </div>
+
+                    <span class="text-gray-400 text-xl">→</span>
+
+                    <!-- Response -->
+                    <div class="flow-node">
+                        <div class="bg-green-100 border-2 border-green-400 rounded-lg p-3 w-52">
+                            <div class="font-semibold text-green-900 text-sm mb-1">Clarification Request</div>
+                            <p class="text-xs text-green-800">"I'd love to help! Which day would you like breaks for?"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                <p class="text-sm text-blue-800"><strong>Output Type:</strong> NeedsClarification</p>
+                <p class="text-xs text-blue-700 mt-1">Maintains context, awaits date input</p>
+            </div>
+        </div>
+
+        <!-- Motivation Techniques Summary -->
+        <div class="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg shadow-lg p-6 border border-pink-200">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">12+ Behavioral Techniques Applied</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h3 class="font-bold text-pink-900 mb-3">Motivation</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li>✓ Social Proof</li>
+                        <li>✓ Scarcity/Urgency</li>
+                        <li>✓ Loss Aversion</li>
+                        <li>✓ Anticipatory Enthusiasm</li>
+                        <li>✓ Positive Feedback</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-purple-900 mb-3">Ability</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li>✓ Choice Architecture</li>
+                        <li>✓ Default Options</li>
+                        <li>✓ Reduce Choice</li>
+                        <li>✓ Soft Call-to-Action</li>
+                        <li>✓ Anchoring</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-indigo-900 mb-3">Prompting</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li>✓ Never Dead-End</li>
+                        <li>✓ Exceptional Benefit</li>
+                        <li>✓ Movement</li>
+                        <li>✓ Curiosity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Metrics -->
+        <div class="bg-gray-900 text-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold mb-6">Success Metrics</h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-cyan-400 mb-2">&gt;95%</div>
+                    <div class="text-sm text-gray-300">Scheduling Accuracy</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-emerald-400 mb-2">100%</div>
+                    <div class="text-sm text-gray-300">Conflict Detection</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-yellow-400 mb-2">≤3</div>
+                    <div class="text-sm text-gray-300">Avg Turns</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-pink-400 mb-2">12+</div>
+                    <div class="text-sm text-gray-300">Techniques</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

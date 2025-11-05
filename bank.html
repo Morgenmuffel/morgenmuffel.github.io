@@ -1,0 +1,319 @@
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fast-Reckless Bank — Yulia Vilensky</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="antialiased min-h-screen" style="font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; --color-primary-base:#2E5BDA; --color-primary-subtle:#EBF0FF; --color-primary-emphasis:#1B3BA8; --color-neutral-900:#1A2332; --color-neutral-700:#475569; --color-neutral-400:#94A3B8; --color-neutral-200:#E2E8F0; --color-neutral-50:#F8FAFC; --color-neutral-0:#FFFFFF; --color-accent-teal:#00D4B4; --color-accent-coral:#FF6B6B; background: var(--color-neutral-0); color: var(--color-neutral-900);">
+
+  <!-- Animated Background (Spline) -->
+  <div aria-hidden="true" class="fixed inset-0 h-screen w-full pointer-events-none">
+    <iframe src="https://my.spline.design/glasswave-UJxPNnCbIoAYyQy8jnzwzS9q" frameborder="0" width="100%" height="100%" class="w-full h-full pointer-events-none"></iframe>
+  </div>
+  <!-- Fixed white rectangle in bottom-right foreground -->
+  <div aria-hidden="true" class="fixed bottom-4 right-4 w-40 h-24 pointer-events-none" style="background: white;"></div>
+
+  <!-- Subtle Background Overlay -->
+  <div aria-hidden="true" class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="w-full h-full opacity-80" style="
+      background:
+        radial-gradient(900px 400px at 20% -5%, rgba(46,91,218,0.10), transparent 60%),
+        radial-gradient(800px 380px at 80% 0%, rgba(0,212,180,0.10), transparent 60%),
+        radial-gradient(700px 360px at 50% 100%, rgba(255,107,107,0.06), transparent 60%),
+        linear-gradient(180deg, rgba(248,250,252,0.85), rgba(255,255,255,0.92));
+    "></div>
+    <div class="absolute inset-x-0 top-0 h-px" style="background: linear-gradient(90deg, rgba(46,91,218,0.15), rgba(0,212,180,0.10), rgba(255,107,107,0.10));"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="fixed z-50 md:px-6 pr-4 pl-4 top-4 right-0 left-0">
+    <div class="max-w-6xl mx-auto rounded-2xl border shadow-lg backdrop-blur-md" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+      <div class="flex md:px-6 pt-3 pr-4 pb-3 pl-4 items-center justify-between">
+        <a href="/" class="flex items-center gap-3 group" aria-label="Home">
+          <img src="assets/LogoWave.svg" alt="Logo" class="w-9 h-9">
+          <span class="text-sm md:text-base font-medium tracking-tight group-hover:opacity-90 transition-opacity">Yulia Vilensky <span class="hidden md:inline">| Senior Product Designer</span></span>
+        </a>
+        <div class="flex items-center gap-3">
+          <a href="/" class="hidden sm:inline-flex items-center gap-2 transition-all hover:shadow-sm text-sm font-medium rounded-md pt-2 pr-3.5 pb-2 pl-3.5" style="background: var(--color-primary-base); color: white;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            Home
+          </a>
+          <a href="/#contact" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-all hover:shadow-sm border" style="border-color: var(--color-neutral-200); color: var(--color-primary-emphasis); background: white;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+            Contact
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section id="case-hero" class="relative">
+      <div class="w-full">
+        <figure class="relative overflow-hidden">
+          <img src="assets/bank1.png" alt="Fast-Reckless Bank" class="w-full h-[50vh] sm:h-[65vh] md:h-[72vh] object-cover">
+          <figcaption class="absolute top-0 right-0 bottom-0 left-0">
+            <div class="sm:px-6 flex h-full max-w-7xl mr-auto ml-auto pr-5 pl-5 items-center">
+              <div class="flex flex-col items-start">
+                <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-widest rounded-full pt-1 pr-3 pb-1 pl-3 shadow" style="color: white; background: var(--color-primary-base);">
+                  Design Leadership
+                </span>
+                <h1 class="sm:text-5xl md:text-6xl text-3xl font-semibold tracking-tight mt-3 px-4 py-2" style="color: white; background: rgba(15,23,42,0.4); text-shadow: rgba(0, 0, 0, 0.25) 0px 1px 2px;">
+                  Fast-Reckless Bank
+                </h1>
+              </div>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="background" class="relative mt-16 md:mt-24">
+      <div class="max-w-6xl mx-auto px-5 sm:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <div class="lg:col-span-4">
+            <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">Overview</h2>
+          </div>
+          <div class="lg:col-span-8">
+            <div class="prose max-w-none">
+              <p class="text-base sm:text-lg" style="color: var(--color-neutral-700);">
+                This project demonstrates strategic AI integration in product design leadership through complete system architecture and full-stack implementation. Originally developed as a technical assignment, it showcases how modern AI tools can fundamentally transform design processes, accelerate team productivity, and enable data-driven decision making.
+              </p>
+              <p class="text-base sm:text-lg mt-4" style="color: var(--color-neutral-700);">
+                As a comprehensive case study for design leadership at scale, it explores the intersection of hands-on design execution, technical architecture decisions, cross-functional collaboration, and AI-powered innovation in fintech UX.
+              </p>
+
+              <div class="mt-8 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div class="rounded-xl p-6 border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+                    <h4 class="text-lg font-semibold mb-2">Timeline</h4>
+                    <p class="text-sm" style="color: var(--color-neutral-700);">1 week sprint</p>
+                  </div>
+                  <div class="rounded-xl p-6 border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+                    <h4 class="text-lg font-semibold mb-2">Role</h4>
+                    <p class="text-sm" style="color: var(--color-neutral-700);">Lead Product Designer & Full-stack Developer</p>
+                  </div>
+                  <div class="rounded-xl p-6 border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+                    <h4 class="text-lg font-semibold mb-2">Focus</h4>
+                    <p class="text-sm" style="color: var(--color-neutral-700);">AI-Powered Design Systems & Rapid Prototyping</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-8 flex flex-wrap gap-3">
+                <a href="https://github.com/Morgenmuffel/fast-reckless-bank" class="inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-all hover:shadow-lg" style="background: var(--color-primary-base); color: white;" target="_blank" rel="noopener noreferrer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                  View on GitHub
+                </a>
+                <a href="https://youtu.be/SE9bBlgrIYo" class="inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-all hover:shadow-lg border" style="border-color: var(--color-primary-base); color: var(--color-primary-base); background: white;" target="_blank" rel="noopener noreferrer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                  Watch Demo
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Challenge Section -->
+    <section class="relative mt-16 md:mt-24">
+      <div class="max-w-6xl mx-auto px-5 sm:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="rounded-xl p-8 border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+            <h3 class="text-xl font-semibold mb-4">Strategic Challenge</h3>
+            <p class="text-base" style="color: var(--color-neutral-700);">Lead AI integration in design workflows while architecting and implementing a complete full-stack banking application that maintains exceptional UX standards.</p>
+          </div>
+          <div class="rounded-xl p-8 border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+            <h3 class="text-xl font-semibold mb-4">Design Leadership</h3>
+            <p class="text-base" style="color: var(--color-neutral-700);">Demonstrate hands-on design execution combined with strategic thinking and technical architecture, using AI as a force multiplier for rapid prototyping and user-centered solutions.</p>
+          </div>
+          <div class="rounded-xl p-8 border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+            <h3 class="text-xl font-semibold mb-4">Innovation Impact</h3>
+            <p class="text-base" style="color: var(--color-neutral-700);">Achieved 60% faster design-to-prototype cycles while establishing reusable AI-powered design methodologies and complete system architecture for team scalability.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo Video Section -->
+    <section class="relative mt-16 md:mt-24">
+      <div class="max-w-6xl mx-auto px-5 sm:px-6">
+        <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold mb-8 text-center">Project Demo</h2>
+        <div class="rounded-xl overflow-hidden shadow-lg">
+          <div class="relative" style="padding-bottom: 56.25%;">
+            <iframe src="https://www.youtube.com/embed/SE9bBlgrIYo?si=QlN8nrHHUYEsFBwX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Design Process Section -->
+    <section class="relative mt-16 md:mt-24">
+      <div class="max-w-6xl mx-auto px-5 sm:px-6">
+        <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold mb-8">Strategic Design Process & AI Integration</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="rounded-xl overflow-hidden border shadow-lg" style="background: white; border-color: var(--color-neutral-200);">
+            <img src="assets/login_wireframe_svg.svg" alt="Login Wireframe" class="w-full h-64 object-contain p-6" style="background: white;">
+            <div class="p-6">
+              <h4 class="text-lg font-semibold mb-2">AI-Powered User Flow Design</h4>
+              <p class="text-sm" style="color: var(--color-neutral-700);">Leveraged conversational AI for rapid iteration on authentication patterns and user onboarding optimization</p>
+            </div>
+          </div>
+          <div class="rounded-xl overflow-hidden border shadow-lg" style="background: white; border-color: var(--color-neutral-200);">
+            <img src="assets/dashboard_wireframe_svg.svg" alt="Dashboard Wireframe" class="w-full h-64 object-contain p-6" style="background: white;">
+            <div class="p-6">
+              <h4 class="text-lg font-semibold mb-2">Design System Architecture</h4>
+              <p class="text-sm" style="color: var(--color-neutral-700);">Systematic approach to component design with AI-assisted consistency validation and scalable patterns</p>
+            </div>
+          </div>
+          <div class="rounded-xl overflow-hidden border shadow-lg" style="background: white; border-color: var(--color-neutral-200);">
+            <img src="assets/transaction_form_wireframe_svg.svg" alt="Transaction Form Wireframe" class="w-full h-64 object-contain p-6" style="background: white;">
+            <div class="p-6">
+              <h4 class="text-lg font-semibold mb-2">High-Fidelity Prototyping</h4>
+              <p class="text-sm" style="color: var(--color-neutral-700);">AI-accelerated wireframe-to-code workflow demonstrating rapid functional prototype development</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Features Section -->
+    <section class="relative mt-16 md:mt-24">
+      <div class="max-w-6xl mx-auto px-5 sm:px-6">
+        <!-- Feature 1 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+          <div>
+            <img src="assets/bank1.png" alt="AI Design Process" class="w-full rounded-xl shadow-lg">
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold mb-4">Strategic AI Integration Leadership</h3>
+            <p class="text-base" style="color: var(--color-neutral-700);">
+              Led the strategic integration of AI tools across the entire design process – from initial concept through final implementation. Used Claude AI as a design consultant for architectural decisions and UX guidance, demonstrating how AI can amplify design leadership capabilities while maintaining creative control and design quality standards.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+          <div class="order-2 lg:order-1">
+            <h3 class="text-2xl font-semibold mb-4">System Architecture & Technical Leadership</h3>
+            <p class="text-base" style="color: var(--color-neutral-700);">
+              Architected and implemented a complete full-stack banking application from system design through deployment. Designed thread-safe architecture using ConcurrentHashMap for concurrent access, implemented proper separation of concerns (Controller → Service → Repository layers), and established comprehensive testing strategy with 36 unit tests. This technical assignment demonstrates ability to lead both design vision and technical execution while maintaining production-ready standards.
+            </p>
+          </div>
+          <div class="order-1 lg:order-2">
+            <img src="assets/bank2.png" alt="Technical Architecture" class="w-full rounded-xl shadow-lg">
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+          <div>
+            <img src="assets/bank3.png" alt="UX Methodology" class="w-full rounded-xl shadow-lg">
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold mb-4">User-Centered Design Systems Thinking</h3>
+            <p class="text-base" style="color: var(--color-neutral-700);">
+              Designed comprehensive user journey mapping covering 9 distinct screen states including error scenarios. Applied systems-oriented thinking to create scalable design patterns while maintaining attention to execution detail. Established industry-standard fintech UX patterns with clear accessibility considerations – demonstrating ability to balance strategic vision with hands-on execution quality.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+          <div class="order-2 lg:order-1">
+            <h3 class="text-2xl font-semibold mb-4">Innovation Through AI-Powered Features</h3>
+            <p class="text-base" style="color: var(--color-neutral-700);">
+              Architected intelligent features that showcase forward-thinking design methodology: smart transaction categorization with asynchronous processing and planned OpenAI integration for personalized insights. Designed with proper error handling, fallback mechanisms, and non-blocking user experience – demonstrating ability to push boundaries of what's possible while maintaining user-first design principles.
+            </p>
+          </div>
+          <div class="order-1 lg:order-2">
+            <img src="assets/bank4.png" alt="AI Features" class="w-full rounded-xl shadow-lg">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="relative mt-16 md:mt-24">
+      <div class="max-w-6xl mx-auto px-5 sm:px-6">
+        <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold mb-8 text-center">Design Leadership Impact & Innovation Metrics</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div class="rounded-xl p-8 text-center border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+            <div class="text-5xl font-bold mb-3" style="color: var(--color-primary-base);">60%</div>
+            <h4 class="text-lg font-semibold mb-2">Faster Prototyping</h4>
+            <p class="text-sm" style="color: var(--color-neutral-700);">Accelerated design-to-functional-prototype cycles through strategic AI integration</p>
+          </div>
+          <div class="rounded-xl p-8 text-center border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+            <div class="text-5xl font-bold mb-3" style="color: var(--color-primary-base);">9</div>
+            <h4 class="text-lg font-semibold mb-2">Complete User Flows</h4>
+            <p class="text-sm" style="color: var(--color-neutral-700);">Comprehensive journey mapping including error states and accessibility considerations</p>
+          </div>
+          <div class="rounded-xl p-8 text-center border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+            <div class="text-5xl font-bold mb-3" style="color: var(--color-primary-base);">Full-Stack</div>
+            <h4 class="text-lg font-semibold mb-2">System Architecture</h4>
+            <p class="text-sm" style="color: var(--color-neutral-700);">Complete technical implementation from system design through production-ready deployment architecture</p>
+          </div>
+        </div>
+
+        <div class="rounded-xl p-8 border mb-8" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+          <h3 class="text-xl font-semibold mb-4">Design Leadership Philosophy</h3>
+          <p class="text-base mb-6" style="color: var(--color-neutral-700);">
+            This project demonstrates that strategic AI integration in design leadership isn't about replacing human creativity – it's about amplifying design capability and enabling teams to focus on high-impact strategic thinking. By treating AI as a collaborative partner in the design process, leaders can accelerate iteration cycles, validate design decisions with data, and maintain exceptional quality standards while fostering a culture of innovation and continuous learning within design teams.
+          </p>
+
+          <h4 class="text-lg font-semibold mb-3">Key Leadership Insights</h4>
+          <ul class="space-y-2 text-base" style="color: var(--color-neutral-700);">
+            <li><strong>Technical Architecture:</strong> Designed and implemented complete system architecture from database layer through UI components, demonstrating end-to-end technical leadership capabilities</li>
+            <li><strong>Strategic Vision:</strong> AI tools enable design leaders to rapidly explore multiple solution paths while maintaining design quality and user-centered principles</li>
+            <li><strong>Team Mentorship:</strong> Demonstrating AI-assisted workflows and full-stack implementation creates learning opportunities and establishes new methodologies for team adoption</li>
+            <li><strong>Cross-functional Impact:</strong> Functional prototypes with complete backend implementation bridge communication gaps with engineering teams and accelerate product development cycles</li>
+          </ul>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="rounded-xl p-8 border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+            <h4 class="text-lg font-semibold mb-4">Technical Implementation & System Architecture</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(0,212,180,0.15); color: var(--color-accent-teal);">Java Spring Boot (Backend)</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(0,212,180,0.15); color: var(--color-accent-teal);">TypeScript & React (Frontend)</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(0,212,180,0.15); color: var(--color-accent-teal);">Thread-Safe Architecture</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(0,212,180,0.15); color: var(--color-accent-teal);">ConcurrentHashMap Storage</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(0,212,180,0.15); color: var(--color-accent-teal);">REST API Design</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(0,212,180,0.15); color: var(--color-accent-teal);">Production Logging</span>
+            </div>
+          </div>
+
+          <div class="rounded-xl p-8 border" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+            <h4 class="text-lg font-semibold mb-4">AI-Powered Design Tools & Workflow</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(46,91,218,0.15); color: var(--color-primary-base);">Claude AI (Design Consultation)</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(46,91,218,0.15); color: var(--color-primary-base);">GitHub Copilot (Rapid Learning)</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(46,91,218,0.15); color: var(--color-primary-base);">Tailwind CSS (Design Systems)</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(46,91,218,0.15); color: var(--color-primary-base);">Comprehensive Testing (36 Tests)</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(46,91,218,0.15); color: var(--color-primary-base);">Responsive Design</span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium" style="background: rgba(46,91,218,0.15); color: var(--color-primary-base);">Error State Design</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative mt-16 py-8 border-t" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+    <div class="max-w-6xl mx-auto px-5 sm:px-6 text-center">
+      <p class="text-sm" style="color: var(--color-neutral-700);">&copy; 2025 Yulia Vilensky. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Bedtime Story Generator — Yulia Vilensky</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="antialiased min-h-screen" style="font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; --color-primary-base:#2E5BDA; --color-primary-subtle:#EBF0FF; --color-primary-emphasis:#1B3BA8; --color-neutral-900:#1A2332; --color-neutral-700:#475569; --color-neutral-400:#94A3B8; --color-neutral-200:#E2E8F0; --color-neutral-50:#F8FAFC; --color-neutral-0:#FFFFFF; --color-accent-teal:#00D4B4; --color-accent-coral:#FF6B6B; background: var(--color-neutral-0); color: var(--color-neutral-900);">
+
+  <!-- Animated Background (Spline) -->
+  <div aria-hidden="true" class="fixed inset-0 h-screen w-full pointer-events-none">
+    <iframe src="https://my.spline.design/glasswave-UJxPNnCbIoAYyQy8jnzwzS9q" frameborder="0" width="100%" height="100%" class="w-full h-full pointer-events-none"></iframe>
+  </div>
+  <!-- Fixed white rectangle in bottom-right foreground -->
+  <div aria-hidden="true" class="fixed bottom-4 right-4 w-40 h-24 pointer-events-none" style="background: white;"></div>
+
+  <!-- Subtle Background Overlay -->
+  <div aria-hidden="true" class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="w-full h-full opacity-80" style="
+      background:
+        radial-gradient(900px 400px at 20% -5%, rgba(46,91,218,0.10), transparent 60%),
+        radial-gradient(800px 380px at 80% 0%, rgba(0,212,180,0.10), transparent 60%),
+        radial-gradient(700px 360px at 50% 100%, rgba(255,107,107,0.06), transparent 60%),
+        linear-gradient(180deg, rgba(248,250,252,0.85), rgba(255,255,255,0.92));
+    "></div>
+    <div class="absolute inset-x-0 top-0 h-px" style="background: linear-gradient(90deg, rgba(46,91,218,0.15), rgba(0,212,180,0.10), rgba(255,107,107,0.10));"></div>
+  </div>
+
+  <!-- Header -->
+    <header class="fixed z-50 md:px-6 pr-4 pl-4 top-4 right-0 left-0">
+      <div class="max-w-6xl mx-auto rounded-2xl border shadow-lg backdrop-blur-md" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+        <div class="flex md:px-6 pt-3 pr-4 pb-3 pl-4 items-center justify-between">
+          <!-- Brand -->
+          <a href="/" class="flex items-center gap-3 group" aria-label="Home">
+            <img src="assets/LogoWave.svg" alt="Logo" class="w-9 h-9">
+            <span class="text-sm md:text-base font-medium tracking-tight group-hover:opacity-90 transition-opacity">Yulia Vilensky <span class="hidden md:inline">| Senior Product Designer</span></span>
+          </a>
+
+          <!-- Nav -->
+          <nav class="hidden md:flex items-center gap-7 text-sm">
+
+          </nav>
+
+          <!-- CTA -->
+          <div class="flex items-center gap-3">
+            <a href="/" class="hidden sm:inline-flex items-center gap-2 transition-all hover:shadow-sm text-sm font-medium rounded-md pt-2 pr-3.5 pb-2 pl-3.5" style="background: var(--color-primary-base); color: white;">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home lucide-layout-dashboard w-[16px] h-[16px]" data-icon-replaced="true" style="color: rgb(255, 255, 255); width: 16px; height: 16px;"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+  Home
+</a>
+            <a href="/#contact" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-all hover:shadow-sm border" style="border-color: var(--color-neutral-200); color: var(--color-primary-emphasis); background: white;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="mail" class="lucide lucide-mail w-4 h-4"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+              Contact
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section id="case-hero" class="relative">
+      <div class="w-full" style="background: linear-gradient(135deg, #1a1a60, #533483, #b8387e);">
+        <div class="sm:px-6 max-w-7xl mx-auto px-5 py-24 md:py-32 text-center">
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight mb-6" style="color: white;">
+            AI Bedtime Story Generator
+          </h1>
+          <p class="text-lg sm:text-xl md:text-2xl mb-8 max-w-4xl mx-auto" style="color: rgba(255,255,255,0.95);">
+            Generates a bedtime story for a 3-year-old using Whisper speech recognition and ElevenLabs' text-to-speech API - in your language.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <a href="https://github.com/Morgenmuffel/py-ai-bedtime-story" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-all hover:shadow-sm border" style="border-color: var(--color-neutral-200); color: var(--color-primary-emphasis); background: white;" target="_blank" rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              View on GitHub
+            </a>
+            <a href="https://py-ai-bedtime-story-778867587659.europe-west3.run.app" class="inline-flex items-center gap-2 rounded-md px-3.5 py-1.5 text-sm font-medium transition-all hover:shadow-sm border" style="border-color: var(--color-neutral-200); color: var(--color-primary-emphasis); background: white;" target="_blank" rel="noopener noreferrer">
+              <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m10.051 8.102-3.778.322-1.994 1.994a.94.94 0 0 0 .533 1.6l2.698.316m8.39 1.617-.322 3.78-1.994 1.994a.94.94 0 0 1-1.595-.533l-.4-2.652m8.166-11.174a1.366 1.366 0 0 0-1.12-1.12c-1.616-.279-4.906-.623-6.38.853-1.671 1.672-5.211 8.015-6.31 10.023a.932.932 0 0 0 .162 1.111l.828.835.833.832a.932.932 0 0 0 1.111.163c2.008-1.102 8.35-4.642 10.021-6.312 1.475-1.478 1.133-4.77.855-6.385Zm-2.961 3.722a1.88 1.88 0 1 1-3.76 0 1.88 1.88 0 0 1 3.76 0Z"/>
+              </svg>
+              Try it Yourself
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="background" class="relative mt-16 md:mt-24">
+      <div class="max-w-6xl mx-auto px-5 sm:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <div class="lg:col-span-4">
+            <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">Bedtime Story Generation and Voice Over Application</h2>
+          </div>
+          <div class="lg:col-span-8">
+            <div class="prose max-w-none">
+              <p class="text-base sm:text-lg" style="color: var(--color-neutral-700);">
+                This is a Flask (Python) based web application that generates a bedtime story for a 3-year-old child, based on voice instructions about the content/title of the story.
+              </p>
+              <p class="text-base sm:text-lg mt-4" style="color: var(--color-neutral-700);">
+                It uses OpenAI Whisper and GPT-4o-mini model to transcribe the prompt and generate the story, and performs a voice-over of the generated story using ElevenLabs' text-to-speech API. The story is generated in the language of the prompt, the voice over is performed by a calming female voice, and the story always ends with everyone getting tired and going to bed!
+              </p>
+              <p class="text-base sm:text-lg mt-4" style="color: var(--color-neutral-700);">
+                Deployed on Google Cloud Run for scalable, serverless hosting.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Image Carousel Section -->
+    <section id="carousel" class="relative mt-16 md:mt-24">
+      <div class="w-full py-16">
+        <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold mb-8 text-center px-5" style="color: var(--color-neutral-900);">Application Flow</h2>
+        <div class="overflow-hidden">
+          <div class="relative">
+            <div id="carousel-viewport" class="overflow-hidden">
+              <div id="carousel-track" class="flex items-start gap-8 py-8 px-6">
+                <!-- Slide 1 -->
+                <div class="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[55vw] lg:w-[45vw]">
+                  <img src="assets/aistory2e.png" alt="Initial screen" class="object-contain w-full h-auto rounded-lg shadow-xl">
+                  <p class="mt-4 text-base sm:text-lg text-center px-4" style="color: var(--color-neutral-700);">Start by pressing the microphone button and record your story prompt in any language</p>
+                </div>
+                <!-- Slide 2 -->
+                <div class="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[55vw] lg:w-[45vw]">
+                  <img src="assets/aistory3e.png" alt="Recording prompt" class="object-contain w-full h-auto rounded-lg shadow-xl">
+                  <p class="mt-4 text-base sm:text-lg text-center px-4" style="color: var(--color-neutral-700);">Speak your story idea - for example: "Tell me a story about a brave little astronaut"</p>
+                </div>
+                <!-- Slide 3 -->
+                <div class="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[55vw] lg:w-[45vw]">
+                  <img src="assets/aistory3egen.png" alt="Generating story" class="object-contain w-full h-auto rounded-lg shadow-xl">
+                  <p class="mt-4 text-base sm:text-lg text-center px-4" style="color: var(--color-neutral-700);">GPT-4o-mini generates a personalized bedtime story that always ends with going to sleep</p>
+                </div>
+                <!-- Slide 4 -->
+                <div class="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[55vw] lg:w-[45vw]">
+                  <img src="assets/aistory4.png" alt="Story with audio" class="object-contain w-full h-auto rounded-lg shadow-xl">
+                  <p class="mt-4 text-base sm:text-lg text-center px-4" style="color: var(--color-neutral-700);">Listen to the story with ElevenLabs' calming voice narration in your language</p>
+                </div>
+                <!-- Slide 5 -->
+                <div class="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[55vw] lg:w-[45vw]">
+                  <img src="assets/aistory2r.png" alt="Russian interface" class="object-contain w-full h-auto rounded-lg shadow-xl">
+                  <p class="mt-4 text-base sm:text-lg text-center px-4" style="color: var(--color-neutral-700);">Multi-language support - works seamlessly in Russian, English, and other languages</p>
+                </div>
+                <!-- Slide 6 -->
+                <div class="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[55vw] lg:w-[45vw]">
+                  <img src="assets/aistory3r.png" alt="Russian story generation" class="object-contain w-full h-auto rounded-lg shadow-xl">
+                  <p class="mt-4 text-base sm:text-lg text-center px-4" style="color: var(--color-neutral-700);">Stories are generated and narrated in the same language as your prompt</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="relative mt-16 md:mt-24 mb-16">
+      <div class="max-w-6xl mx-auto px-5 sm:px-6">
+        <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold mb-6 text-center">Technologies Used</h2>
+        <div class="flex flex-wrap justify-center gap-3">
+          <span class="inline-flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis);">OpenAI API</span>
+          <span class="inline-flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal);">GCP</span>
+          <span class="inline-flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis);">Twilio</span>
+          <span class="inline-flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal);">ElevenLabs</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative mt-16 py-8 border-t" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+    <div class="max-w-6xl mx-auto px-5 sm:px-6 text-center">
+      <p class="text-sm" style="color: var(--color-neutral-700);">&copy; 2025 Yulia Vilensky. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Infinite horizontal carousel
+    (function initCarousel() {
+      const track = document.getElementById('carousel-track');
+      const viewport = document.getElementById('carousel-viewport');
+      if (!track || !viewport) return;
+
+      // Clone slides for seamless loop
+      const slides = Array.from(track.children);
+      slides.forEach(slide => {
+        const clone = slide.cloneNode(true);
+        track.appendChild(clone);
+      });
+
+      let offset = 0;
+      const speed = 0.5; // pixels per frame
+
+      function animate() {
+        offset -= speed;
+        const trackWidth = track.scrollWidth / 2; // half because we doubled
+        if (Math.abs(offset) >= trackWidth) {
+          offset = 0;
+        }
+        track.style.transform = `translateX(${offset}px)`;
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      // Pause on hover
+      viewport.addEventListener('mouseenter', () => {
+        track.style.animationPlayState = 'paused';
+      });
+      viewport.addEventListener('mouseleave', () => {
+        track.style.animationPlayState = 'running';
+      });
+    })();
+
+    // Initialize Lucide icons
+    if (window.lucide && typeof lucide.createIcons === 'function') {
+      lucide.createIcons();
+    }
+  </script>
+
+</body>
+</html>

@@ -10,23 +10,18 @@
 </head>
 <body class="antialiased min-h-screen" style="font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; --color-primary-base:#2E5BDA; --color-primary-subtle:#EBF0FF; --color-primary-emphasis:#1B3BA8; --color-neutral-900:#1A2332; --color-neutral-700:#475569; --color-neutral-400:#94A3B8; --color-neutral-200:#E2E8F0; --color-neutral-50:#F8FAFC; --color-neutral-0:#FFFFFF; --color-accent-teal:#00D4B4; --color-accent-coral:#FF6B6B; background: var(--color-neutral-0); color: var(--color-neutral-900);">
 
-  <!-- Animated Background (Spline) -->
-  <div aria-hidden="true" class="fixed inset-0 h-screen w-full pointer-events-none">
-    <iframe src="https://my.spline.design/glasswave-UJxPNnCbIoAYyQy8jnzwzS9q" frameborder="0" width="100%" height="100%" class="w-full h-full pointer-events-none"></iframe>
-  </div>
-  <!-- Fixed white rectangle in bottom-right foreground -->
-  <div aria-hidden="true" class="fixed bottom-4 right-4 w-40 h-24 pointer-events-none" style="background: white;"></div>
-
-  <!-- Subtle Background Overlay -->
+  <!-- Static Background with Blurred Radial Splashes -->
   <div aria-hidden="true" class="fixed inset-0 -z-10 pointer-events-none">
-    <div class="w-full h-full opacity-80" style="
+    <div class="w-full h-full" style="
       background:
-        radial-gradient(900px 400px at 20% -5%, rgba(46,91,218,0.10), transparent 60%),
-        radial-gradient(800px 380px at 80% 0%, rgba(0,212,180,0.10), transparent 60%),
-        radial-gradient(700px 360px at 50% 100%, rgba(255,107,107,0.06), transparent 60%),
-        linear-gradient(180deg, rgba(248,250,252,0.85), rgba(255,255,255,0.92));
+        radial-gradient(1200px 600px at 15% 10%, rgba(46,91,218,0.08), transparent 70%),
+        radial-gradient(1000px 500px at 85% 20%, rgba(0,212,180,0.08), transparent 70%),
+        radial-gradient(1100px 550px at 50% 80%, rgba(255,107,107,0.06), transparent 70%),
+        radial-gradient(900px 450px at 70% 50%, rgba(46,91,218,0.06), transparent 70%),
+        radial-gradient(800px 400px at 30% 60%, rgba(0,212,180,0.06), transparent 70%),
+        #FFFFFF;
+      filter: blur(60px);
     "></div>
-    <div class="absolute inset-x-0 top-0 h-px" style="background: linear-gradient(90deg, rgba(46,91,218,0.15), rgba(0,212,180,0.10), rgba(255,107,107,0.10));"></div>
   </div>
 
   <!-- Header -->

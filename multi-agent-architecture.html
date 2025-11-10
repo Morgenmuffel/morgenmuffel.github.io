@@ -120,19 +120,19 @@
       <!-- Hero: Full-width with diagram on right, dark gradient overlay -->
       <section id="case-hero" class="relative" style="background: var(--dark-gradient-bg);">
         <div class="w-full">
-          <div class="relative overflow-hidden reveal-on-scroll transition-all duration-700" style="opacity: 1; transform: translateY(0px); min-height: 550px;">
-            <!-- Diagram positioned on the right -->
-            <div class="absolute right-0 top-0 bottom-0 w-1/2 hidden md:flex items-center justify-end pr-8">
-              <img src="assets/MultiAgentFlow.png" alt="Multi-Agent Architecture diagram" class="max-w-full max-h-full object-contain" style="max-height: 500px;">
+          <div class="relative overflow-hidden reveal-on-scroll transition-all duration-700" style="opacity: 1; transform: translateY(0px); min-height: 600px;">
+            <!-- Diagram positioned starting from middle, full width, under gradient -->
+            <div class="absolute left-1/2 top-0 bottom-0 right-0" style="z-index: 0;">
+              <img src="assets/MultiAgentFlow.png" alt="Multi-Agent Architecture diagram" class="w-full h-full object-cover" style="opacity: 0.15;">
             </div>
-            <!-- Content on the left -->
-            <div class="relative z-10 md:px-6 flex min-h-[550px] max-w-6xl mr-auto ml-auto pr-4 pl-4 items-center py-12">
-              <div class="flex flex-col items-start max-w-xl">
+            <!-- Content on the left with proper top padding -->
+            <div class="relative z-10 md:px-6 flex min-h-[600px] max-w-6xl mr-auto ml-auto pr-4 pl-4 items-center pt-32 pb-12">
+              <div class="flex flex-col items-start max-w-2xl">
                 <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-widest rounded-full pt-1 pr-3 pb-1 pl-3 shadow" style="color: white; background: var(--color-primary-base);">
                   Agentic AI
                 </span>
                 <h1 class="sm:text-5xl md:text-6xl text-3xl font-semibold tracking-tight mt-3 px-4 py-2" style="color: white; background: var(--dark-gradient-bg-subtle); line-height: 1.1; text-shadow: rgba(0, 0, 0, 0.25) 0px 1px 2px;">Multi-Agent Architecture for<br>Intelligent Calendar Scheduling</h1>
-                <p class="text-base sm:text-lg mt-3 max-w-3xl" style="color: rgba(255,255,255,0.9);">Designing a 4-agent system from scratch: translating conversational flows into clean agent boundaries, typed delegation patterns, and state management for complex conversational AI</p>
+                <p class="text-base sm:text-lg mt-3" style="color: rgba(255,255,255,0.9);">Designing a 4-agent system from scratch: translating conversational flows into clean agent boundaries, typed delegation patterns, and state management for complex conversational AI</p>
               </div>
             </div>
           </div>
@@ -194,15 +194,27 @@
                   <li class="mb-2"><strong>Fragile changes:</strong> Fixing conflict detection broke confirmation flow</li>
                   <li class="mb-2"><strong>No separation of concerns:</strong> Everything coupled together</li>
                 </ul>
-
-                <div class="callout-box">
-                  <p class="text-base font-medium" style="color: var(--color-neutral-900);">
-                    <strong>💡 The redesign challenge:</strong> How do you architect an AI system that separates concerns cleanly (calendar logic ≠ conversation logic), is testable at multiple levels, and enables rapid iteration without breaking existing functionality?
-                  </p>
-                </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- Callout Section (Full-width, dark elegant bg, white text) -->
+      <section id="callout" class="relative mt-16 md:mt-24" style="background: var(--dark-gradient-bg);">
+        <div class="w-full">
+          <div class="px-5 sm:px-10 py-14 sm:py-20 text-center reveal-on-scroll max-w-5xl mx-auto" style="opacity: 0; transform: translateY(8px);">
+            <blockquote class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight" style="color: white; line-height: 1.4;">
+              "How do you architect an AI system that separates concerns cleanly (calendar logic ≠ conversation logic), is testable at multiple levels, and enables rapid iteration without breaking existing functionality?"
+            </blockquote>
+            <p class="mt-6 text-lg sm:text-xl" style="color: rgba(255,255,255,0.8);">The redesign challenge</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Continue Problem Section -->
+      <section class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
           <div class="mt-10 h-px w-full" style="background: linear-gradient(90deg, rgba(226,232,240,1), rgba(226,232,240,0));"></div>
         </div>
       </section>
@@ -357,24 +369,24 @@
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                 <div class="outcome-box">
-                  <div class="text-3xl font-bold mb-2" style="color: var(--color-primary-base);">4</div>
-                  <h3 class="text-base font-semibold tracking-tight mb-2">Focused agents</h3>
-                  <p class="text-sm" style="color: var(--color-neutral-700);">20-80 line prompts each vs. 157-line monolith. Independently maintainable and scalable</p>
+                  <div class="text-3xl font-bold mb-2" style="color: white;">4</div>
+                  <h3 class="text-base font-semibold tracking-tight mb-2" style="color: white;">Focused agents</h3>
+                  <p class="text-sm" style="color: rgba(255,255,255,0.8);">20-80 line prompts each vs. 157-line monolith. Independently maintainable and scalable</p>
                 </div>
                 <div class="outcome-box">
-                  <div class="text-3xl font-bold mb-2" style="color: var(--color-primary-base);">0.6s</div>
-                  <h3 class="text-base font-semibold tracking-tight mb-2">Response time</h3>
-                  <p class="text-sm" style="color: var(--color-neutral-700);">Multi-turn conversation efficiency through dynamic instructions, context compaction (800 vs 2500+ tokens), and state management</p>
+                  <div class="text-3xl font-bold mb-2" style="color: white;">0.6s</div>
+                  <h3 class="text-base font-semibold tracking-tight mb-2" style="color: white;">Response time</h3>
+                  <p class="text-sm" style="color: rgba(255,255,255,0.8);">Multi-turn conversation efficiency through dynamic instructions, context compaction (800 vs 2500+ tokens), and state management</p>
                 </div>
                 <div class="outcome-box">
-                  <div class="text-3xl font-bold mb-2" style="color: var(--color-primary-base);">98%</div>
-                  <h3 class="text-base font-semibold tracking-tight mb-2">Multi-turn accuracy</h3>
-                  <p class="text-sm" style="color: var(--color-neutral-700);">Explicit state management and pattern matching vs. monolithic version that "forgot" context mid-conversation</p>
+                  <div class="text-3xl font-bold mb-2" style="color: white;">98%</div>
+                  <h3 class="text-base font-semibold tracking-tight mb-2" style="color: white;">Multi-turn accuracy</h3>
+                  <p class="text-sm" style="color: rgba(255,255,255,0.8);">Explicit state management and pattern matching vs. monolithic version that "forgot" context mid-conversation</p>
                 </div>
                 <div class="outcome-box">
-                  <div class="text-3xl font-bold mb-2" style="color: var(--color-primary-base);">Clear</div>
-                  <h3 class="text-base font-semibold tracking-tight mb-2">Observability</h3>
-                  <p class="text-sm" style="color: var(--color-neutral-700);">Agent encapsulation enabled targeted logging and metrics per agent vs. opaque monolithic debugging</p>
+                  <div class="text-3xl font-bold mb-2" style="color: white;">Observability</div>
+                  <h3 class="text-base font-semibold tracking-tight mb-2" style="color: white;">Full transparency</h3>
+                  <p class="text-sm" style="color: rgba(255,255,255,0.8);">Agent encapsulation enabled targeted logging and metrics per agent vs. opaque monolithic debugging</p>
                 </div>
               </div>
 

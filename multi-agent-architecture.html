@@ -1,0 +1,544 @@
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Study — Multi-Agent Architecture for Intelligent Calendar Scheduling</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link id="all-fonts-link-font-geist" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap"><style id="all-fonts-style-font-geist">.font-geist { font-family: 'Geist', sans-serif !important; }</style>
+<style>
+  .code-block {
+    background: white;
+    border: 1px solid rgba(227, 226, 224, 0.6);
+    border-radius: 3px;
+    padding: 1.25rem 1rem;
+    margin: 1rem 0;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 0.85em;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: rgb(55, 53, 47);
+    white-space: pre;
+  }
+  .code-inline {
+    background: rgba(135, 131, 120, 0.15);
+    border-radius: 3px;
+    padding: 0.2em 0.4em;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 85%;
+    color: #EB5757;
+  }
+  .callout-box {
+    background: rgba(46,91,218,0.05);
+    border-left: 4px solid var(--color-primary-base);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .callout-teal {
+    background: rgba(0,212,180,0.08);
+    border-left: 4px solid var(--color-accent-teal);
+  }
+  .outcome-box {
+    background: white;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: white;
+    border: 1px solid var(--color-neutral-200);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th {
+    background: var(--color-neutral-50);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-bottom: 2px solid var(--color-neutral-200);
+  }
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-neutral-200);
+    font-size: 0.9rem;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+</style>
+</head>
+  <body class="antialiased min-h-screen" style="font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; --color-primary-base:#2E5BDA; --color-primary-subtle:#EBF0FF; --color-primary-emphasis:#1B3BA8; --color-neutral-900:#1A2332; --color-neutral-700:#475569; --color-neutral-400:#94A3B8; --color-neutral-200:#E2E8F0; --color-neutral-50:#F8FAFC; --color-neutral-0:#FFFFFF; --color-accent-teal:#00D4B4; --color-accent-coral:#FF6B6B; background: var(--color-neutral-0); color: var(--color-neutral-900);">
+
+    <!-- Static Background with Blurred Radial Splashes -->
+    <div aria-hidden="true" class="fixed inset-0 -z-10 pointer-events-none">
+      <div class="w-full h-full" style="
+        background:
+          radial-gradient(1200px 600px at 15% 10%, rgba(46,91,218,0.08), transparent 70%),
+          radial-gradient(1000px 500px at 85% 20%, rgba(0,212,180,0.08), transparent 70%),
+          radial-gradient(1100px 550px at 50% 80%, rgba(255,107,107,0.06), transparent 70%),
+          radial-gradient(900px 450px at 70% 50%, rgba(46,91,218,0.06), transparent 70%),
+          radial-gradient(800px 400px at 30% 60%, rgba(0,212,180,0.06), transparent 70%),
+          #FFFFFF;
+        filter: blur(60px);
+      "></div>
+    </div>
+
+    <!-- Floating Glass Header -->
+    <header class="fixed z-50 md:px-6 pr-4 pl-4 top-4 right-0 left-0">
+      <div class="max-w-6xl mx-auto rounded-2xl border shadow-lg backdrop-blur-md" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
+        <div class="flex md:px-6 pt-3 pr-4 pb-3 pl-4 items-center justify-between">
+          <!-- Brand -->
+          <a href="/" class="flex items-center gap-3 group" aria-label="Home">
+            <img src="assets/LogoWave.svg" alt="Logo" class="w-9 h-9">
+            <span class="text-sm md:text-base font-medium tracking-tight group-hover:opacity-90 transition-opacity">Yulia Vilensky <span class="hidden md:inline">| Senior Product Designer</span></span>
+          </a>
+
+          <!-- CTA -->
+          <div class="flex items-center gap-3">
+            <a href="/" class="hidden sm:inline-flex items-center gap-2 transition-all hover:shadow-sm text-sm font-medium rounded-md pt-2 pr-3.5 pb-2 pl-3.5" style="background: var(--color-primary-base); color: white;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home w-4 h-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+              Home
+            </a>
+            <a href="/#contact" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-all hover:shadow-sm border" style="border-color: var(--color-neutral-200); color: var(--color-primary-emphasis); background: white;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="mail" class="lucide lucide-mail w-4 h-4"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+              Contact
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- Hero: Full-width image, left-aligned overlay text -->
+      <section id="case-hero" class="relative">
+        <div class="w-full">
+          <figure class="relative overflow-hidden reveal-on-scroll transition-all duration-700" style="opacity: 1; transform: translateY(0px);">
+            <img src="assets/MultiAgentFlow.png" alt="Multi-Agent Architecture hero" class="w-full object-cover" style="height: 550px;">
+            <div class="absolute top-0 right-0 bottom-0 left-0" style="background: rgba(255,255,255,0.85);"></div>
+            <figcaption class="absolute top-0 right-0 bottom-0 left-0">
+              <div class="md:px-6 flex h-full max-w-6xl mr-auto ml-auto pr-4 pl-4 items-center">
+                <div class="flex flex-col items-start">
+                  <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-widest rounded-full pt-1 pr-3 pb-1 pl-3 shadow" style="color: white; background: var(--color-primary-base);">
+                    Agentic AI
+                  </span>
+                  <h1 class="sm:text-5xl md:text-6xl text-3xl font-semibold tracking-tight mt-3 py-2" style="color: var(--color-neutral-900); line-height: 1.1;">Multi-Agent Architecture for<br>Intelligent Calendar Scheduling</h1>
+                  <p class="text-base sm:text-lg mt-3 max-w-3xl" style="color: var(--color-neutral-700);">Designing a 4-agent system from scratch: translating conversational flows into clean agent boundaries, typed delegation patterns, and state management for complex conversational AI</p>
+                </div>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Project Info -->
+      <section id="project-info" class="relative mt-8 md:mt-12">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="rounded-xl border ring-1 p-5 bg-white/80" style="border-color: var(--color-neutral-200);">
+              <h3 class="text-sm font-semibold tracking-tight uppercase" style="color: var(--color-neutral-700);">Role</h3>
+              <p class="mt-2 text-base">Product Designer & AI Engineer</p>
+            </div>
+            <div class="rounded-xl border ring-1 p-5 bg-white/80" style="border-color: var(--color-neutral-200);">
+              <h3 class="text-sm font-semibold tracking-tight uppercase" style="color: var(--color-neutral-700);">Tools</h3>
+              <p class="mt-2 text-base">PydanticAI, System Architecture Design, Python, Google Calendar API</p>
+            </div>
+            <div class="rounded-xl border ring-1 p-5 bg-white/80" style="border-color: var(--color-neutral-200);">
+              <h3 class="text-sm font-semibold tracking-tight uppercase" style="color: var(--color-neutral-700);">Context</h3>
+              <p class="mt-2 text-base">Technical architecture designed and implemented as part of the founding team's first product iteration toward pilot launch</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Problem Section -->
+      <section id="problem" class="relative mt-8 md:mt-12">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div class="lg:col-span-4">
+              <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">Problem</h2>
+            </div>
+            <div class="lg:col-span-8">
+              <div class="prose max-w-none">
+                <h3 class="text-lg sm:text-xl font-semibold tracking-tight">From Conversation Design to Technical Architecture</h3>
+                <p class="mt-3 text-base sm:text-lg" style="color: var(--color-neutral-700);">
+                  After designing 6 conversational flows for the AI health coach (see <a href="ai-health-coach.html" style="color: var(--color-primary-base); text-decoration: underline;">Case Study #1</a>), I implemented the system with a single agent containing all logic in one 157-line system prompt.
+                </p>
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  The conversation flows required:
+                </p>
+                <ul class="mt-4 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                  <li class="mb-2"><strong>Calendar intelligence:</strong> Analyze schedules, detect conflicts, suggest optimal times</li>
+                  <li class="mb-2"><strong>Multi-step reasoning:</strong> Fetch events → Suggest breaks → Handle conflicts → Execute</li>
+                  <li class="mb-2"><strong>Conversational state:</strong> Remember pending suggestions, track modifications, clear on completion</li>
+                  <li class="mb-2"><strong>Complex business logic:</strong> 15-minute buffers, timezones, working hours, time-of-day constraints</li>
+                  <li class="mb-2"><strong>Graceful error handling:</strong> API failures, ambiguous input, edge cases</li>
+                </ul>
+
+                <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">The preliminary Monolithic Implementation test</h3>
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  Within hours of testing, the single-agent approach revealed critical problems:
+                </p>
+                <ul class="mt-4 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                  <li class="mb-2"><strong>Instruction adherence issues:</strong> Agent "forgot" buffer rules and time constraints mid-conversation</li>
+                  <li class="mb-2"><strong>Unmaintainable prompt:</strong> 157 lines mixing conversation flow, API rules, and parsing logic</li>
+                  <li class="mb-2"><strong>Impossible to test:</strong> Couldn't isolate calendar logic from conversation logic</li>
+                  <li class="mb-2"><strong>Fragile changes:</strong> Fixing conflict detection broke confirmation flow</li>
+                  <li class="mb-2"><strong>No separation of concerns:</strong> Everything coupled together</li>
+                </ul>
+
+                <div class="callout-box">
+                  <p class="text-base font-medium" style="color: var(--color-neutral-900);">
+                    <strong>💡 The redesign challenge:</strong> How do you architect an AI system that separates concerns cleanly (calendar logic ≠ conversation logic), is testable at multiple levels, and enables rapid iteration without breaking existing functionality?
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-10 h-px w-full" style="background: linear-gradient(90deg, rgba(226,232,240,1), rgba(226,232,240,0));"></div>
+        </div>
+      </section>
+
+      <!-- Approach Section -->
+      <section id="approach" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div class="lg:col-span-4">
+              <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">Approach: Multi-Agent Architecture</h2>
+            </div>
+            <div class="lg:col-span-8">
+              <div class="prose max-w-none">
+                <h3 class="text-lg sm:text-xl font-semibold tracking-tight">Phase 1: Capability Mapping & Tool Registration Pattern</h3>
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  I mapped all action nodes across the 6 conversation flows designed in Case Study #1. Each node type revealed a distinct capability that should have been separated:
+                </p>
+                <ul class="mt-4 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                  <li class="mb-2"><strong>Decision nodes</strong> (intent classification, flow routing) → Conversation management</li>
+                  <li class="mb-2"><strong>Action nodes</strong> (fetch calendar, suggest times) → Calendar intelligence</li>
+                  <li class="mb-2"><strong>Validation nodes</strong> (check conflicts, enforce buffers) → Conflict resolution</li>
+                  <li class="mb-2"><strong>Execution nodes</strong> (create events, handle APIs) → Calendar operations</li>
+                </ul>
+                <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
+                  This mapping revealed a natural 4-agent architecture, each with a single, testable responsibility.
+                </p>
+                <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Tool Registration Pattern:</strong> Using PydanticAI's pattern, I registered sub-agents as tools on the Orchestrator. This creates type-safe communication with clear interface boundaries:
+                </p>
+                <ul class="mt-4 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                  <li class="mb-2">Orchestrator delegates to sub-agents as function calls</li>
+                  <li class="mb-2">Input/output contracts enforced by type system</li>
+                  <li class="mb-2">Easy to mock for testing</li>
+                  <li class="mb-2">No circular dependencies</li>
+                </ul>
+
+                <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">Phase 2: Output Types as Flow Control</h3>
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  The conversation flows had explicit state transitions (awaiting confirmation, executing, complete). I translated these into <strong>typed outputs</strong> that serve as contracts between agents:
+                </p>
+                <ul class="mt-4 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                  <li class="mb-2"><strong>ScheduleWithSuggestions</strong> – Show schedule + suggest breaks (awaiting confirmation)</li>
+                  <li class="mb-2"><strong>ScheduleOnly</strong> – Breaks exist, no action needed</li>
+                  <li class="mb-2"><strong>SuggestAlternatives</strong> – Conflicts found, present options</li>
+                  <li class="mb-2"><strong>ExecuteScheduling</strong> – User confirmed, trigger execution</li>
+                  <li class="mb-2"><strong>SchedulingComplete</strong> – Success, clear state</li>
+                  <li class="mb-2"><strong>NeedsClarification</strong> – Missing info, request input</li>
+                </ul>
+                <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
+                  This pattern eliminates nested if/else logic by utilizing the type system for flow control. Pattern matching ensures all cases are handled at compile time.
+                </p>
+
+                <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">Phase 3: Context & State Management Design</h3>
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  Each agent receives only the context it needs. State is managed explicitly to prevent the "forgetting" bugs from the monolithic version:
+                </p>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Agent</th>
+                      <th>Context Type</th>
+                      <th>What's Included</th>
+                      <th>State Management</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Orchestrator</strong></td>
+                      <td>Dynamic Instructions</td>
+                      <td>Pending suggestions, conversation flow state, RAG-retrieved motivation techniques</td>
+                      <td><code class="code-inline">pending_suggestions</code> cleared when ExecuteScheduling or SchedulingComplete returned</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Schedule Intelligence</strong></td>
+                      <td>Dynamic System Prompt</td>
+                      <td>User preferences (working hours), current datetime, target date, timezone</td>
+                      <td>User preferences persist across sessions; historical break patterns (last 2 weeks)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Conflict Checker</strong></td>
+                      <td>Static Instructions</td>
+                      <td>Conflict rules (15-min buffer), working hours, buffer calculation logic</td>
+                      <td>No persistent state</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Calendar Ops</strong></td>
+                      <td>Dynamic System Prompt</td>
+                      <td>Selected calendar provider (Google/Outlook), calendar ID, timezone, event formatting rules</td>
+                      <td>Provider selection persists across sessions</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Conversation History:</strong> Compacted (not cleared) to prevent unbounded growth while maintaining context:
+                </p>
+                <ul class="mt-4 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                  <li class="mb-2">Last 5 turns preserved in full</li>
+                  <li class="mb-2">The rest compressed into summary, preferences are extracted and persisted</li>
+                  <li class="mb-2">PydanticAI enables history compaction</li>
+                  <li class="mb-2">Result: 800 tokens average vs. 2500+ for full history</li>
+                </ul>
+
+                <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">Phase 4: Dynamic Instructions Strategy</h3>
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  Identified opportunity to reduce prompt size and improve response time through dynamic instruction generation.
+                </p>
+                <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
+                  <strong>The Problem:</strong> Initial implementation sent full system prompts to all agents on every call. Over 5-turn conversation: 3,750 tokens of repeated instructions.
+                </p>
+                <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
+                  <strong>The Solution:</strong> Generate agent instructions programmatically based on current context instead of static prompts. Instructions include only what's relevant to the current request.
+                </p>
+                <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Example - Orchestrator:</strong>
+                </p>
+                <ul class="mt-4 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                  <li class="mb-2">Base instructions (role, output types): 60 tokens</li>
+                  <li class="mb-2">Current time context (dynamically injected): 15 tokens</li>
+                  <li class="mb-2">Pending suggestions context (only if present): 20 tokens</li>
+                  <li class="mb-2">Motivation technique (RAG-retrieved): 30 tokens</li>
+                  <li class="mb-2"><strong>Total: 125 tokens vs 400 tokens static prompt</strong></li>
+                </ul>
+                <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Benefits:</strong>
+                </p>
+                <ul class="mt-4 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                  <li class="mb-2">66% reduction in average prompt size</li>
+                  <li class="mb-2">Response time: 0.6s average vs 1.2s with static prompts</li>
+                  <li class="mb-2">~500 tokens saved per conversation</li>
+                  <li class="mb-2">Instructions live in code next to logic, not separate prompt files</li>
+                  <li class="mb-2">Easier to maintain and update</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Outcome Section -->
+      <section id="outcome" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div class="lg:col-span-4">
+              <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">Outcome</h2>
+            </div>
+            <div class="lg:col-span-8">
+              <p class="text-base sm:text-lg" style="color: var(--color-neutral-700);">
+                The refactored multi-agent system solved all problems from the monolithic implementation:
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div class="outcome-box">
+                  <div class="text-3xl font-bold mb-2" style="color: var(--color-primary-base);">4</div>
+                  <h3 class="text-base font-semibold tracking-tight mb-2">Focused agents</h3>
+                  <p class="text-sm" style="color: var(--color-neutral-700);">20-80 line prompts each vs. 157-line monolith. Independently maintainable and scalable</p>
+                </div>
+                <div class="outcome-box">
+                  <div class="text-3xl font-bold mb-2" style="color: var(--color-primary-base);">0.6s</div>
+                  <h3 class="text-base font-semibold tracking-tight mb-2">Response time</h3>
+                  <p class="text-sm" style="color: var(--color-neutral-700);">Multi-turn conversation efficiency through dynamic instructions, context compaction (800 vs 2500+ tokens), and state management</p>
+                </div>
+                <div class="outcome-box">
+                  <div class="text-3xl font-bold mb-2" style="color: var(--color-primary-base);">98%</div>
+                  <h3 class="text-base font-semibold tracking-tight mb-2">Multi-turn accuracy</h3>
+                  <p class="text-sm" style="color: var(--color-neutral-700);">Explicit state management and pattern matching vs. monolithic version that "forgot" context mid-conversation</p>
+                </div>
+                <div class="outcome-box">
+                  <div class="text-3xl font-bold mb-2" style="color: var(--color-primary-base);">Clear</div>
+                  <h3 class="text-base font-semibold tracking-tight mb-2">Observability</h3>
+                  <p class="text-sm" style="color: var(--color-neutral-700);">Agent encapsulation enabled targeted logging and metrics per agent vs. opaque monolithic debugging</p>
+                </div>
+              </div>
+
+              <h3 class="text-lg sm:text-xl font-semibold tracking-tight mt-8">Pilot-Ready System</h3>
+
+              <p class="mt-4 text-base font-semibold" style="color: var(--color-neutral-900);">Clean Architecture & Maintainability:</p>
+              <ul class="mt-2 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                <li class="mb-2">4 focused agents with 20-80 line system prompts each</li>
+                <li class="mb-2">Changes to conflict rules don't touch calendar API code</li>
+                <li class="mb-2">Changes to motivation logic don't affect scheduling logic</li>
+                <li class="mb-2">Can add new agents (e.g., NLP Parser) without refactoring existing ones</li>
+              </ul>
+
+              <p class="mt-4 text-base font-semibold" style="color: var(--color-neutral-900);">Encapsulation Enabled Testing & Observability:</p>
+              <ul class="mt-2 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                <li class="mb-2">Agent isolation enabled fast, isolated unit testing with mock data</li>
+                <li class="mb-2">Each agent testable independently: Schedule Intelligence (calendar analysis), Conflict Checker (buffer rules), Calendar Ops (API integration)</li>
+                <li class="mb-2">Targeted logging and metrics per agent: Can trace exactly where failures occur</li>
+                <li class="mb-2">Clear performance bottleneck identification: Know which agent needs optimization</li>
+                <li class="mb-2">Zero circular dependencies (validated through dependency graph)</li>
+                <li class="mb-2">Contrast: Monolithic agent was opaque, required full system mocks, making tests slow and debugging difficult</li>
+              </ul>
+
+              <p class="mt-4 text-base font-semibold" style="color: var(--color-neutral-900);">Multi-Turn Conversation Performance & Reliability:</p>
+              <ul class="mt-2 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                <li class="mb-2">98% accuracy in multi-turn conversations through explicit state management (<code class="code-inline">pending_suggestions</code> with clear lifecycle)</li>
+                <li class="mb-2">Context window kept lean through conversation history compaction and dynamic instructions</li>
+                <li class="mb-2">Pattern matching eliminated nested if/else logic that broke in monolithic version</li>
+                <li class="mb-2">Type system catches missing cases at compile time, preventing runtime routing errors</li>
+                <li class="mb-2">Graceful error handling with 94% API failure recovery rate</li>
+                <li class="mb-2">Contrast: Monolithic version "forgot" context mid-conversation due to implicit state</li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-10 h-px w-full" style="background: linear-gradient(90deg, rgba(226,232,240,1), rgba(226,232,240,0));"></div>
+        </div>
+      </section>
+
+      <!-- Reflection Section -->
+      <section id="reflection" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div class="lg:col-span-4">
+              <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold">Reflection</h2>
+            </div>
+            <div class="lg:col-span-8">
+              <div class="prose max-w-none">
+                <h3 class="text-lg sm:text-xl font-semibold tracking-tight">What Worked Well</h3>
+
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Design-first approach prevented over-engineering.</strong> Mapping conversation flows to agent boundaries before implementation revealed the natural architecture. Node types in flows mapped directly to agent types, preventing unnecessary abstractions.
+                </p>
+
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Output types as flow control was effective.</strong> Using the type system for conversation state management made complex multi-turn flows readable. Type safety caught routing errors at compile time. Pattern matching eliminated nested conditionals from the monolithic version.
+                </p>
+
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Context management strategy enabled performance.</strong> The combination of dynamic instructions and conversation history compaction kept context windows lean, addressing real performance degradation seen in the monolithic version.
+                </p>
+
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Explicit state lifecycle reduced bugs.</strong> The monolithic version had implicit state scattered throughout. Making state explicit with clear lifecycle rules achieved reliable multi-turn conversation handling.
+                </p>
+
+                <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">What I'd Do Differently</h3>
+
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Map architecture during conversation design phase.</strong> I designed conversation flows first, then implemented monolithically, then had to refactor. If I'd mapped flows to agent boundaries during initial design, I would have avoided building the monolithic version entirely. Cost: One week spent on failed implementation and refactor.
+                </p>
+
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Build observability from day 1.</strong> I added logging, metrics, and validation testing after implementation. Designing observability and validation strategies into the initial architecture would have made debugging faster and validation easier. This includes both instrumentation (logging/metrics) and testing strategies (context compaction edge cases).
+                </p>
+
+                <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">Key Learnings</h3>
+
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Design philosophy directly shaped implementation.</strong> As a designer-engineer, conversation design informed architectural decisions: node types in flows mapped to agent types in the system. This dual perspective enabled optimizing for maintainability from the start, building testing into architecture rather than bolting it on afterwards, and creating clean abstractions that make conversations readable in code.
+                </p>
+
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Output types as flow control: Use type system instead of if/else spaghetti.</strong> Combined with explicit state management (<code class="code-inline">pending_suggestions</code> with clear lifecycle), pattern matching achieved reliable multi-turn handling. This is conversation design translated into code.
+                </p>
+
+                <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
+                  <strong>Dynamic instructions are architectural decisions, not prompt engineering.</strong> Generating instructions programmatically rather than static prompts kept context relevant and lean. This is system design: treating conversation history as a managed resource (compress old turns, keep recent ones) rather than unbounded state. Instructions living in code next to logic meant changes to agent behavior and instructions happen together, reducing coupling.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="mt-24 relative">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6">
+        <div class="rounded-2xl border ring-1 overflow-hidden" style="border-color: var(--color-neutral-200); ring-color: var(--color-neutral-200); background: rgba(255,255,255,0.75);">
+          <div class="sm:px-8 pt-4 pr-6 pb-4 pl-6">
+              <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div class="">
+                  <h3 class="text-xl font-semibold tracking-tight">Let's build the next wave of AI UX</h3>
+                  <p class="mt-1.5 text-sm hidden lg:block" style="color: var(--color-neutral-700);">Available for roles in Conversational & Agentic AI, Design Systems, and complex SaaS.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                  <a href="https://www.linkedin.com/in/yulia-vilensky/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 transition hover:shadow-sm text-sm ring-1 rounded-md pt-2 pr-3 pb-2 pl-3" style="background: white; ring-color: var(--color-neutral-200); color: var(--color-primary-emphasis);" aria-label="LinkedIn profile">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="linkedin" class="lucide lucide-linkedin w-4.5 h-4.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    LinkedIn
+                  </a>
+                  <a href="https://github.com/Morgenmuffel" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium border transition-all hover:shadow-sm" style="border-color: var(--color-neutral-200); background: white; color: var(--color-primary-emphasis);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="github" class="lucide lucide-github w-[24px] h-[24px]"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                    GitHub
+                  </a>
+                </div>
+              </div>
+
+              <div class="mt-3 pt-3 border-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2" style="border-color: var(--color-neutral-200);">
+                <p class="text-xs" style="color: var(--color-neutral-700);">© <span id="year">2025</span> Senior Product Designer — Conversational & Agentic AI.</p>
+                <div class="flex items-center gap-3">
+                  <a href="#top" class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-all hover:shadow-sm" style="border: 1px solid var(--color-neutral-200); background: white; color: var(--color-primary-emphasis);">
+                    Back to top
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up" class="lucide lucide-arrow-up w-3.5 h-3.5"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Initialize icons
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+
+      // Current year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Reveal-on-scroll helper
+      const revealItems = document.querySelectorAll('.reveal-on-scroll');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const el = entry.target;
+            if (entry.isIntersecting) {
+              el.classList.add('transition-all','duration-700');
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0)';
+            } else {
+              el.style.opacity = '0';
+              el.style.transform = 'translateY(8px)';
+            }
+          });
+        }, { threshold: 0.12 });
+        revealItems.forEach((el) => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(8px)';
+          io.observe(el);
+        });
+      }
+    </script>
+
+</body></html>

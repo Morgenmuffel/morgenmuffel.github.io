@@ -31,22 +31,22 @@
     color: #EB5757;
   }
   .callout-box {
-    background: rgba(46,91,218,0.05);
-    border-left: 4px solid var(--color-primary-base);
+    background: var(--dark-gradient-bg);
     border-radius: 8px;
     padding: 1.25rem 1.5rem;
     margin: 1.5rem 0;
+    color: white;
   }
   .callout-teal {
-    background: rgba(0,212,180,0.08);
-    border-left: 4px solid var(--color-accent-teal);
+    background: var(--dark-gradient-bg);
+    color: white;
   }
   .outcome-box {
-    background: white;
-    border: 1px solid var(--color-neutral-200);
+    background: var(--dark-gradient-bg);
     border-radius: 12px;
     padding: 1.5rem;
     margin: 1rem 0;
+    color: white;
   }
   table {
     width: 100%;
@@ -75,7 +75,7 @@
   }
 </style>
 </head>
-  <body class="antialiased min-h-screen" style="font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; --color-primary-base:#2E5BDA; --color-primary-subtle:#EBF0FF; --color-primary-emphasis:#1B3BA8; --color-neutral-900:#1A2332; --color-neutral-700:#475569; --color-neutral-400:#94A3B8; --color-neutral-200:#E2E8F0; --color-neutral-50:#F8FAFC; --color-neutral-0:#FFFFFF; --color-accent-teal:#00D4B4; --color-accent-coral:#FF6B6B; background: var(--color-neutral-0); color: var(--color-neutral-900);">
+  <body class="antialiased min-h-screen" style="font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; --color-primary-base:#2E5BDA; --color-primary-subtle:#EBF0FF; --color-primary-emphasis:#1B3BA8; --color-neutral-900:#1A2332; --color-neutral-700:#475569; --color-neutral-400:#94A3B8; --color-neutral-200:#E2E8F0; --color-neutral-50:#F8FAFC; --color-neutral-0:#FFFFFF; --color-accent-teal:#00D4B4; --color-accent-coral:#FF6B6B; --dark-gradient-bg: radial-gradient(900px 380px at 20% -10%, rgba(220,91,218,0.15), transparent 60%), radial-gradient(800px 360px at 80% 110%, rgba(0,212,180,0.18), transparent 60%), linear-gradient(180deg, rgba(15,23,42,0.85), rgba(30,41,59,0.90)); --dark-gradient-bg-subtle: radial-gradient(900px 380px at 20% -10%, rgba(220,91,218,0.06), transparent 60%), radial-gradient(800px 360px at 80% 110%, rgba(0,212,180,0.08), transparent 60%), linear-gradient(180deg, rgba(15,23,42,0.35), rgba(30,41,59,0.40)); background: var(--color-neutral-0); color: var(--color-neutral-900);">
 
     <!-- Static Background with Blurred Radial Splashes -->
     <div aria-hidden="true" class="fixed inset-0 -z-10 pointer-events-none">
@@ -117,24 +117,25 @@
     </header>
 
     <main id="top">
-      <!-- Hero: Full-width image, left-aligned overlay text -->
-      <section id="case-hero" class="relative">
+      <!-- Hero: Full-width with diagram on right, dark gradient overlay -->
+      <section id="case-hero" class="relative" style="background: var(--dark-gradient-bg);">
         <div class="w-full">
-          <figure class="relative overflow-hidden reveal-on-scroll transition-all duration-700" style="opacity: 1; transform: translateY(0px);">
-            <img src="assets/MultiAgentFlow.png" alt="Multi-Agent Architecture hero" class="w-full object-cover" style="height: 550px;">
-            <div class="absolute top-0 right-0 bottom-0 left-0" style="background: rgba(255,255,255,0.85);"></div>
-            <figcaption class="absolute top-0 right-0 bottom-0 left-0">
-              <div class="md:px-6 flex h-full max-w-6xl mr-auto ml-auto pr-4 pl-4 items-center">
-                <div class="flex flex-col items-start">
-                  <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-widest rounded-full pt-1 pr-3 pb-1 pl-3 shadow" style="color: white; background: var(--color-primary-base);">
-                    Agentic AI
-                  </span>
-                  <h1 class="sm:text-5xl md:text-6xl text-3xl font-semibold tracking-tight mt-3 py-2" style="color: var(--color-neutral-900); line-height: 1.1;">Multi-Agent Architecture for<br>Intelligent Calendar Scheduling</h1>
-                  <p class="text-base sm:text-lg mt-3 max-w-3xl" style="color: var(--color-neutral-700);">Designing a 4-agent system from scratch: translating conversational flows into clean agent boundaries, typed delegation patterns, and state management for complex conversational AI</p>
-                </div>
+          <div class="relative overflow-hidden reveal-on-scroll transition-all duration-700" style="opacity: 1; transform: translateY(0px); min-height: 550px;">
+            <!-- Diagram positioned on the right -->
+            <div class="absolute right-0 top-0 bottom-0 w-1/2 hidden md:flex items-center justify-end pr-8">
+              <img src="assets/MultiAgentFlow.png" alt="Multi-Agent Architecture diagram" class="max-w-full max-h-full object-contain" style="max-height: 500px;">
+            </div>
+            <!-- Content on the left -->
+            <div class="relative z-10 md:px-6 flex min-h-[550px] max-w-6xl mr-auto ml-auto pr-4 pl-4 items-center py-12">
+              <div class="flex flex-col items-start max-w-xl">
+                <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-widest rounded-full pt-1 pr-3 pb-1 pl-3 shadow" style="color: white; background: var(--color-primary-base);">
+                  Agentic AI
+                </span>
+                <h1 class="sm:text-5xl md:text-6xl text-3xl font-semibold tracking-tight mt-3 px-4 py-2" style="color: white; background: var(--dark-gradient-bg-subtle); line-height: 1.1; text-shadow: rgba(0, 0, 0, 0.25) 0px 1px 2px;">Multi-Agent Architecture for<br>Intelligent Calendar Scheduling</h1>
+                <p class="text-base sm:text-lg mt-3 max-w-3xl" style="color: rgba(255,255,255,0.9);">Designing a 4-agent system from scratch: translating conversational flows into clean agent boundaries, typed delegation patterns, and state management for complex conversational AI</p>
               </div>
-            </figcaption>
-          </figure>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -142,17 +143,17 @@
       <section id="project-info" class="relative mt-8 md:mt-12">
         <div class="max-w-6xl mx-auto px-5 sm:px-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="rounded-xl border ring-1 p-5 bg-white/80" style="border-color: var(--color-neutral-200);">
-              <h3 class="text-sm font-semibold tracking-tight uppercase" style="color: var(--color-neutral-700);">Role</h3>
-              <p class="mt-2 text-base">Product Designer & AI Engineer</p>
+            <div class="rounded-xl p-5" style="background: var(--dark-gradient-bg);">
+              <h3 class="text-sm font-semibold tracking-tight uppercase" style="color: rgba(255,255,255,0.8);">Role</h3>
+              <p class="mt-2 text-base" style="color: white;">Product Designer & AI Engineer</p>
             </div>
-            <div class="rounded-xl border ring-1 p-5 bg-white/80" style="border-color: var(--color-neutral-200);">
-              <h3 class="text-sm font-semibold tracking-tight uppercase" style="color: var(--color-neutral-700);">Tools</h3>
-              <p class="mt-2 text-base">PydanticAI, System Architecture Design, Python, Google Calendar API</p>
+            <div class="rounded-xl p-5" style="background: var(--dark-gradient-bg);">
+              <h3 class="text-sm font-semibold tracking-tight uppercase" style="color: rgba(255,255,255,0.8);">Tools</h3>
+              <p class="mt-2 text-base" style="color: white;">PydanticAI, System Architecture Design, Python, Google Calendar API</p>
             </div>
-            <div class="rounded-xl border ring-1 p-5 bg-white/80" style="border-color: var(--color-neutral-200);">
-              <h3 class="text-sm font-semibold tracking-tight uppercase" style="color: var(--color-neutral-700);">Context</h3>
-              <p class="mt-2 text-base">Technical architecture designed and implemented as part of the founding team's first product iteration toward pilot launch</p>
+            <div class="rounded-xl p-5" style="background: var(--dark-gradient-bg);">
+              <h3 class="text-sm font-semibold tracking-tight uppercase" style="color: rgba(255,255,255,0.8);">Context</h3>
+              <p class="mt-2 text-base" style="color: white;">Technical architecture designed and implemented as part of the founding team's first product iteration toward pilot launch</p>
             </div>
           </div>
         </div>

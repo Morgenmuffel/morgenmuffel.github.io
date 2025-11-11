@@ -7,6 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+</style>
 
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSBYY0WW99"></script>
@@ -560,7 +570,7 @@
 
             <!-- Form -->
             <form class="sm:px-8 pr-6 pl-6 space-y-4" action="https://api.web3forms.com/submit" method="POST" id="contact-form">
-              <div id="form-alert" class="hidden rounded-md px-3 py-2 text-sm" role="status"></div>
+              <div id="form-alert" class="hidden rounded-md px-4 py-3 text-sm mt-6 animate-gradient" role="status" style="background: linear-gradient(90deg, rgba(0,212,180,0.14), rgba(46,91,218,0.10), rgba(255,107,107,0.14)); background-size: 200% 100%; animation: gradient-shift 3s ease infinite;"></div>
               <input type="hidden" name="access_key" value="a44e77c0-8602-426d-84ab-d457dfe1cbf2">
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -579,16 +589,7 @@
                 <textarea name="message" rows="5" required="" class="outline-none transition-shadow resize-y text-sm w-full rounded-md pt-2 pr-3 pb-2 pl-3" style="border: 1px solid var(--color-neutral-200); background: var(--color-neutral-50); color: var(--color-neutral-900); box-shadow: none;" onfocus="this.style.boxShadow='0 0 0 3px rgba(46,91,218,0.15)';" onblur="this.style.boxShadow='none';" id="message" spellcheck="false" aria-label="To enrich screen reader interactions, please activate Accessibility in Grammarly extension settings"></textarea>
               </div>
 
-              <!-- Consent (custom checkbox) -->
-              <label class="flex items-start gap-3 cursor-pointer select-none" id="consent-label">
-                <input id="consent" type="checkbox" required="" class="peer sr-only">
-                <span id="checkbox-visual" class="relative flex items-center justify-center w-5 h-5 mt-0.5 rounded border-2 transition-all" style="border-color: var(--color-neutral-400);">
-                  <svg id="checkbox-checkmark" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white opacity-0 absolute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </span>
-                <span class="text-sm" style="color: var(--color-neutral-700);">I consent to having this website store my submitted information so they can respond to my inquiry.</span>
-              </label>
-
-              <div class="flex gap-3 items-center justify-end" style="margin-top: 0 !important;">
+              <div class="flex gap-3 items-center justify-end">
                 <button type="submit" class="inline-flex gap-2 transition-all hover:shadow-md text-sm font-medium rounded-md pt-2.5 pr-4 pb-2.5 pl-4 gap-x-2 gap-y-2 items-center" style="background: var(--color-primary-base); color: white;" id="submit-btn">
                   <svg id="submit-spinner" class="animate-spin hidden w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -779,9 +780,15 @@
       function showAlert(type, message) {
         alertBox.classList.remove('hidden');
         alertBox.textContent = message;
-        alertBox.style.background = type === 'success' ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)';
-        alertBox.style.color = type === 'success' ? '#065F46' : '#7F1D1D';
-        alertBox.style.border = '1px solid var(--color-neutral-200)';
+        alertBox.style.fontWeight = '500';
+        if (type === 'success') {
+          alertBox.style.color = 'var(--color-primary-emphasis)';
+          alertBox.style.border = '1px solid rgba(46,91,218,0.20)';
+        } else {
+          alertBox.style.background = 'rgba(239,68,68,0.08)';
+          alertBox.style.color = '#7F1D1D';
+          alertBox.style.border = '1px solid rgba(239,68,68,0.20)';
+        }
       }
 
       function setLoading(loading) {
@@ -808,33 +815,14 @@
         el?.addEventListener('input', () => validateField(el));
       });
 
-      // Handle custom checkbox visual state
-      const consentCheckbox = document.getElementById('consent');
-      const checkboxVisual = document.getElementById('checkbox-visual');
-      const checkboxCheckmark = document.getElementById('checkbox-checkmark');
-
-      consentCheckbox?.addEventListener('change', function() {
-        if (this.checked) {
-          checkboxVisual.style.background = 'var(--color-primary-base)';
-          checkboxVisual.style.borderColor = 'var(--color-primary-base)';
-          checkboxCheckmark.style.opacity = '1';
-        } else {
-          checkboxVisual.style.background = 'transparent';
-          checkboxVisual.style.borderColor = 'var(--color-neutral-400)';
-          checkboxCheckmark.style.opacity = '0';
-        }
-        validateField(this);
-      });
-
       form?.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const name = document.getElementById('name');
         const email = document.getElementById('email');
         const message = document.getElementById('message');
-        const consent = document.getElementById('consent');
 
-        const fieldsValid = [name, email, message, consent].map(validateField).every(Boolean);
+        const fieldsValid = [name, email, message].map(validateField).every(Boolean);
         if (!fieldsValid) {
           showAlert('error', 'Please complete the required fields.');
           return;
@@ -854,21 +842,21 @@
           const data = await response.json();
 
           if (data.success) {
-            showAlert('success', 'Thank you! Your message has been sent successfully. I will get back to you within 1-2 business days.');
+            showAlert('success', '✨ Message received! I\'ll respond within 1-2 business days.');
             trackEvent('form_submission', {
               form_type: 'contact',
               form_status: 'success'
             });
             form.reset();
           } else {
-            showAlert('error', 'Something went wrong. Please try again or email me directly.');
+            showAlert('error', '⚠️ Oops! Something went wrong. Please try again.');
             trackEvent('form_submission', {
               form_type: 'contact',
               form_status: 'error'
             });
           }
         } catch (error) {
-          showAlert('error', 'Network error. Please check your connection and try again.');
+          showAlert('error', '⚠️ Network error. Check your connection and try again.');
         } finally {
           setLoading(false);
         }

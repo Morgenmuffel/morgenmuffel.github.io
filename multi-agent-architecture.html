@@ -213,18 +213,9 @@
       </section>
 
       <!-- Multi-Agent Architecture Diagram -->
-      <section class="relative mt-16 md:mt-24">
+      <section class="relative mt-8 md:mt-12">
         <div class="max-w-6xl mx-auto px-5 sm:px-6">
-          <div class="rounded-xl overflow-hidden border shadow-lg" style="border-color: var(--color-neutral-200); background: white;">
-            <img src="assets/MultiAgentFlow.png" alt="Multi-Agent Architecture - 4-agent system showing Orchestrator, Schedule Intelligence Agent, Conflict Checker, and Calendar Ops with their connections and context flows" class="w-full h-auto">
-          </div>
-        </div>
-      </section>
-
-      <!-- Continue Problem Section -->
-      <section class="relative mt-16 md:mt-24">
-        <div class="max-w-6xl mx-auto px-5 sm:px-6">
-          <div class="mt-10 h-px w-full" style="background: linear-gradient(90deg, rgba(226,232,240,1), rgba(226,232,240,0));"></div>
+          <img src="assets/MultiAgentFlow.png" alt="Multi-Agent Architecture - 4-agent system showing Orchestrator, Schedule Intelligence Agent, Conflict Checker, and Calendar Ops with their connections and context flows" class="w-full h-auto">
         </div>
       </section>
 
@@ -275,16 +266,296 @@
                 <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
                   This pattern eliminates nested if/else logic by utilizing the type system for flow control. Pattern matching ensures all cases are handled at compile time.
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <!-- Interactive Type-Safe Routing Diagram -->
-                <div class="mt-8 rounded-xl overflow-hidden border shadow-lg" style="border-color: var(--color-neutral-200); background: white;">
-                  <div class="px-4 py-3 border-b" style="border-color: var(--color-neutral-200); background: var(--color-neutral-50);">
-                    <p class="text-sm font-medium" style="color: var(--color-neutral-700);">Interactive Flow: Type-Safe Routing Pattern</p>
-                  </div>
-                  <iframe src="https://type-safe-routing.vercel.app/" class="w-full" style="height: 800px; border: none;" title="Type-Safe Routing Pattern Visualization"></iframe>
-                </div>
+      <!-- Interactive Type-Safe Routing Diagram - Full Width -->
+      <section class="relative mt-12 md:mt-16">
+        <div class="w-full px-5 sm:px-6">
+          <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-6">
+              <h3 class="text-2xl sm:text-3xl font-semibold mb-3 tracking-tight" style="color: var(--color-neutral-900);">Interactive Flow: Type-Safe Routing Pattern</h3>
+              <p class="text-base" style="color: var(--color-neutral-700);">Hover over output types and state changes to trace the flow</p>
+            </div>
 
-                <h3 class="mt-8 text-lg sm:text-xl font-semibold tracking-tight">Phase 3: Context & State Management Design</h3>
+            <div class="relative overflow-x-auto">
+              <div class="w-full">
+                <svg id="type-safe-diagram" viewBox="0 0 1500 850" class="w-full h-auto" stroke-width="2">
+                  <!-- Background grid -->
+                  <defs>
+                    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+                      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(148,163,184,0.15)" stroke-width="1" />
+                    </pattern>
+                  </defs>
+                  <rect width="1500" height="850" fill="url(#grid)" />
+
+                  <!-- USER INPUT -->
+                  <g>
+                    <rect x="440" y="40" rx="8" ry="8" width="180" height="110" fill="white" stroke="rgb(203,213,225)" stroke-width="1.5" />
+                    <text x="530" y="82" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(71,85,105)">USER INPUT</text>
+                    <text x="530" y="110" text-anchor="middle" font-size="12" fill="rgb(100,116,139)">"Schedule breaks today"</text>
+                  </g>
+
+                  <line x1="620" y1="95" x2="680" y2="95" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- COORDINATOR -->
+                  <g>
+                    <rect x="680" y="40" rx="8" ry="8" width="200" height="110" fill="white" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                    <text x="780" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">COORDINATOR</text>
+                    <text x="780" y="108" text-anchor="middle" font-size="11" fill="rgb(100,116,139)">Current state:</text>
+                    <text x="780" y="128" text-anchor="middle" font-size="11" fill="rgb(148,163,184)">pending_suggestions = None</text>
+                  </g>
+
+                  <line x1="880" y1="95" x2="1020" y2="95" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <text x="950" y="80" text-anchor="middle" font-size="11" fill="rgb(71,85,105)" font-weight="600">Builds context and runs</text>
+
+                  <!-- ORCHESTRATOR -->
+                  <g>
+                    <rect x="1020" y="40" rx="8" ry="8" width="240" height="110" fill="white" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                    <text x="1140" y="75" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">ORCHESTRATOR</text>
+                    <text x="1140" y="98" text-anchor="middle" font-size="11" fill="rgb(100,116,139)">• Provides: user preferences,</text>
+                    <text x="1140" y="115" text-anchor="middle" font-size="11" fill="rgb(100,116,139)">pending_suggestions</text>
+                    <text x="1140" y="132" text-anchor="middle" font-size="11" fill="rgb(100,116,139)">• Includes: conversation history</text>
+                  </g>
+
+                  <line x1="1260" y1="95" x2="1300" y2="95" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- Calls sub-agents internally -->
+                  <g>
+                    <rect x="1300" y="40" rx="8" ry="8" width="200" height="110" fill="white" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                    <text x="1400" y="77" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(71,85,105)">Calls sub-agents</text>
+                    <text x="1400" y="96" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(71,85,105)">internally</text>
+                    <text x="1400" y="118" text-anchor="middle" font-size="11" fill="rgb(100,116,139)">Schedule Intelligence,</text>
+                    <text x="1400" y="136" text-anchor="middle" font-size="11" fill="rgb(100,116,139)">Conflict Checker, Calendar Ops</text>
+                  </g>
+
+                  <line x1="1140" y1="150" x2="1140" y2="190" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- Horizontal line segments from Orchestrator to each output type -->
+                  <line class="horizontal-segment-1" x1="140" y1="190" x2="1140" y2="190" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment-2" x1="340" y1="190" x2="1140" y2="190" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment-3" x1="540" y1="190" x2="1140" y2="190" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment-4" x1="740" y1="190" x2="1140" y2="190" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment-5" x1="940" y1="190" x2="1140" y2="190" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment-6" x1="1140" y1="190" x2="1140" y2="190" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- Vertical connections to output types -->
+                  <line class="path-line-1" x1="140" y1="190" x2="140" y2="220" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line-2" x1="340" y1="190" x2="340" y2="220" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line-3" x1="540" y1="190" x2="540" y2="220" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line-4" x1="740" y1="190" x2="740" y2="220" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line-5" x1="940" y1="190" x2="940" y2="220" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line-6" x1="1140" y1="190" x2="1140" y2="220" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- OUTPUT TYPE 1: ScheduleOnly -->
+                  <g class="output-group" data-path="1">
+                    <rect class="output-rect" x="50" y="220" rx="8" ry="8" width="180" height="115" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="140" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="rgb(100,116,139)">OUTPUT TYPE 1:</text>
+                    <text x="140" y="276" text-anchor="middle" font-size="14" font-weight="700" fill="rgb(71,85,105)">ScheduleOnly</text>
+                    <text x="140" y="310" text-anchor="middle" font-size="12" fill="rgb(100,116,139)">Read-only query</text>
+                  </g>
+
+                  <!-- OUTPUT TYPE 2: ScheduleWithSuggestions -->
+                  <g class="output-group" data-path="2">
+                    <rect class="output-rect" x="250" y="220" rx="8" ry="8" width="180" height="115" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="340" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="rgb(100,116,139)">OUTPUT TYPE 2:</text>
+                    <text x="340" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">ScheduleWith</text>
+                    <text x="340" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">Suggestions</text>
+                    <text x="340" y="315" text-anchor="middle" font-size="11" fill="rgb(100,116,139)">PROACTIVE path</text>
+                  </g>
+
+                  <!-- OUTPUT TYPE 3: SuggestAlternatives -->
+                  <g class="output-group" data-path="3">
+                    <rect class="output-rect" x="450" y="220" rx="8" ry="8" width="180" height="125" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="540" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="rgb(100,116,139)">OUTPUT TYPE 3:</text>
+                    <text x="540" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">Suggest</text>
+                    <text x="540" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">Alternatives</text>
+                    <text x="540" y="312" text-anchor="middle" font-size="11" fill="rgb(100,116,139)">REACTIVE path</text>
+                    <text x="540" y="330" text-anchor="middle" font-size="12" fill="rgb(148,163,184)">(conflicts resolved)</text>
+                  </g>
+
+                  <!-- OUTPUT TYPE 4: ExecuteScheduling -->
+                  <g class="output-group" data-path="4">
+                    <rect class="output-rect" x="650" y="220" rx="8" ry="8" width="180" height="115" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="740" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="rgb(100,116,139)">OUTPUT TYPE 4:</text>
+                    <text x="740" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">Execute</text>
+                    <text x="740" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">Scheduling</text>
+                  </g>
+
+                  <!-- OUTPUT TYPE 5: SchedulingComplete -->
+                  <g class="output-group" data-path="5">
+                    <rect class="output-rect" x="850" y="220" rx="8" ry="8" width="180" height="115" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="940" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="rgb(100,116,139)">OUTPUT TYPE 5:</text>
+                    <text x="940" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">Scheduling</text>
+                    <text x="940" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">Complete</text>
+                  </g>
+
+                  <!-- OUTPUT TYPE 6: NeedsClarification -->
+                  <g class="output-group" data-path="6">
+                    <rect class="output-rect" x="1050" y="220" rx="8" ry="8" width="180" height="115" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="1140" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="rgb(100,116,139)">OUTPUT TYPE 6:</text>
+                    <text x="1140" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">Needs</text>
+                    <text x="1140" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="rgb(71,85,105)">Clarification</text>
+                  </g>
+
+                  <!-- Lines after output types -->
+                  <line class="path-line2-1" x1="140" y1="335" x2="140" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line2-2" x1="340" y1="335" x2="340" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line2-3" x1="540" y1="345" x2="540" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line2-4" x1="740" y1="335" x2="740" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line2-5" x1="940" y1="335" x2="940" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line2-6" x1="1140" y1="335" x2="1140" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- Horizontal line segments to pattern matching center (640) -->
+                  <line class="horizontal-segment2-1" x1="140" y1="365" x2="640" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment2-2" x1="340" y1="365" x2="640" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment2-3" x1="540" y1="365" x2="640" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment2-4" x1="640" y1="365" x2="740" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment2-5" x1="640" y1="365" x2="940" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment2-6" x1="640" y1="365" x2="1140" y2="365" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="vertical-to-pattern" x1="640" y1="365" x2="640" y2="415" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- Pattern Matching Box -->
+                  <g>
+                    <rect class="pattern-box" x="420" y="415" rx="10" ry="10" width="440" height="90" fill="rgb(239,246,255)" stroke="rgb(46,91,218)" stroke-width="2" stroke-dasharray="6,4" />
+                    <text x="640" y="445" text-anchor="middle" font-size="16" font-weight="700" fill="rgb(27,59,168)">PATTERN MATCHING</text>
+                    <text x="640" y="467" text-anchor="middle" font-size="13" font-weight="600" fill="rgb(100,116,139)">Type-Safe Routing</text>
+                    <text x="640" y="488" text-anchor="middle" font-size="11" fill="rgb(100,116,139)">Match the output type and handle accordingly</text>
+                  </g>
+
+                  <!-- Lines after pattern matching -->
+                  <line class="vertical-from-pattern" x1="640" y1="505" x2="640" y2="535" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- Horizontal line segments from pattern center to state boxes -->
+                  <line class="horizontal-segment3-1" x1="140" y1="535" x2="640" y2="535" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment3-2" x1="340" y1="535" x2="640" y2="535" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment3-3" x1="540" y1="535" x2="640" y2="535" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment3-4" x1="640" y1="535" x2="740" y2="535" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment3-5" x1="640" y1="535" x2="940" y2="535" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment3-6" x1="640" y1="535" x2="1140" y2="535" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- Vertical lines to state change boxes -->
+                  <line class="path-line3-1" x1="140" y1="535" x2="140" y2="565" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line3-2" x1="340" y1="535" x2="340" y2="565" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line3-3" x1="540" y1="535" x2="540" y2="565" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line3-4" x1="740" y1="535" x2="740" y2="565" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line3-5" x1="940" y1="535" x2="940" y2="565" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line3-6" x1="1140" y1="535" x2="1140" y2="565" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- STATE CHANGE 1: ScheduleOnly -->
+                  <g class="state-group" data-path="1">
+                    <rect class="state-rect" x="50" y="565" rx="8" ry="8" width="180" height="170" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="140" y="595" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">STATE CHANGE:</text>
+                    <text x="140" y="618" text-anchor="middle" font-size="12" fill="rgb(100,116,139)">No change</text>
+                    <text x="140" y="643" text-anchor="middle" font-size="12" fill="rgb(148,163,184)">pending_suggestions:</text>
+                    <text x="140" y="663" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(148,163,184)">None</text>
+                    <path d="M53 675 H227 V725 Q227 733 219 733 H61 Q53 733 53 725 Z" fill="rgb(220,252,231)" />
+                    <text x="140" y="696" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">CONVERSATION STATE:</text>
+                    <text x="140" y="713" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(16,120,87)">COMPLETE</text>
+                  </g>
+
+                  <!-- STATE CHANGE 2: ScheduleWithSuggestions -->
+                  <g class="state-group" data-path="2">
+                    <rect class="state-rect" x="250" y="565" rx="8" ry="8" width="180" height="170" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="340" y="595" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">STATE CHANGE:</text>
+                    <text x="340" y="615" text-anchor="middle" font-size="12" fill="rgb(100,116,139)">Store pending_suggestions</text>
+                    <text x="340" y="638" text-anchor="middle" font-size="12" fill="rgb(148,163,184)">pending_suggestions:</text>
+                    <text x="340" y="658" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(0,212,180)">[10:00, 14:00, 16:00]</text>
+                    <path d="M253 675 H427 V725 Q427 733 419 733 H261 Q253 733 253 725 Z" fill="rgb(254,243,199)" />
+                    <text x="340" y="696" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">CONVERSATION STATE:</text>
+                    <text x="340" y="713" text-anchor="middle" font-size="11" font-weight="600" fill="rgb(161,98,7)">AWAITING_CONFIRMATION</text>
+                  </g>
+
+                  <!-- STATE CHANGE 3: SuggestAlternatives -->
+                  <g class="state-group" data-path="3">
+                    <rect class="state-rect" x="450" y="565" rx="8" ry="8" width="180" height="170" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="540" y="595" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">STATE CHANGE:</text>
+                    <text x="540" y="615" text-anchor="middle" font-size="12" fill="rgb(100,116,139)">Store pending_suggestions</text>
+                    <text x="540" y="638" text-anchor="middle" font-size="12" fill="rgb(148,163,184)">pending_suggestions:</text>
+                    <text x="540" y="658" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(255,107,107)">[alternatives: 14:45, 15:30]</text>
+                    <path d="M453 675 H627 V725 Q627 733 619 733 H461 Q453 733 453 725 Z" fill="rgb(254,243,199)" />
+                    <text x="540" y="696" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">CONVERSATION STATE:</text>
+                    <text x="540" y="713" text-anchor="middle" font-size="11" font-weight="600" fill="rgb(161,98,7)">AWAITING_CONFIRMATION</text>
+                  </g>
+
+                  <!-- STATE CHANGE 4: ExecuteScheduling -->
+                  <g class="state-group" data-path="4">
+                    <rect class="state-rect" x="650" y="565" rx="8" ry="8" width="180" height="170" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="740" y="595" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">STATE CHANGE:</text>
+                    <text x="740" y="615" text-anchor="middle" font-size="12" fill="rgb(100,116,139)">Clear pending_suggestions</text>
+                    <text x="740" y="638" text-anchor="middle" font-size="12" fill="rgb(148,163,184)">pending_suggestions:</text>
+                    <text x="740" y="653" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(148,163,184)">None</text>
+                    <text x="740" y="668" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(100,116,139)">Then: Call Calendar Ops</text>
+                    <path d="M653 675 H827 V725 Q827 733 819 733 H661 Q653 733 653 725 Z" fill="rgb(219,234,254)" />
+                    <text x="740" y="696" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">CONVERSATION STATE:</text>
+                    <text x="740" y="713" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(30,64,175)">EXECUTING</text>
+                  </g>
+
+                  <!-- STATE CHANGE 5: SchedulingComplete -->
+                  <g class="state-group" data-path="5">
+                    <rect class="state-rect" x="850" y="565" rx="8" ry="8" width="180" height="170" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="940" y="595" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">STATE CHANGE:</text>
+                    <text x="940" y="615" text-anchor="middle" font-size="12" fill="rgb(100,116,139)">Clear pending_suggestions</text>
+                    <text x="940" y="638" text-anchor="middle" font-size="12" fill="rgb(148,163,184)">pending_suggestions:</text>
+                    <text x="940" y="658" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(148,163,184)">None</text>
+                    <path d="M853 675 H1027 V725 Q1027 733 1019 733 H861 Q853 733 853 725 Z" fill="rgb(220,252,231)" />
+                    <text x="940" y="696" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">CONVERSATION STATE:</text>
+                    <text x="940" y="713" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(16,120,87)">COMPLETE</text>
+                  </g>
+
+                  <!-- STATE CHANGE 6: NeedsClarification -->
+                  <g class="state-group" data-path="6">
+                    <rect class="state-rect" x="1050" y="565" rx="8" ry="8" width="180" height="170" fill="white" stroke="rgb(148,163,184)" stroke-width="1" />
+                    <text x="1140" y="595" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">STATE CHANGE:</text>
+                    <text x="1140" y="615" text-anchor="middle" font-size="12" fill="rgb(100,116,139)">Maintain current state</text>
+                    <text x="1140" y="638" text-anchor="middle" font-size="12" fill="rgb(148,163,184)">pending_suggestions:</text>
+                    <text x="1140" y="658" text-anchor="middle" font-size="12" font-weight="600" fill="rgb(148,163,184)">[unchanged]</text>
+                    <path d="M1053 675 H1227 V725 Q1227 733 1219 733 H1061 Q1053 733 1053 725 Z" fill="rgb(254,243,199)" />
+                    <text x="1140" y="696" text-anchor="middle" font-size="12" font-weight="700" fill="rgb(26,35,50)">CONVERSATION STATE:</text>
+                    <text x="1140" y="713" text-anchor="middle" font-size="11" font-weight="600" fill="rgb(161,98,7)">AWAITING_INPUT</text>
+                  </g>
+
+                  <!-- Lines after state changes -->
+                  <line class="path-line4-1" x1="140" y1="735" x2="140" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line4-2" x1="340" y1="735" x2="340" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line4-3" x1="540" y1="735" x2="540" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line4-4" x1="740" y1="735" x2="740" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line4-5" x1="940" y1="735" x2="940" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="path-line4-6" x1="1140" y1="735" x2="1140" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- Final horizontal line segments to response center -->
+                  <line class="horizontal-segment4-1" x1="140" y1="765" x2="640" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment4-2" x1="340" y1="765" x2="640" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment4-3" x1="540" y1="765" x2="640" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment4-4" x1="640" y1="765" x2="740" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment4-5" x1="640" y1="765" x2="940" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="horizontal-segment4-6" x1="640" y1="765" x2="1140" y2="765" stroke="rgb(148,163,184)" stroke-width="1.5" />
+                  <line class="final-vertical" x1="640" y1="765" x2="640" y2="795" stroke="rgb(148,163,184)" stroke-width="1.5" />
+
+                  <!-- USER SEES RESPONSE -->
+                  <g>
+                    <rect class="response-box" x="530" y="795" rx="10" ry="10" width="220" height="45" fill="white" stroke="rgb(0,212,180)" stroke-width="1" />
+                    <text x="640" y="821" text-anchor="middle" font-size="13" font-weight="600" fill="rgb(26,35,50)">USER SEES RESPONSE</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Continue with Phase 3 -->
+      <section id="approach-continued" class="relative mt-6 md:mt-8">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div class="lg:col-span-4">
+            </div>
+            <div class="lg:col-span-8">
+              <div class="prose max-w-none">
+                <h3 class="text-lg sm:text-xl font-semibold tracking-tight">Phase 3: Context & State Management Design</h3>
                 <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
                   Each agent receives only the context it needs. State is managed explicitly to prevent the "forgetting" bugs from the monolithic version:
                 </p>
@@ -569,6 +840,186 @@
           io.observe(el);
         });
       }
+
+      // Interactive diagram hover effects
+      (function() {
+        let hoveredPath = null;
+
+        // Color mapping
+        const pathColors = {
+          1: 'rgb(16,185,129)',   // Green
+          2: 'rgb(255,107,107)',  // Coral/Orange
+          3: 'rgb(255,107,107)',  // Coral
+          4: 'rgb(46,91,218)',    // Blue
+          5: 'rgb(16,185,129)',   // Green
+          6: 'rgb(251,191,36)'    // Yellow
+        };
+
+        function getPathColor(pathIndex) {
+          return pathColors[pathIndex] || 'rgb(148,163,184)';
+        }
+
+        function updatePathHighlight(pathIndex) {
+          const isHighlighted = hoveredPath === pathIndex;
+          const color = isHighlighted ? getPathColor(pathIndex) : 'rgb(148,163,184)';
+          const width = isHighlighted ? '3' : '1.5';
+
+          // Update all lines for this path
+          ['.path-line-', '.path-line2-', '.path-line3-', '.path-line4-'].forEach(className => {
+            const line = document.querySelector(`${className}${pathIndex}`);
+            if (line) {
+              line.setAttribute('stroke', color);
+              line.setAttribute('stroke-width', width);
+            }
+          });
+
+          // Update output rect
+          const outputRect = document.querySelector(`.output-group[data-path="${pathIndex}"] .output-rect`);
+          if (outputRect) {
+            outputRect.setAttribute('stroke', color);
+            outputRect.setAttribute('stroke-width', isHighlighted ? '2' : '1');
+            outputRect.style.filter = isHighlighted ? `drop-shadow(0 4px 12px ${color}40)` : 'none';
+          }
+
+          // Update state rect
+          const stateRect = document.querySelector(`.state-group[data-path="${pathIndex}"] .state-rect`);
+          if (stateRect) {
+            stateRect.setAttribute('stroke', color);
+            stateRect.setAttribute('stroke-width', isHighlighted ? '2' : '1');
+            stateRect.style.filter = isHighlighted ? `drop-shadow(0 4px 12px ${color}40)` : 'none';
+          }
+        }
+
+        function updateCommonLines() {
+          // Reset all horizontal segments to default
+          for (let i = 1; i <= 6; i++) {
+            ['.horizontal-segment-', '.horizontal-segment2-', '.horizontal-segment3-', '.horizontal-segment4-'].forEach(className => {
+              const line = document.querySelector(`${className}${i}`);
+              if (line) {
+                line.setAttribute('stroke', 'rgb(148,163,184)');
+                line.setAttribute('stroke-width', '1.5');
+              }
+            });
+          }
+
+          // If a path is hovered, highlight its specific segments
+          if (hoveredPath) {
+            const color = getPathColor(hoveredPath);
+            const width = '3';
+
+            // Highlight only the segments for the hovered path
+            ['.horizontal-segment-', '.horizontal-segment2-', '.horizontal-segment3-', '.horizontal-segment4-'].forEach(className => {
+              const line = document.querySelector(`${className}${hoveredPath}`);
+              if (line) {
+                line.setAttribute('stroke', color);
+                line.setAttribute('stroke-width', width);
+              }
+            });
+
+            // Update common vertical lines
+            const commonVerticalLines = [
+              '.vertical-to-pattern',
+              '.vertical-from-pattern',
+              '.final-vertical'
+            ];
+
+            commonVerticalLines.forEach(className => {
+              const line = document.querySelector(className);
+              if (line) {
+                line.setAttribute('stroke', color);
+                line.setAttribute('stroke-width', width);
+              }
+            });
+
+            // Update pattern box
+            const patternBox = document.querySelector('.pattern-box');
+            if (patternBox) {
+              patternBox.setAttribute('stroke', color);
+              patternBox.style.filter = `drop-shadow(0 4px 12px ${color}40)`;
+            }
+
+            // Update response box
+            const responseBox = document.querySelector('.response-box');
+            if (responseBox) {
+              responseBox.setAttribute('stroke', color);
+              responseBox.setAttribute('stroke-width', '2');
+              responseBox.style.filter = `drop-shadow(0 4px 12px ${color}40)`;
+            }
+          } else {
+            // Reset common vertical lines
+            const commonVerticalLines = [
+              '.vertical-to-pattern',
+              '.vertical-from-pattern',
+              '.final-vertical'
+            ];
+
+            commonVerticalLines.forEach(className => {
+              const line = document.querySelector(className);
+              if (line) {
+                line.setAttribute('stroke', 'rgb(148,163,184)');
+                line.setAttribute('stroke-width', '1.5');
+              }
+            });
+
+            // Reset pattern box
+            const patternBox = document.querySelector('.pattern-box');
+            if (patternBox) {
+              patternBox.setAttribute('stroke', 'rgb(46,91,218)');
+              patternBox.style.filter = 'none';
+            }
+
+            // Reset response box
+            const responseBox = document.querySelector('.response-box');
+            if (responseBox) {
+              responseBox.setAttribute('stroke', 'rgb(0,212,180)');
+              responseBox.setAttribute('stroke-width', '1');
+              responseBox.style.filter = 'none';
+            }
+          }
+        }
+
+        // Add event listeners to output groups
+        document.querySelectorAll('.output-group').forEach(group => {
+          const pathIndex = parseInt(group.getAttribute('data-path'));
+
+          group.addEventListener('mouseenter', () => {
+            hoveredPath = pathIndex;
+            updatePathHighlight(pathIndex);
+            updateCommonLines();
+          });
+
+          group.addEventListener('mouseleave', () => {
+            const oldPath = hoveredPath;
+            hoveredPath = null;
+            updatePathHighlight(oldPath);
+            updateCommonLines();
+          });
+
+          // Add cursor pointer style
+          group.style.cursor = 'pointer';
+        });
+
+        // Add event listeners to state groups
+        document.querySelectorAll('.state-group').forEach(group => {
+          const pathIndex = parseInt(group.getAttribute('data-path'));
+
+          group.addEventListener('mouseenter', () => {
+            hoveredPath = pathIndex;
+            updatePathHighlight(pathIndex);
+            updateCommonLines();
+          });
+
+          group.addEventListener('mouseleave', () => {
+            const oldPath = hoveredPath;
+            hoveredPath = null;
+            updatePathHighlight(oldPath);
+            updateCommonLines();
+          });
+
+          // Add cursor pointer style
+          group.style.cursor = 'pointer';
+        });
+      })();
     </script>
 
 </body></html>

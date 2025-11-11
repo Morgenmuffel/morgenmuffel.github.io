@@ -580,10 +580,12 @@
               </div>
 
               <!-- Consent (custom checkbox) -->
-              <label class="flex items-start gap-3 cursor-pointer select-none">
+              <label class="flex items-start gap-3 cursor-pointer select-none" id="consent-label">
                 <input id="consent" type="checkbox" required="" class="peer sr-only">
-
-
+                <span id="checkbox-visual" class="relative flex items-center justify-center w-5 h-5 mt-0.5 rounded border-2 transition-all" style="border-color: var(--color-neutral-400);">
+                  <svg id="checkbox-checkmark" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white opacity-0 absolute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                <span class="text-sm" style="color: var(--color-neutral-700);">I consent to having this website store my submitted information so they can respond to my inquiry.</span>
               </label>
 
               <div class="flex gap-3 items-center justify-end" style="margin-top: 0 !important;">
@@ -804,6 +806,24 @@
       ['name','email','message'].forEach(id => {
         const el = document.getElementById(id);
         el?.addEventListener('input', () => validateField(el));
+      });
+
+      // Handle custom checkbox visual state
+      const consentCheckbox = document.getElementById('consent');
+      const checkboxVisual = document.getElementById('checkbox-visual');
+      const checkboxCheckmark = document.getElementById('checkbox-checkmark');
+
+      consentCheckbox?.addEventListener('change', function() {
+        if (this.checked) {
+          checkboxVisual.style.background = 'var(--color-primary-base)';
+          checkboxVisual.style.borderColor = 'var(--color-primary-base)';
+          checkboxCheckmark.style.opacity = '1';
+        } else {
+          checkboxVisual.style.background = 'transparent';
+          checkboxVisual.style.borderColor = 'var(--color-neutral-400)';
+          checkboxCheckmark.style.opacity = '0';
+        }
+        validateField(this);
       });
 
       form?.addEventListener('submit', async (e) => {

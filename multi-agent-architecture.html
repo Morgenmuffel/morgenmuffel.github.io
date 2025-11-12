@@ -69,6 +69,8 @@
     padding: 0.75rem 1rem;
     border-bottom: 1px solid var(--color-neutral-200);
     font-size: 0.9rem;
+    vertical-align: top;
+    text-align: left;
   }
   tr:last-child td {
     border-bottom: none;
@@ -228,9 +230,9 @@
             </div>
             <div class="lg:col-span-8">
               <div class="prose max-w-none">
-                <h3 class="text-lg sm:text-xl font-semibold tracking-tight">Phase 1: Capability Mapping & Tool Registration Pattern</h3>
+                <h3 class="text-lg sm:text-xl font-semibold tracking-tight">Phase 1: Capability Mapping, Conversational States & Tool Registration Pattern</h3>
                 <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
-                  I mapped all action nodes across the 6 conversation flows designed in Case Study #1. Each node type revealed a distinct capability that should have been separated:
+                  I mapped all action nodes and state transitions across the 6 conversation flows designed in Case Study #1. Each node type revealed a distinct capability that should have been separated:
                 </p>
                 <ul class="mt-4 list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
                   <li class="mb-2"><strong>Decision nodes</strong> (intent classification, flow routing) → Conversation management</li>
@@ -240,6 +242,105 @@
                 </ul>
                 <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
                   This mapping revealed a natural 4-agent architecture, each with a single, testable responsibility.
+                </p>
+
+                <p class="mt-6 text-base font-semibold" style="color: var(--color-neutral-900);">Conversational States (State Machine for Multi-Turn Flows)</p>
+                <p class="mt-2 text-base" style="color: var(--color-neutral-700);">
+                  Beyond agent boundaries, I extracted explicit conversational states from the flows. Each state represents where the conversation is in its lifecycle, what information is pending, and what user actions are valid:
+                </p>
+
+                <table class="mt-4">
+                  <thead>
+                    <tr>
+                      <th style="width: 25%;">State</th>
+                      <th style="width: 40%;">Description</th>
+                      <th style="width: 35%;">Triggers & Context</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>INITIAL</strong></td>
+                      <td>
+                        No pending suggestions<br>
+                        No conversation context<br>
+                        Entry point for all new conversations
+                      </td>
+                      <td>
+                        <strong>Triggers:</strong> New user message<br>
+                        <code class="code-inline">pending_suggestions = None</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="border-bottom: none;"><strong>AWAITING CONFIRMATION</strong></td>
+                      <td style="border-bottom: none;">
+                        Has suggestions stored (<code class="code-inline">pending_suggestions</code>)<br>
+                        Waiting for user approval or modification<br>
+                        User can: confirm, modify times, or cancel
+                      </td>
+                      <td style="border-bottom: none;"></td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left: 2rem; border-top: none; border-bottom: none;"><strong>→ PROACTIVE</strong></td>
+                      <td style="border-bottom: none;">
+                        On schedule query or scheduling request without specific times. System analyzed schedule and suggests optimal times
+                      </td>
+                      <td style="border-bottom: none;">
+                        <strong>Triggers:</strong> <code class="code-inline">ScheduleWithSuggestions</code> returned<br>
+                        System has suggestions ready, awaiting user decision
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left: 2rem; border-top: none;"><strong>→ REACTIVE</strong></td>
+                      <td>
+                        User requested specific times that had conflicts → System generates alternatives
+                      </td>
+                      <td>
+                        <strong>Triggers:</strong> <code class="code-inline">SuggestAlternatives</code> returned<br>
+                        System has alternative suggestions ready, awaiting user decision
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>AWAITING_INPUT</strong></td>
+                      <td>
+                        Missing required information (date, time, or duration)<br>
+                        Need clarification from user<br>
+                        Maintains current context<br>
+                        No suggestions yet - need more info first
+                      </td>
+                      <td>
+                        <strong>Triggers:</strong> Ambiguous request or missing parameters<br>
+                        <code class="code-inline">pending_suggestions = [unchanged]</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>EXECUTING</strong></td>
+                      <td>
+                        Processing calendar operations<br>
+                        Creating/modifying break events<br>
+                        User sees loading/progress indicator
+                      </td>
+                      <td>
+                        <strong>Triggers:</strong> User confirmed OR explicit request with no conflicts found<br>
+                        Clears <code class="code-inline">pending_suggestions</code> before executing
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>COMPLETE</strong></td>
+                      <td>
+                        Conversation finished successfully<br>
+                        All state cleared<br>
+                        Ready for new conversation
+                      </td>
+                      <td>
+                        <strong>Triggers:</strong> Successful execution OR read-only query response<br>
+                        <code class="code-inline">pending_suggestions = None</code>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
+                  These states became the foundation for the <strong>output types</strong> in Phase 2, ensuring the type system enforces valid state transitions.
                 </p>
                 <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
                   <strong>Tool Registration Pattern:</strong> Using PydanticAI's pattern, I registered sub-agents as tools on the Orchestrator. This creates type-safe communication with clear interface boundaries:
@@ -264,7 +365,7 @@
                   <li class="mb-2"><strong>NeedsClarification</strong> – Missing info, request input</li>
                 </ul>
                 <p class="mt-4 text-base" style="color: var(--color-neutral-700);">
-                  This pattern eliminates nested if/else logic by utilizing the type system for flow control. Pattern matching ensures all cases are handled at compile time.
+                  This pattern eliminates nested if/else logic by utilizing the type system for flow control. Pattern matching ensures all cases are handled.
                 </p>
               </div>
             </div>
@@ -703,7 +804,7 @@
                 <li class="mb-2">98% accuracy in multi-turn conversations through explicit state management (<code class="code-inline">pending_suggestions</code> with clear lifecycle)</li>
                 <li class="mb-2">Context window kept lean through conversation history compaction and dynamic instructions</li>
                 <li class="mb-2">Pattern matching eliminated nested if/else logic that broke in monolithic version</li>
-                <li class="mb-2">Type system catches missing cases at compile time, preventing runtime routing errors</li>
+                <li class="mb-2">Type system catches missing cases, preventing runtime routing errors</li>
                 <li class="mb-2">Graceful error handling with 94% API failure recovery rate</li>
                 <li class="mb-2">Contrast: Monolithic version "forgot" context mid-conversation due to implicit state</li>
               </ul>
@@ -729,7 +830,7 @@
                 </p>
 
                 <p class="mt-3 text-base" style="color: var(--color-neutral-700);">
-                  <strong>Output types as flow control was effective.</strong> Using the type system for conversation state management made complex multi-turn flows readable. Type safety caught routing errors at compile time. Pattern matching eliminated nested conditionals from the monolithic version.
+                  <strong>Output types as flow control was effective.</strong> Using the type system for conversation state management made complex multi-turn flows readable. Type safety caught routing errors early. Pattern matching eliminated nested conditionals from the monolithic version.
                 </p>
 
                 <p class="mt-3 text-base" style="color: var(--color-neutral-700);">

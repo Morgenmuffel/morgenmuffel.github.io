@@ -336,6 +336,136 @@ Agent: "Based on your pattern: 9:30 AM, 1:15 PM, 3:45 PM.
         </div>
       </section>
 
+      <!-- Flow 3: Multi-day Break Scheduling -->
+      <section id="flow-multiday" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold mb-4">Flow 3: Multi-day break scheduling</h2>
+
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-base font-semibold tracking-tight mb-3">Key design decisions:</h3>
+              <ul class="list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                <li class="mb-2">Schedule coordination: Analyze meeting density across multiple days to optimize break placement</li>
+                <li class="mb-2">Pattern consistency: Apply learned user preferences (typical break times, duration) across all days</li>
+                <li class="mb-2">Batch presentation: Show entire week's plan with per-day conflict status</li>
+                <li>Adaptive frequency: Increase break frequency on meeting-heavy days, maintain minimum on lighter days</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-base font-semibold tracking-tight mb-3">Examples:</h3>
+              <div class="space-y-4">
+                <div class="code-block">User: "Schedule breaks for this week"
+Agent: "Based on your typical pattern + meeting load:
+
+       Mon (heavy): 10:30 AM, 1:15 PM, 3:45 PM
+       Tue (light): 11:00 AM, 2:30 PM
+       Wed (heavy): 10:00 AM, 12:30 PM, 3:00 PM, 4:30 PM
+       Thu (medium): 10:30 AM, 1:30 PM, 3:30 PM
+       Fri (light): 11:00 AM, 2:00 PM
+
+       All slots available - schedule these?"</div>
+
+                <div class="code-block">User: "Set up breaks for next 3 days"
+Agent: "Planning Thu-Sat:
+       ⚠️ Thu 2 PM conflicts with client demo,
+                  suggesting 3:15 PM instead
+       ✅ Fri & Sat: usual pattern fits perfectly
+
+       Should I proceed?"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Flow 4: Reschedule Request -->
+      <section id="flow-reschedule" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold mb-4">Flow 4: Reschedule request</h2>
+
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-base font-semibold tracking-tight mb-3">Key design decisions:</h3>
+              <ul class="list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                <li class="mb-2">Identify target: Resolve ambiguous references (<em>"my next break"</em>, <em>"today's breaks"</em>) using calendar + time context</li>
+                <li class="mb-2">Modification types: Move (change time), cancel (remove), bulk reschedule (pattern shift)</li>
+                <li class="mb-2">Preserve intent: Maintain break frequency and spacing when rescheduling multiple breaks</li>
+                <li>Pattern learning: Remember and suggest previous reschedule patterns (<em>"like we did last week"</em>)</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-base font-semibold tracking-tight mb-3">Examples:</h3>
+              <div class="space-y-4">
+                <div class="code-block">User: "Move my 2 PM break to 3 PM"
+Agent: "Moving your 2:00 PM break to 3:00 PM.
+       Done! Your updated schedule:
+       10:30 AM ✓  3:00 PM ✓  4:30 PM ✓"</div>
+
+                <div class="code-block">User: "Cancel my next break"
+Agent: "Cancelling your 1:15 PM break.
+       You still have breaks at 3:30 PM and 4:45 PM
+       today - want to keep those?"</div>
+
+                <div class="code-block">User: "Reschedule today's breaks"
+Agent: "Current: 10 AM, 1 PM, 4 PM
+       Meeting just added at 1 PM - suggest:
+       Keep: 10:00 AM ✓
+       Move: 1:00 PM → 2:15 PM
+       Keep: 4:00 PM ✓
+       Should I update?"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Flow 5: Query Schedule -->
+      <section id="flow-query" class="relative mt-16 md:mt-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6">
+          <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold mb-4">Flow 5: Query schedule (with proactive suggestions)</h2>
+
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-base font-semibold tracking-tight mb-3">Key design decisions:</h3>
+              <ul class="list-disc pl-6 text-base" style="color: var(--color-neutral-700);">
+                <li class="mb-2">Dual purpose: Information retrieval + behavior change opportunity</li>
+                <li class="mb-2">Proactive detection: If query reveals no breaks scheduled, offer suggestions immediately</li>
+                <li class="mb-2">Adaptive persuasion: Light schedule → gentle nudge; heavy schedule → stronger recommendation with stress framing</li>
+                <li>Comparison intelligence: Support temporal comparisons (<em>"today vs yesterday"</em>) to surface break gaps</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-base font-semibold tracking-tight mb-3">Examples:</h3>
+              <div class="space-y-4">
+                <div class="code-block">User: "What's my schedule today?"
+Agent: "Today: 5 meetings, 9 AM - 4:30 PM
+
+       I notice you have no breaks scheduled.
+       With back-to-back meetings, I recommend:
+       10:30 AM, 1:00 PM, 3:15 PM (5 min each)
+
+       Want me to add these?"</div>
+
+                <div class="code-block">User: "Show me tomorrow's calendar"
+Agent: "Tomorrow (Thu): 3 meetings, mostly morning
+
+       Your usual 2:00 PM break still fits perfectly
+       between your lunch and design review.
+       Schedule it now?"</div>
+
+                <div class="code-block">User: "Compare today with yesterday's schedule"
+Agent: "Yesterday: 3 meetings, 3 breaks taken ✓
+       Today: 6 meetings, 0 breaks so far ⚠️
+
+       Today's heavier - I suggest adding:
+       12:45 PM and 3:00 PM to maintain energy.
+       Sound good?"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Advanced Patterns -->
       <section id="advanced-patterns" class="relative mt-16 md:mt-24">
         <div class="max-w-6xl mx-auto px-5 sm:px-6">

@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+// Edge Middleware for static sites (no Next.js)
 
 // ========================================
 // CONFIGURATION
@@ -22,8 +22,9 @@ const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days in seconds
 // MIDDLEWARE FUNCTION
 // ========================================
 
-export function middleware(request) {
-  const { pathname } = request.nextUrl;
+export default async function middleware(request) {
+  const url = new URL(request.url);
+  const { pathname } = url;
 
   // Check if the current page is in the protected list
   const isProtected = PROTECTED_PAGES.some(page => {
@@ -33,15 +34,22 @@ export function middleware(request) {
 
   // If page is not protected, allow access
   if (!isProtected) {
-    return NextResponse.next();
+    return;
   }
 
   // Check for authentication cookie
-  const authCookie = request.cookies.get(COOKIE_NAME)?.value;
+  const cookieHeader = request.headers.get('cookie') || '';
+  const cookies = Object.fromEntries(
+    cookieHeader.split(';').map(c => {
+      const [key, ...v] = c.trim().split('=');
+      return [key, v.join('=')];
+    })
+  );
+  const authCookie = cookies[COOKIE_NAME];
 
   // If valid cookie exists, grant access
   if (authCookie === PASSWORD) {
-    return NextResponse.next();
+    return;
   }
 
   // Check for Basic Auth header
@@ -57,13 +65,10 @@ export function middleware(request) {
       // Validate password (username can be anything)
       if (password === PASSWORD) {
         // Create response with auth cookie
-        const response = NextResponse.next();
-        response.cookies.set(COOKIE_NAME, PASSWORD, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'strict',
-          maxAge: COOKIE_MAX_AGE,
-          path: '/'
+        const response = new Response(null, {
+          headers: {
+            'Set-Cookie': `${COOKIE_NAME}=${PASSWORD}; HttpOnly; Secure; SameSite=Strict; Max-Age=${COOKIE_MAX_AGE}; Path=/`
+          }
         });
         return response;
       }
@@ -74,7 +79,7 @@ export function middleware(request) {
   }
 
   // Authentication failed - return 401 with Basic Auth challenge
-  return new NextResponse(
+  return new Response(
     `<!DOCTYPE html>
 <html lang="en">
 <head>

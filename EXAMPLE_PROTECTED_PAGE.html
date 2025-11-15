@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protected Page Example</title>
+
+  <!-- ============================================ -->
+  <!-- CLIENT-SIDE PASSWORD PROTECTION (OPTION 2)  -->
+  <!-- ============================================ -->
+  <!-- Uncomment the line below to enable client-side password protection -->
+  <!-- <script src="/password-protection-simple.js"></script> -->
+
+  <!-- OR you can include the script inline: -->
+  <!--
+  <script>
+    (function() {
+      'use strict';
+      const CORRECT_PASSWORD = 'your-password-here'; // CHANGE THIS!
+      const AUTH_KEY = 'portfolio-auth-token';
+      const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000;
+
+      const authData = sessionStorage.getItem(AUTH_KEY);
+      if (authData) {
+        try {
+          const { timestamp, authenticated } = JSON.parse(authData);
+          const now = new Date().getTime();
+          if (authenticated && (now - timestamp) < SESSION_DURATION) {
+            return;
+          }
+        } catch (e) {
+          sessionStorage.removeItem(AUTH_KEY);
+        }
+      }
+
+      const password = prompt('🔒 This project is password protected.\n\nPlease enter the password to continue:');
+
+      if (password === CORRECT_PASSWORD) {
+        sessionStorage.setItem(AUTH_KEY, JSON.stringify({
+          authenticated: true,
+          timestamp: new Date().getTime()
+        }));
+      } else {
+        if (password !== null) {
+          alert('❌ Incorrect password. Redirecting to home page.');
+        }
+        window.location.href = '/index.html';
+      }
+    })();
+  </script>
+  -->
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2E5BDA;
+    }
+    .note {
+      background: #EBF0FF;
+      border-left: 4px solid #2E5BDA;
+      padding: 1rem;
+      margin: 2rem 0;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔒 Protected Page Example</h1>
+
+  <p>This is an example of a password-protected page.</p>
+
+  <div class="note">
+    <h3>Note About Password Protection Methods:</h3>
+
+    <h4>Server-Side (Recommended) - Using middleware.js:</h4>
+    <ul>
+      <li>No changes needed to HTML files</li>
+      <li>Password protection is automatic</li>
+      <li>More secure</li>
+      <li>Just commit <code>middleware.js</code>, <code>package.json</code>, and <code>vercel.json</code></li>
+    </ul>
+
+    <h4>Client-Side (Simple) - Using password-protection-simple.js:</h4>
+    <ul>
+      <li>Uncomment the script tag in the <code>&lt;head&gt;</code> section above</li>
+      <li>Update the password in <code>password-protection-simple.js</code></li>
+      <li>Less secure (password visible in source)</li>
+      <li>Easier to implement</li>
+    </ul>
+  </div>
+
+  <h2>Your Protected Content Goes Here</h2>
+
+  <p>If you're seeing this page, either:</p>
+  <ol>
+    <li>You've successfully authenticated with the password, or</li>
+    <li>Password protection is not yet enabled</li>
+  </ol>
+
+  <h3>How to Enable Protection:</h3>
+
+  <p><strong>For Server-Side Protection:</strong></p>
+  <ol>
+    <li>Ensure <code>middleware.js</code>, <code>package.json</code>, and <code>vercel.json</code> are committed</li>
+    <li>Add this page to the <code>PROTECTED_PAGES</code> array in <code>middleware.js</code></li>
+    <li>Set the <code>PROTECTED_PAGES_PASSWORD</code> environment variable in Vercel</li>
+    <li>Deploy to Vercel</li>
+  </ol>
+
+  <p><strong>For Client-Side Protection:</strong></p>
+  <ol>
+    <li>Uncomment the script tag in the <code>&lt;head&gt;</code> section of this file</li>
+    <li>Update the password in <code>password-protection-simple.js</code></li>
+    <li>Commit and deploy</li>
+  </ol>
+
+  <hr>
+
+  <p><a href="/index.html">← Back to Home</a></p>
+</body>
+</html>

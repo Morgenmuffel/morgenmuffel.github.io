@@ -6,26 +6,48 @@ set -e
 
 PASSWORD="${PROTECTED_PAGES_PASSWORD:-change-this-default-password}"
 
+# List of files to protect (add new files here)
+PROTECTED_FILES=(
+  "multi-agent-architecture.html"
+  # Add more files like this:
+  # "another-project.html"
+  # "secret-page.html"
+)
+
 # Create a small Node.js script to do the replacement safely
 cat > replace-password.js << 'EOJS'
 const fs = require('fs');
 const password = process.env.PROTECTED_PAGES_PASSWORD || 'change-this-default-password';
 
-// Read the HTML file
-let html = fs.readFileSync('multi-agent-architecture.html', 'utf8');
+// Get files from command line arguments
+const files = process.argv.slice(2);
 
-// Replace the placeholder with actual password (properly escaped for JS string)
+// Properly escape password for JS string
 const escapedPassword = password.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-html = html.replace('PLACEHOLDER_PASSWORD', escapedPassword);
 
-// Write back
-fs.writeFileSync('multi-agent-architecture.html', html, 'utf8');
+let count = 0;
+files.forEach(file => {
+  if (fs.existsSync(file)) {
+    // Read the HTML file
+    let html = fs.readFileSync(file, 'utf8');
 
-console.log('✅ Password injected into protected pages');
+    // Replace the placeholder with actual password
+    html = html.replace('PLACEHOLDER_PASSWORD', escapedPassword);
+
+    // Write back
+    fs.writeFileSync(file, html, 'utf8');
+    console.log(`  ✓ ${file}`);
+    count++;
+  } else {
+    console.log(`  ⚠ ${file} not found, skipping`);
+  }
+});
+
+console.log(`✅ Password injected into ${count} protected page(s)`);
 EOJS
 
-# Run the Node.js script
-node replace-password.js
+# Run the Node.js script with all protected files
+node replace-password.js "${PROTECTED_FILES[@]}"
 
 # Clean up
 rm replace-password.js

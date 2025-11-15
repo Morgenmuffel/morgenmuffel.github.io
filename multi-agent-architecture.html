@@ -1,6 +1,29 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Case Study — Multi-Agent Architecture for Intelligent Calendar Scheduling</title>
+
+<!-- Password Protection -->
+<script>
+(function() {
+  const AUTH_PASSWORD = 'PLACEHOLDER_PASSWORD'; // Will be set via environment variable
+  const AUTH_KEY = 'portfolio_auth_multi_agent';
+
+  // Check if already authenticated
+  if (sessionStorage.getItem(AUTH_KEY) === 'authenticated') {
+    return; // Allow access
+  }
+
+  // Prompt for password
+  const password = prompt('🔒 This project is password protected.\n\nPlease enter the password:');
+
+  if (password === AUTH_PASSWORD) {
+    sessionStorage.setItem(AUTH_KEY, 'authenticated');
+  } else {
+    alert('Incorrect password. Redirecting to home page.');
+    window.location.href = '/';
+  }
+})();
+</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">

@@ -5,15 +5,8 @@ import { NextResponse } from 'next/server';
 // ========================================
 
 // Define which pages require password protection
-// Add or remove pages from this list as needed
 const PROTECTED_PAGES = [
-  '/ai-health-coach.html',
-  '/multi-agent-architecture.html',
-  '/bank.html',
-  '/clustered.html',
-  '/bedtime-storyai.html',
-  '/locationdata.html',
-  '/diagrams.html'
+  '/multi-agent-architecture.html'
 ];
 
 // Password for protected pages
@@ -135,23 +128,9 @@ export function middleware(request) {
 // ========================================
 
 // Define which routes this middleware should run on
-// Update this list when you add/remove protected pages
 export const config = {
   matcher: [
-    '/ai-health-coach.html',
     '/multi-agent-architecture.html',
-    '/bank.html',
-    '/clustered.html',
-    '/bedtime-storyai.html',
-    '/locationdata.html',
-    '/diagrams.html',
-    // Support URLs without .html extension
-    '/ai-health-coach',
-    '/multi-agent-architecture',
-    '/bank',
-    '/clustered',
-    '/bedtime-storyai',
-    '/locationdata',
-    '/diagrams'
+    '/multi-agent-architecture'
   ]
 };

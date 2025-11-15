@@ -1,2 +1,12 @@
 .DS_Store
 old/
+
+# Vercel
+.vercel
+.env*.local
+.env
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log

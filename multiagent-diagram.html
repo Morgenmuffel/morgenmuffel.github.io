@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>MultiAgentFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ai-gradient-opac: rgba(255, 255, 255, 1);
+      --inter-bold-15-font-family: "Inter", Helvetica;
+      --inter-bold-15-font-size: 15px;
+      --inter-bold-15-font-style: normal;
+      --inter-bold-15-font-weight: 700;
+      --inter-bold-15-letter-spacing: 0px;
+      --inter-bold-15-line-height: normal;
+      --inter-regular-font-family: "Inter", Helvetica;
+      --inter-regular-font-size: 13px;
+      --inter-regular-font-style: normal;
+      --inter-regular-font-weight: 400;
+      --inter-regular-letter-spacing: 0px;
+      --inter-regular-line-height: 20px;
+    }
+
+    body {
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .gradient-border {
+      position: relative;
+      border-radius: 16px;
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      z-index: -1;
+      border-radius: 16px;
+      background: linear-gradient(90deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%);
+    }
+
+    .font-inter-bold-15 {
+      font-family: var(--inter-bold-15-font-family);
+      font-size: var(--inter-bold-15-font-size);
+      font-style: var(--inter-bold-15-font-style);
+      font-weight: var(--inter-bold-15-font-weight);
+      letter-spacing: var(--inter-bold-15-letter-spacing);
+      line-height: var(--inter-bold-15-line-height);
+    }
+
+    .font-inter-regular {
+      font-family: var(--inter-regular-font-family);
+      font-size: var(--inter-regular-font-size);
+      font-style: var(--inter-regular-font-style);
+      font-weight: var(--inter-regular-font-weight);
+      letter-spacing: var(--inter-regular-letter-spacing);
+      line-height: var(--inter-regular-line-height);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="max-w-screen-xl mx-auto p-4">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden gradient-border">
+      <div class="flex items-center justify-between border-b border-gray-300 px-4 py-3">
+        <div class="flex items-center space-x-2">
+          <div class="flex space-x-2">
+            <div class="w-2.5 h-2.5 bg-red-500 rounded-full"></div>
+            <div class="w-2.5 h-2.5 bg-yellow-500 rounded-full"></div>
+            <div class="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
+          </div>
+          <p class="text-sm text-gray-500">Multi‑Agent Scheduler for AI Healthcoach</p>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center bg-gradient-to-r from-teal-500/20 to-blue-500/20 border border-gray-300 rounded-md px-3 py-1.5">
+            <i data-lucide="tag" class="w-4 h-4 text-blue-600"></i>
+            <span class="ml-2 text-xs text-blue-600">PydanticAI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-8">
+        <div class="rounded-lg shadow-md p-6 relative" style="overflow: hidden;">
+          <!-- Background Grid Pattern -->
+          <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1088 613" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="z-index: 0;">
+            <g filter="url(#filter0_d_1201_273)">
+              <rect x="1" y="1" width="1086" height="610.875" rx="12" fill="white"/>
+              <rect x="1" y="1" width="1086" height="610.875" rx="12" fill="url(#pattern0_1201_273)"/>
+            </g>
+            <defs>
+              <filter id="filter0_d_1201_273" x="0" y="0" width="1088" height="612.875" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_1201_273"/>
+                <feOffset/>
+                <feComposite in2="hardAlpha" operator="out"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0.231373 0 0 0 0 0.509804 0 0 0 0 0.964706 0 0 0 0.5 0"/>
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1201_273"/>
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1201_273" result="shape"/>
+              </filter>
+              <pattern id="pattern0_1201_273" patternUnits="userSpaceOnUse" patternTransform="matrix(32 0 0 32 1 1)" preserveAspectRatio="none" viewBox="0 0 32 32" width="1" height="1">
+                <g id="pattern0_1201_273_inner">
+                  <rect opacity="0.25" x="0.5" y="0.5" width="31" height="31" stroke="#94A3B8" stroke-opacity="0.25"/>
+                </g>
+              </pattern>
+            </defs>
+          </svg>
+
+          <div class="relative w-full h-[610.88px]">
+
+              <!-- Connection Lines and Dots -->
+              <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1086 611" preserveAspectRatio="xMidYMid meet" style="z-index: 1;">
+                <!-- Connection Lines -->
+                <!-- Chatbot to Orchestrator -->
+                <path d="M 243 185.8 L 243 206" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Orchestrator to Schedule Intelligence Agent -->
+                <path d="M 286.9 185.8 L 286.9 206 L 286.9 299" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Orchestrator to Conflict Checker -->
+                <path d="M 286.9 185.8 L 286.9 206 L 750.2 206" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Orchestrator to Calendar Ops -->
+                <path d="M 286.9 185.8 L 286.9 206 L 16.3 206" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Schedule Intelligence Agent to Dynamic Instructions (bottom) -->
+                <path d="M 494.5 363 L 494.5 457" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Conflict Checker to Static Prompt -->
+                <path d="M 738 363 L 738 457" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Calendar Ops to Google/Outlook API -->
+                <path d="M 239 363 L 239 458" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Dynamic Instructions to Orchestrator (top right) -->
+                <path d="M 716 90 L 620 115" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Natural language parsing to Orchestrator -->
+                <path d="M 716 185 L 620 160" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Connection line from Chatbot -->
+                <path d="M 202 114 L 228 114 L 243 150" stroke="rgba(71, 85, 105, 0.6)" stroke-width="1.81" fill="none"/>
+
+                <!-- Connection Dots -->
+                <!-- Orchestrator center dot -->
+                <circle cx="286.9" cy="206" r="5.43" fill="#2E5BDA"/>
+
+                <!-- Schedule Intelligence Agent connection dot -->
+                <circle cx="310.9" cy="331" r="5.43" fill="#2E5BDA"/>
+
+                <!-- Conflict Checker connection dot -->
+                <circle cx="750.2" cy="206" r="5.43" fill="#2E5BDA"/>
+
+                <!-- Calendar Ops connection dot -->
+                <circle cx="16.3" cy="206" r="5.43" fill="#2E5BDA"/>
+
+                <!-- Dynamic Instructions top dot -->
+                <circle cx="610" cy="90" r="5.43" fill="#00D4B4"/>
+
+                <!-- Natural language parsing dot -->
+                <circle cx="705.4" cy="157" r="5.43" fill="#FF6B6B"/>
+
+                <!-- Calendar Ops to API dot -->
+                <circle cx="239" cy="361" r="5.43" fill="#FF6B6B"/>
+
+                <!-- Schedule Intelligence to Dynamic Instructions dot -->
+                <circle cx="494.5" cy="316.43" r="5.43" fill="#00D4B4"/>
+
+                <!-- Conflict Checker to Static Prompt dot -->
+                <circle cx="738" cy="282.43" r="5.43" fill="#00D4B4"/>
+              </svg>
+
+
+              <!-- Schedule Intelligence Agent -->
+              <div class="w-[261px] top-[299px] left-[364px] bg-[linear-gradient(90deg,rgba(46,91,218,0.08)_0%,rgba(46,91,218,0.04)_100%),linear-gradient(0deg,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0.8)_100%)] absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="flex flex-col gap-2.5 px-[15px] py-3.5 items-center justify-center">
+                  <h3 class="w-fit mt-[-1.00px] font-inter-bold-15 text-slate-600 text-center whitespace-nowrap">
+                    Schedule Intelligence Agent
+                  </h3>
+                  <ul class="w-fit font-inter-regular text-slate-600 list-none">
+                    <li>Schedule type classification</li>
+                    <li>Optimal micro-break times</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Conflict Checker -->
+              <div class="h-16 top-[299px] left-[678px] bg-[linear-gradient(90deg,rgba(46,91,218,0.08)_0%,rgba(46,91,218,0.04)_100%),linear-gradient(0deg,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0.8)_100%)] absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="inline-flex gap-2.5 px-[15px] py-[22px] items-center justify-center h-full">
+                  <h3 class="w-fit mt-[-1.00px] font-inter-bold-15 text-slate-600 text-center whitespace-nowrap">
+                    Conflict Checker
+                  </h3>
+                </div>
+              </div>
+
+              <!-- Calendar Ops -->
+              <div class="h-16 top-[299px] left-[179px] bg-[linear-gradient(90deg,rgba(46,91,218,0.08)_0%,rgba(46,91,218,0.04)_100%),linear-gradient(0deg,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0.8)_100%)] absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="inline-flex gap-2.5 px-[15px] py-[22px] items-center justify-center h-full">
+                  <h3 class="w-fit mt-[-1.00px] font-inter-bold-15 text-slate-600 text-center whitespace-nowrap">
+                    Calendar Ops
+                  </h3>
+                </div>
+              </div>
+
+              <!-- Chatbot UI -->
+              <div class="h-16 top-[82px] left-[62px] bg-white absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="inline-flex gap-2.5 pl-[19px] pr-5 py-[22px] items-center justify-center h-full">
+                  <div class="inline-flex items-center gap-2.5 relative flex-[0_0_auto] mt-[-7.00px] mb-[-5.00px]">
+                    <i data-lucide="bot" class="relative w-8 h-8 text-slate-600"></i>
+                    <h2 class="relative w-[84px] h-3.5 font-bold text-slate-600 text-base text-center tracking-[0] leading-[normal] whitespace-nowrap">
+                      Chatbot UI
+                    </h2>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Orchestrator Agent -->
+              <div class="top-[67px] left-[367px] bg-[linear-gradient(90deg,rgba(46,91,218,0.08)_0%,rgba(46,91,218,0.04)_100%),linear-gradient(0deg,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0.8)_100%)] absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="inline-flex flex-col gap-2.5 px-[15px] py-3.5 items-center justify-center">
+                  <h3 class="w-fit mt-[-1.00px] font-inter-bold-15 text-slate-600 text-center whitespace-nowrap">
+                    Orchestrator Agent
+                  </h3>
+                  <ul class="w-fit font-inter-regular text-slate-600 list-none">
+                    <li>User intent classification</li>
+                    <li>Conversational flow adherence</li>
+                    <li>Preference management</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Google/Outlook API -->
+              <div class="top-[458px] left-[149px] bg-[linear-gradient(90deg,rgba(255,107,107,0.1)_0%,rgba(255,107,107,0.05)_100%),linear-gradient(0deg,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0.8)_100%)] absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="inline-flex flex-col gap-2.5 px-[15px] py-3.5 items-center justify-center">
+                  <h3 class="w-fit mt-[-1.00px] font-inter-bold-15 text-slate-600 text-center whitespace-nowrap">
+                    Google/Outlook API
+                  </h3>
+                </div>
+              </div>
+
+              <!-- Static System Prompt -->
+              <div class="top-[457px] left-[663px] bg-[linear-gradient(90deg,rgba(0,212,180,0.1)_0%,rgba(0,212,180,0.05)_100%),linear-gradient(0deg,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0.8)_100%)] absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="inline-flex flex-col gap-[5px] p-3 items-center justify-center">
+                  <p class="w-fit mt-[-1.00px] font-inter-regular text-slate-600 whitespace-nowrap">
+                    Static System Prompt
+                  </p>
+                </div>
+              </div>
+
+              <!-- Dynamic System Instructions (bottom) -->
+              <div class="top-[457px] left-[375px] bg-[linear-gradient(90deg,rgba(0,212,180,0.1)_0%,rgba(0,212,180,0.05)_100%),linear-gradient(0deg,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0.8)_100%)] absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="inline-flex flex-col gap-[5px] p-3 items-center justify-center">
+                  <div class="w-fit mt-[-1.00px] font-inter-regular text-slate-600">
+                    <span class="font-inter-regular">
+                      Dynamic System Instructions<br>
+                    </span>
+                    <span class="font-inter-regular">
+                      User preferences<br>
+                      Time Zone, current time/date
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dynamic System Instructions (top right) -->
+              <div class="top-[25px] left-[716px] bg-[linear-gradient(90deg,rgba(0,212,180,0.1)_0%,rgba(0,212,180,0.05)_100%),linear-gradient(0deg,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0.8)_100%)] absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="inline-flex flex-col gap-[5px] p-3 items-center justify-center">
+                  <div class="w-fit mt-[-1.00px] font-normal text-slate-600 text-[13px] tracking-[0] leading-5">
+                    <span class="font-bold">
+                      Dynamic System Instructions<br>
+                    </span>
+                    <span class="font-inter-regular">
+                      Conversational state<br>
+                      Pending actions<br>
+                    </span>
+                    <span class="font-bold">RAG</span>
+                    <span class="font-inter-regular">
+                      : Motivational techniques
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Natural language parsing -->
+              <div class="w-[233px] top-[140px] left-[716px] bg-[linear-gradient(90deg,rgba(255,107,107,0.1)_0%,rgba(255,107,107,0.05)_100%),linear-gradient(0deg,rgba(255,255,255,0.8)_0%,rgba(255,255,255,0.8)_100%)] absolute rounded-[10px] border-2 border-solid border-slate-200" style="z-index: 10;">
+                <div class="flex flex-col gap-2.5 px-[15px] py-3.5 items-center justify-center">
+                  <h3 class="w-fit mt-[-1.00px] font-inter-bold-15 text-slate-600 text-center whitespace-nowrap">
+                    Natural language parsing
+                  </h3>
+                  <ul class="w-fit font-inter-regular text-slate-600 list-none">
+                    <li>Extract date/time/duration</li>
+                    <li>context from user prompt</li>
+                  </ul>
+                </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between border-t border-gray-300 px-4 py-3">
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center bg-gradient-to-r from-teal-500/20 to-blue-500/20 border border-gray-300 rounded-md px-3 py-1.5">
+            <i data-lucide="circle" class="w-4 h-4 text-teal-500"></i>
+            <span class="ml-2 text-xs text-gray-600">Agent</span>
+          </div>
+          <div class="flex items-center bg-gradient-to-r from-blue-500/20 to-blue-500/10 border border-gray-300 rounded-md px-3 py-1.5">
+            <i data-lucide="circle" class="w-4 h-4 text-blue-500"></i>
+            <span class="ml-2 text-xs text-gray-600">System Prompt/Instructions</span>
+          </div>
+          <div class="flex items-center bg-gradient-to-r from-teal-500/10 to-teal-500/5 border border-gray-300 rounded-md px-3 py-1.5">
+            <i data-lucide="circle" class="w-4 h-4 text-teal-500"></i>
+            <span class="ml-2 text-xs text-gray-600">Context: Retrieval & Memory</span>
+          </div>
+          <div class="flex items-center bg-gradient-to-r from-red-500/10 to-red-500/5 border border-gray-300 rounded-md px-3 py-1.5">
+            <i data-lucide="circle" class="w-4 h-4 text-red-500"></i>
+            <span class="ml-2 text-xs text-gray-600">Tools</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  if (window.lucide && typeof lucide.createIcons === 'function') {
+    lucide.createIcons();
+  }
+</script>
+</body>
+</html>

@@ -3,5 +3,13 @@
   "outputDirectory": ".",
   "framework": null,
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/ai-health-coach", "destination": "/work/conversational-flows-ai-health-coach", "permanent": true },
+    { "source": "/multi-agent-architecture", "destination": "/work/multi-agent-calendar-scheduling", "permanent": true },
+    { "source": "/locationdata", "destination": "/work/interactive-location-data-tool", "permanent": true }
+  ],
+  "headers": [
+    { "source": "/assets/protected/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] }
+  ]
 }

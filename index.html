@@ -1,866 +1,173 @@
-<html lang="en"><head><meta charset="utf-8">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Senior Product Designer — Conversational &amp; Agentic AI</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Yulia Vilensky · Senior Design Engineer, Conversational &amp; Agentic AI</title>
+<meta name="description" content="I design how AI agents behave and the interfaces they act through. Senior design engineer in Berlin: agent behaviour, conversational flows and production front ends.">
+<meta property="og:title" content="Yulia Vilensky · Senior Design Engineer">
+<meta property="og:description" content="I design how AI agents behave and the interfaces they act through.">
+<meta property="og:image" content="/assets/site/glass-wave.webp">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-  @keyframes gradient-shift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-</style>
-
-<!-- Google Analytics 4 -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Valley+Sans:wght@400..900&display=swap">
+<link rel="stylesheet" href="/assets/site/site.css">
+<link rel="preload" as="image" href="/assets/site/glass-wave.webp">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSBYY0WW99"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-FSBYY0WW99');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-FSBYY0WW99");</script>
+</head>
+<body>
 
-<link id="all-fonts-link-font-geist" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist">.font-geist { font-family: 'Geist', sans-serif !important; }</style><link id="all-fonts-link-font-roboto" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-roboto">.font-roboto { font-family: 'Roboto', sans-serif !important; }</style><link id="all-fonts-link-font-montserrat" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-montserrat">.font-montserrat { font-family: 'Montserrat', sans-serif !important; }</style><link id="all-fonts-link-font-poppins" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-poppins">.font-poppins { font-family: 'Poppins', sans-serif !important; }</style><link id="all-fonts-link-font-playfair" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap"><style id="all-fonts-style-font-playfair">.font-playfair { font-family: 'Playfair Display', serif !important; }</style><link id="all-fonts-link-font-instrument-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-instrument-serif">.font-instrument-serif { font-family: 'Instrument Serif', serif !important; }</style><link id="all-fonts-link-font-merriweather" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap"><style id="all-fonts-style-font-merriweather">.font-merriweather { font-family: 'Merriweather', serif !important; }</style><link id="all-fonts-link-font-bricolage" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-bricolage">.font-bricolage { font-family: 'Bricolage Grotesque', sans-serif !important; }</style><link id="all-fonts-link-font-jakarta" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-jakarta">.font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }</style><link id="all-fonts-link-font-manrope" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-manrope">.font-manrope { font-family: 'Manrope', sans-serif !important; }</style><link id="all-fonts-link-font-space-grotesk" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-space-grotesk">.font-space-grotesk { font-family: 'Space Grotesk', sans-serif !important; }</style><link id="all-fonts-link-font-work-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-work-sans">.font-work-sans { font-family: 'Work Sans', sans-serif !important; }</style><link id="all-fonts-link-font-pt-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-pt-serif">.font-pt-serif { font-family: 'PT Serif', serif !important; }</style><link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style><link id="all-fonts-link-font-space-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-space-mono">.font-space-mono { font-family: 'Space Mono', monospace !important; }</style><link id="all-fonts-link-font-quicksand" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-quicksand">.font-quicksand { font-family: 'Quicksand', sans-serif !important; }</style><link id="all-fonts-link-font-nunito" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-nunito">.font-nunito { font-family: 'Nunito', sans-serif !important; }</style></head>
-  <body class="antialiased min-h-screen" style="font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; --color-primary-base:#2E5BDA; --color-primary-subtle:#EBF0FF; --color-primary-emphasis:#1B3BA8; --color-neutral-900:#1A2332; --color-neutral-700:#475569; --color-neutral-400:#94A3B8; --color-neutral-200:#E2E8F0; --color-neutral-50:#F8FAFC; --color-neutral-0:#FFFFFF; --color-accent-teal:#00D4B4; --color-accent-coral:#FF6B6B; background: var(--color-neutral-0); color: var(--color-neutral-900);">
-
-    <!-- Animated Background (Spline) -->
-    <div aria-hidden="true" class="fixed inset-0 h-screen w-full pointer-events-none">
-      <iframe src="https://my.spline.design/glasswave-UJxPNnCbIoAYyQy8jnzwzS9q" frameborder="0" width="100%" height="100%" class="w-full h-full pointer-events-none"></iframe>
+<header class="hero" id="top">
+  <div class="wave" aria-hidden="true"></div>
+  <nav class="nav appear" data-mount style="--ay:-12px" aria-label="Main">
+    <a class="micro link" href="/">Yulia Vilensky</a>
+    <div class="nav-links micro">
+      <a class="link hide-sm" href="#about">About</a>
+      <a class="link" href="#work">Work</a>
+      <a class="link nav-cta" href="#contact">Let’s create</a>
     </div>
-    <!-- Fixed white rectangle in bottom-right foreground -->
-    <div aria-hidden="true" class="fixed bottom-4 right-4 w-40 h-24 pointer-events-none" style="background: white; "></div>
-
-    <!-- Subtle Background Overlay (light, brand accents) -->
-    <div aria-hidden="true" class="fixed inset-0 -z-10 pointer-events-none">
-      <div class="w-full h-full opacity-80" style="
-        background:
-          radial-gradient(900px 400px at 20% -5%, rgba(46,91,218,0.10), transparent 60%),
-          radial-gradient(800px 380px at 80% 0%, rgba(0,212,180,0.10), transparent 60%),
-          radial-gradient(700px 360px at 50% 100%, rgba(255,107,107,0.06), transparent 60%),
-          linear-gradient(180deg, rgba(248,250,252,0.85), rgba(255,255,255,0.92));
-      "></div>
-      <div class="absolute inset-x-0 top-0 h-px" style="background: linear-gradient(90deg, rgba(46,91,218,0.15), rgba(0,212,180,0.10), rgba(255,107,107,0.10));"></div>
+  </nav>
+  <h1 class="hero-top reveal-words" data-mount>SENIOR DESIGN</h1>
+  <div class="hero-meta">
+    <div class="intro appear" data-mount>
+      <p class="micro">Berlin · Open to remote across Europe</p>
+      <p>15+ years across engineering, UX and AI design. I began in embedded and software engineering, moved into UX for complex B2B SaaS and data-heavy products, and now work in the codebase again.</p>
     </div>
+    <p class="hero-bottom reveal-words" data-mount aria-hidden="true">ENGINEER</p>
+  </div>
+</header>
 
-    <!-- Floating Glass Header -->
-    <header class="fixed z-50 md:px-6 pr-4 pl-4 top-4 right-0 left-0">
-      <div class="max-w-6xl mx-auto rounded-2xl border shadow-lg backdrop-blur-md" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
-        <div class="flex md:px-6 pt-3 pr-4 pb-3 pl-4 items-center justify-between">
-          <!-- Brand -->
-          <a href="#top" class="flex items-center gap-3 group" aria-label="Home">
-            <img src="assets/LogoWave.svg" alt="Logo" class="w-9 h-9">
-            <span class="text-sm md:text-base font-medium tracking-tight group-hover:opacity-90 transition-opacity">Yulia Vilensky <span class="hidden md:inline">| Senior Product Designer</span></span>
-          </a>
+<main>
+  <section class="about" id="about" aria-label="About">
+    <div class="manifesto">
+      <h2 class="statement left"><span>I DESIGN HOW</span><span>AI AGENTS</span><span>BEHAVE AND</span></h2>
+      <h2 class="statement right"><span>THE INTERFACES</span><span>THEY ACT</span><span>THROUGH</span></h2>
+    </div>
+    <div class="rise-stage" data-rise="stage" data-cols="13" data-cols-phone="7" aria-hidden="true"><div class="squares"></div></div>
+  </section>
 
-          <!-- Nav -->
-          <nav class="hidden md:flex items-center gap-7 text-sm">
+  <section class="focus" data-focus aria-label="Focus">
+    <div class="band"><div class="squares" aria-hidden="true"></div></div>
+    <div class="band"><div class="squares" aria-hidden="true"></div>
+      <div class="frow"><span class="frow-n">[01]</span><h3 class="frow-t">Agent behaviour</h3><p class="frow-c">I write and fine-tune the prompts, tool contracts and conversational flows that govern how an agent asks, explains and recovers.</p></div>
+    </div>
+    <div class="band"><div class="squares" aria-hidden="true"></div>
+      <div class="frow"><span class="frow-n">[02]</span><h3 class="frow-t">Interfaces in production</h3><p class="frow-c">I build the interface those conversations happen in, directly in the production codebase. My handoff is working code plus the API changes a feature needs.</p></div>
+    </div>
+    <div class="band"><div class="squares" aria-hidden="true"></div>
+      <div class="frow"><span class="frow-n">[03]</span><h3 class="frow-t">End-to-end product flows</h3><p class="frow-c">From problem framing to shipped journeys, onboarding, activation and purchase, without a handoff in the middle.</p></div>
+    </div>
+    <div class="band"><div class="squares" aria-hidden="true"></div>
+      <div class="frow"><span class="frow-n">[04]</span><h3 class="frow-t">Design systems in code</h3><p class="frow-c">Tokens, theming, component architecture, WCAG and motion, enforced in the repo so new work builds on the system instead of drifting from it.</p></div>
+    </div>
+    <div class="band"><div class="squares" aria-hidden="true"></div>
+      <div class="frow last"><span class="frow-n">[05]</span><h3 class="frow-t">AI-native practice</h3><p class="frow-c">Agentic coding tools every day, my own skills for repeating patterns, and code-generation recipes tied to the design system.</p></div>
+    </div>
+    <div class="band"><div class="squares" aria-hidden="true"></div></div>
+  </section>
 
-          </nav>
+  <section class="work" id="work" aria-labelledby="work-title">
+    <h2 class="display reveal-words" id="work-title">WORK</h2>
+    <div class="work-list">
+<!-- work:start -->
+      <a class="wrow" href="/work/design-test-enrich">
+        <div class="wrow-a"><p class="wrow-n">01</p><span class="btn-line micro">View project <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></span></div>
+        <div class="wrow-cover"><div class="lock-panel micro"><svg width="22" height="26" viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg><span>Password protected</span></div><div class="squares trail" data-grid="hover" data-cols="8" aria-hidden="true"></div></div>
+        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Design, Test, Enrich</h3><p class="micro">Interaction design for a complex, multi-state flow · Self-initiated</p></div><p>Building an enrichment workflow meant configuring it blind across three screens and learning whether it worked only after a full catalog run. I proposed one loop instead, then streamlined it around a single rule: every project starts from a file, and every new file is a job.</p></div>
+      </a>
+      <a class="wrow" href="/work/self-serve-activation">
+        <div class="wrow-a"><p class="wrow-n">02</p><span class="btn-line micro">View project <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></span></div>
+        <div class="wrow-cover"><div class="lock-panel micro"><svg width="22" height="26" viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg><span>Password protected</span></div><div class="squares trail" data-grid="hover" data-cols="8" aria-hidden="true"></div></div>
+        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Self-serve activation</h3><p class="micro">Discovery from evidence · Journey design · AI behaviour as interaction</p></div><p>As Dyver opened up beyond ops-led enterprise delivery, new customers had to reach a first enriched catalog without a person guiding them. They stopped early, and not for the reason everyone assumed.</p></div>
+      </a>
+      <a class="wrow" href="/work/customer-journeys">
+        <div class="wrow-a"><p class="wrow-n">03</p><span class="btn-line micro">View project <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></span></div>
+        <div class="wrow-cover"><div class="lock-panel micro"><svg width="22" height="26" viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg><span>Password protected</span></div><div class="squares trail" data-grid="hover" data-cols="8" aria-hidden="true"></div></div>
+        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Customer journeys</h3><p class="micro">Audience and funnel strategy · Design judgment beyond product UI</p></div><p>One homepage spoke to customers who need enrichment in two different ways, and the one who wants to start alone, today, had no clear way in.</p></div>
+      </a>
+      <a class="wrow" href="/work/design-system-in-code">
+        <div class="wrow-a"><p class="wrow-n">04</p><span class="btn-line micro">View project <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></span></div>
+        <div class="wrow-cover"><div class="lock-panel micro"><svg width="22" height="26" viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg><span>Password protected</span></div><div class="squares trail" data-grid="hover" data-cols="8" aria-hidden="true"></div></div>
+        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Design system in code</h3><p class="micro">Design-to-production · Design systems · AI-native practice</p></div><p>How one designer-engineer keeps a design system coherent when much of the code is generated: by enforcing it in the repository instead of checking against it afterwards.</p></div>
+      </a>
+      <a class="wrow" href="/work/conversational-flows-ai-health-coach">
+        <div class="wrow-a"><p class="wrow-n">05</p><span class="btn-line micro">View project</span></div>
+        <div class="wrow-cover"><img src="/assets/ai-coach-flow2.png" alt="" loading="lazy"><div class="squares trail" data-grid="hover" data-cols="8" aria-hidden="true"></div></div>
+        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Designing Adaptive Conversational Flows for an AI Health Coach</h3><p class="micro">Conversational design · Behavioural science</p></div><p>Designing context-aware conversation patterns that adapt persuasion techniques to schedule stress</p></div>
+      </a>
+      <a class="wrow" href="/work/multi-agent-calendar-scheduling">
+        <div class="wrow-a"><p class="wrow-n">06</p><span class="btn-line micro">View project</span></div>
+        <div class="wrow-cover"><img src="/assets/MultiAgentFlow.png" alt="" loading="lazy"><div class="squares trail" data-grid="hover" data-cols="8" aria-hidden="true"></div></div>
+        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Multi-Agent Architecture for Intelligent Calendar Scheduling</h3><p class="micro">Agentic AI architecture · Context engineering</p></div><p>Designing a 4-agent system from scratch: translating conversational flows into clean agent boundaries, typed delegation patterns, and state management for complex conversational AI</p></div>
+      </a>
+      <a class="wrow" href="/work/interactive-location-data-tool">
+        <div class="wrow-a"><p class="wrow-n">07</p><span class="btn-line micro">View project</span></div>
+        <div class="wrow-cover"><img src="/assets/EnIn1pQJzUXfyRGR.png" alt="" loading="lazy"><div class="squares trail" data-grid="hover" data-cols="8" aria-hidden="true"></div></div>
+        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Interactive Data Tool for Property Developers</h3><p class="micro">Product discovery · Data visualisation</p></div><p>Led product discovery for an interactive data visualization tool that helps property developers analyze location data, predict prices, and make informed investment decisions.</p></div>
+      </a>
+<!-- work:end -->
+    </div>
+  </section>
 
-          <!-- CTA -->
-          <div class="flex items-center gap-3">
-            <a href="#portfolio" class="hidden sm:inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-all hover:shadow-sm" style="background: var(--color-primary-base); color: white;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="layout-dashboard" class="lucide lucide-layout-dashboard w-4 h-4"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
-              View Work
-            </a>
-            <a href="#contact" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-all hover:shadow-sm border" style="border-color: var(--color-neutral-200); color: var(--color-primary-emphasis); background: white;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="mail" class="lucide lucide-mail w-4 h-4"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
-              Contact
-            </a>
-          </div>
+  <section class="toolkit" id="toolkit" aria-labelledby="toolkit-title">
+    <h2 class="section-title" id="toolkit-title">TOOLKIT</h2>
+    <div class="tools">
+      <div class="tool"><h3>Design engineering</h3><p>React, TypeScript, Next.js, Tailwind and shadcn, design tokens, component architecture, WCAG, motion and micro-interactions</p></div>
+      <div class="tool"><h3>AI and conversational design</h3><p>Agentic and conversational flows, prompt design, agent harness, tool contracts, structured outputs, human-in-the-loop, behavioral science</p></div>
+      <div class="tool"><h3>AI-native workflow</h3><p>Claude Code, Codex, Cursor, custom skills, code-generation recipes, Figma MCP, Git worktrees</p></div>
+      <div class="tool"><h3>UX and product design</h3><p>Product discovery, user journeys, design systems, Figma variables and advanced prototyping, user research, data-driven iteration</p></div>
+      <div class="tool"><h3>Engineering and data</h3><p>Python, FastAPI, PydanticAI, SQL, LangChain, OpenAI API, Docker</p></div>
+    </div>
+  </section>
+
+  <section class="quote" aria-label="Quote">
+    <h2>“DON’T PANIC. I’M YOUR HUMAN IN THE LOOP.”</h2>
+    <div class="squares edges" data-grid="edges" data-cols="16" data-cols-phone="8" aria-hidden="true"></div>
+    <div class="squares trail" data-grid="hover" data-cols="16" data-cols-phone="8" aria-hidden="true"></div>
+    <div class="squares rise-strip" data-rise="strip" data-cols="13" data-cols-phone="7" aria-hidden="true"></div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="contact-grid appear">
+      <div>
+        <h2 id="contact-title">TELL ME WHAT YOU’RE BUILDING.</h2>
+        <p>Berlin-based, open to remote work across Europe.</p>
+      </div>
+      <div>
+        <h3>Links</h3>
+        <div class="contact-links micro">
+          <a class="link" href="#about">About</a>
+          <a class="link" href="#work">Work</a>
+          <a class="link" href="#contact">Let’s create</a>
+          <a class="link" href="https://www.linkedin.com/in/yulia-vilensky/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="link" href="https://github.com/Morgenmuffel" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
-    </header>
-
-    <main class="md:pt-32 pt-32" id="top">
-      <!-- Hero -->
-      <section class="relative" id="about">
-        <div class="max-w-7xl mx-auto px-5 sm:px-6">
-          <div class="text-center">
-            <p class="inline-flex items-center gap-2 text-[11px] uppercase tracking-widest border rounded-full pt-1 pr-3 pb-1 pl-3" style="border-color: var(--color-neutral-200); color: var(--color-primary-emphasis); background: linear-gradient(90deg, rgba(0,212,180,0.14), rgba(46,91,218,0.10), rgba(255,107,107,0.14));">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="bot" class="lucide lucide-bot w-[14px] h-[14px]" data-icon-replaced="true" style="color: rgb(27, 59, 168); width: 14px; height: 14px;"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2" class=""></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
-              Conversational &amp; Agentic AI
-            </p>
-            <h1 class="mt-4 text-3xl sm:text-5xl md:text-6xl tracking-tight font-semibold" style="color: var(--color-neutral-900);">
-              I design the future of AI workflows &amp; agent experiences
-            </h1>
-            <p class="mt-4 text-base sm:text-lg md:text-xl mx-auto max-w-3xl" style="color: var(--color-neutral-700);">
-              Hybrid designer–engineer with 15+ years across engineering, UX, and AI design. I began in embedded/software engineering,
-              transitioned into UX design for complex SaaS and data products, and now focus on agentic AI, conversational workflows,
-              and human–AI collaboration. Each step was intentional: to combine technical fluency with human-centered design, and to
-              become a trailblazer in AI UX innovation.
-            </p>
-
-            <!-- CTAs -->
-            <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a href="#portfolio" class="inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-all hover:shadow-md" style="background: var(--color-primary-base); color: white;">
-                Explore Case Studies
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right w-4 h-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-              </a>
-              <a href="#contact" class="inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium border transition-all hover:shadow-sm" style="border-color: var(--color-accent-teal); color: var(--color-primary-emphasis); background: white;">
-                Get in Touch
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-4 h-4"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Skills & Experience Grid -->
-          <div class="md:mt-16 grid grid-cols-1 md:grid-cols-3 mt-12 gap-x-6 gap-y-6">
-            <!-- AI & UX Design (Teal) -->
-            <div class="rounded-xl border backdrop-blur-md transition-all hover:shadow-lg" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
-              <div class="pt-6 pr-6 pb-6 pl-6">
-                <div class="flex items-start justify-between gap-3 mb-4">
-                  <div class="w-12 h-12 rounded-xl overflow-hidden shadow-sm" style="background: rgba(255,255,255,0.95);">
-                    <svg viewBox="0 0 42 42" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8.26001 41.97C13.3934 41.2371 15.402 35.3127 17.4293 29.3333C18.391 26.4965 19.3341 23.0394 20.4852 19.5264C13.4824 32.0014 0.999294 32.9859 0 13.0046V33C0 36.3389 1.81824 39.2532 4.51862 40.8066C5.63666 41.45 6.90594 41.8599 8.26001 41.97Z" fill="url(#paint0_radial_teal)"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8.26001 41.97C13.3716 42.312 17.0999 39.0304 21.3029 35.3309C26.3994 30.8448 32.1946 25.7439 42 25.7439V9C42 5.45435 39.9496 2.38745 36.9698 0.920654C27.6662 1.33623 23.4061 10.6117 20.4852 19.5264C19.9309 21.2182 19.4248 22.897 18.9416 24.4999V24.4999C18.4215 26.2252 17.9279 27.8627 17.4293 29.3333C15.402 35.3127 13.3934 41.2371 8.26001 41.97Z" fill="url(#paint1_linear_teal)"/>
-                      <defs>
-                        <radialGradient id="paint0_radial_teal" cx="0" cy="0" r="1" gradientTransform="matrix(7.5 17.5 -18.5361 5.33034 0.499996 24)" gradientUnits="userSpaceOnUse">
-                          <stop offset="0.4" stop-color="#00E5C8"/>
-                          <stop offset="1" stop-color="#008F7A"/>
-                        </radialGradient>
-                        <linearGradient id="paint1_linear_teal" x1="20" y1="20" x2="50" y2="26" gradientUnits="userSpaceOnUse">
-                          <stop stop-color="#006B57"/>
-                          <stop offset="1" stop-color="#00E5C8"/>
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </div>
-                </div>
-                <h3 class="text-xl font-bold tracking-tight mb-2" style="color: var(--color-neutral-900);">AI &amp; UX Design</h3>
-                <p class="text-sm font-bold italic mb-4" style="color: var(--color-neutral-700);">Human-centered design for intelligent systems</p>
-                <ul class="space-y-2 text-sm" style="color: var(--color-neutral-700);">
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-teal);"></span>
-                    <span>Conversational AI flows &amp; agent workflows</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-teal);"></span>
-                    <span>Prompt design &amp; behavioral science integration</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-teal);"></span>
-                    <span>Design systems &amp; journey mapping</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-teal);"></span>
-                    <span>Usability testing &amp; discovery research</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-teal);"></span>
-                    <span>Data-driven iteration &amp; A/B testing</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-teal);"></span>
-                    <span>Multi-step interactions &amp; error states</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-teal);"></span>
-                    <span>Context switching &amp; memory patterns</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-teal);"></span>
-                    <span>B2B SaaS &amp; enterprise product design</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- Technical Fluency (Blue) -->
-            <div class="rounded-xl border backdrop-blur-md transition-all hover:shadow-lg" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
-              <div class="p-6">
-                <div class="flex items-start justify-between gap-3 mb-4">
-                  <div class="w-12 h-12 rounded-xl overflow-hidden shadow-sm" style="background: rgba(255,255,255,0.95);">
-                    <svg viewBox="0 0 42 42" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8.26001 41.97C13.3934 41.2371 15.402 35.3127 17.4293 29.3333C18.391 26.4965 19.3341 23.0394 20.4852 19.5264C13.4824 32.0014 0.999294 32.9859 0 13.0046V33C0 36.3389 1.81824 39.2532 4.51862 40.8066C5.63666 41.45 6.90594 41.8599 8.26001 41.97Z" fill="url(#paint0_radial_blue)"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8.26001 41.97C13.3716 42.312 17.0999 39.0304 21.3029 35.3309C26.3994 30.8448 32.1946 25.7439 42 25.7439V9C42 5.45435 39.9496 2.38745 36.9698 0.920654C27.6662 1.33623 23.4061 10.6117 20.4852 19.5264C19.9309 21.2182 19.4248 22.897 18.9416 24.4999V24.4999C18.4215 26.2252 17.9279 27.8627 17.4293 29.3333C15.402 35.3127 13.3934 41.2371 8.26001 41.97Z" fill="url(#paint1_linear_blue)"/>
-                      <defs>
-                        <radialGradient id="paint0_radial_blue" cx="0" cy="0" r="1" gradientTransform="matrix(7.5 17.5 -18.5361 5.33034 0.499996 24)" gradientUnits="userSpaceOnUse">
-                          <stop offset="0.4" stop-color="#4A7BFF"/>
-                          <stop offset="1" stop-color="#0F2B8C"/>
-                        </radialGradient>
-                        <linearGradient id="paint1_linear_blue" x1="20" y1="20" x2="50" y2="26" gradientUnits="userSpaceOnUse">
-                          <stop stop-color="#061D6E"/>
-                          <stop offset="1" stop-color="#4A7BFF"/>
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </div>
-                </div>
-                <h3 class="text-xl font-bold tracking-tight mb-2" style="color: var(--color-neutral-900);">Technical Fluency</h3>
-                <p class="text-sm font-bold italic mb-4" style="color: var(--color-neutral-700);">Engineering depth meets AI innovation</p>
-                <ul class="space-y-2 text-sm" style="color: var(--color-neutral-700);">
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-primary-base);"></span>
-                    <span>Python, LangChain, PydanticAI</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-primary-base);"></span>
-                    <span>HuggingFace, TensorFlow, OpenAI API</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-primary-base);"></span>
-                    <span>FastAPI, Docker, GitHub Copilot</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-primary-base);"></span>
-                    <span>SQL, Tableau, Scikit-learn</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-primary-base);"></span>
-                    <span>Figma (Make, DevMode, MCP), Cursor, v0.dev</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-primary-base);"></span>
-                    <span>HTML/CSS/JS, responsive web design</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-primary-base);"></span>
-                    <span>Linux kernel &amp; embedded systems</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-primary-base);"></span>
-                    <span>API-driven architecture &amp; system design</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- Collaboration & Leadership (Coral) -->
-            <div class="rounded-xl border backdrop-blur-md transition-all hover:shadow-lg" style="background: rgba(255,255,255,0.7); border-color: var(--color-neutral-200);">
-              <div class="p-6">
-                <div class="flex items-start justify-between gap-3 mb-4">
-                  <div class="w-12 h-12 rounded-xl overflow-hidden shadow-sm" style="background: rgba(255,255,255,0.95);">
-                    <svg viewBox="0 0 42 42" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8.26001 41.97C13.3934 41.2371 15.402 35.3127 17.4293 29.3333C18.391 26.4965 19.3341 23.0394 20.4852 19.5264C13.4824 32.0014 0.999294 32.9859 0 13.0046V33C0 36.3389 1.81824 39.2532 4.51862 40.8066C5.63666 41.45 6.90594 41.8599 8.26001 41.97Z" fill="url(#paint0_radial_coral)"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8.26001 41.97C13.3716 42.312 17.0999 39.0304 21.3029 35.3309C26.3994 30.8448 32.1946 25.7439 42 25.7439V9C42 5.45435 39.9496 2.38745 36.9698 0.920654C27.6662 1.33623 23.4061 10.6117 20.4852 19.5264C19.9309 21.2182 19.4248 22.897 18.9416 24.4999V24.4999C18.4215 26.2252 17.9279 27.8627 17.4293 29.3333C15.402 35.3127 13.3934 41.2371 8.26001 41.97Z" fill="url(#paint1_linear_coral)"/>
-                      <defs>
-                        <radialGradient id="paint0_radial_coral" cx="0" cy="0" r="1" gradientTransform="matrix(7.5 17.5 -18.5361 5.33034 0.499996 24)" gradientUnits="userSpaceOnUse">
-                          <stop offset="0.4" stop-color="#FF8585"/>
-                          <stop offset="1" stop-color="#CC3333"/>
-                        </radialGradient>
-                        <linearGradient id="paint1_linear_coral" x1="20" y1="20" x2="50" y2="26" gradientUnits="userSpaceOnUse">
-                          <stop stop-color="#B32929"/>
-                          <stop offset="1" stop-color="#FF8585"/>
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </div>
-                </div>
-                <h3 class="text-xl font-bold tracking-tight mb-2" style="color: var(--color-neutral-900);">Collaboration &amp; Leadership</h3>
-                <p class="text-sm font-bold italic mb-4" style="color: var(--color-neutral-700);">Cross-functional impact and strategic thinking</p>
-                <ul class="space-y-2 text-sm" style="color: var(--color-neutral-700);">
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-coral);"></span>
-                    <span>Stakeholder management &amp; storytelling</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-coral);"></span>
-                    <span>Cross-functional team collaboration</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-coral);"></span>
-                    <span>Ambiguity tolerance &amp; self-initiative</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-coral);"></span>
-                    <span>Product strategy &amp; design methodology</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-coral);"></span>
-                    <span>Customer interviews &amp; user research</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-coral);"></span>
-                    <span>Design system advocacy &amp; adoption</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-coral);"></span>
-                    <span>Educating teams on design maturity</span>
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="w-1 h-1 rounded-full mt-2 shrink-0" style="background: var(--color-accent-coral);"></span>
-                    <span>End-to-end ownership &amp; accountability</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Portfolio -->
-      <section id="portfolio" class="relative mt-20 md:mt-28">
-        <div class="max-w-7xl mx-auto px-5 sm:px-6">
-          <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div>
-              <h2 class="text-2xl sm:text-3xl tracking-tight font-semibold" style="color: var(--color-neutral-900);">Portfolio</h2>
-              <p class="text-sm mt-1.5" style="color: var(--color-neutral-700);">Case Studies and AI Experiments.</p>
-            </div>
-            <!-- Tabs -->
-            <div class="inline-flex items-center rounded-lg p-1 ring-1" style="background: var(--color-neutral-50); ring-color: var(--color-neutral-200);">
-              <button id="tab-cases" type="button" class="px-3.5 py-2 text-sm rounded-md transition-all" style="color: var(--color-primary-emphasis); background: white; border: 1px solid var(--color-neutral-200);">
-                Case Studies
-              </button>
-              <button id="tab-experiments" type="button" class="px-3.5 py-2 text-sm rounded-md text-[color:var(--color-neutral-700)] hover:text-[color:var(--color-primary-emphasis)] transition-colors" style="">
-                AI Experiments
-              </button>
-              <button id="tab-archive" type="button" class="px-3.5 py-2 text-sm rounded-md text-[color:var(--color-neutral-700)] hover:text-[color:var(--color-primary-emphasis)] transition-colors" style="">
-                Archive
-              </button>
-            </div>
-          </div>
-
-          <!-- Case Studies Grid -->
-          <div id="grid-cases" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Card 1: Conversational Flows for AI Health Coach Scheduler -->
-            <a href="ai-health-coach.html" class="group rounded-xl overflow-hidden border transition-all backdrop-blur-md bg-white/70 hover:bg-white/60 hover:backdrop-blur-lg hover:shadow-lg flex flex-col" style="border-color: var(--color-neutral-200);">
-              <div class="relative">
-                <img src="assets/ai-coach-flow3.png" alt="AI Health Coach Conversational Flows" class="h-52 w-full object-cover">
-                <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] ring-1" style="background: rgba(255,255,255,0.92); color: var(--color-primary-emphasis); ring-color: var(--color-neutral-200);">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                  Conversational AI
-                </div>
-              </div>
-              <div class="p-5 flex flex-col flex-grow">
-                <h3 class="text-base font-semibold tracking-tight group-hover:text-[color:var(--color-primary-emphasis)] transition-colors">
-                  Conversational Flows for AI Health Coach Scheduler
-                </h3>
-                <p class="mt-2 text-sm flex-grow" style="color: var(--color-neutral-700);">
-                  Designed 7 context-aware conversational flows that adapt persuasion techniques to schedule stress for a multi-agent health coaching system.
-                </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">CxD</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal); ring-color: rgba(0,212,180,0.25);">PydanticAI</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Card 2: Multi-Agent Architecture -->
-            <a href="multi-agent-architecture.html" class="group rounded-xl overflow-hidden border transition-all backdrop-blur-md bg-white/70 hover:bg-white/60 hover:backdrop-blur-lg hover:shadow-lg flex flex-col" style="border-color: var(--color-neutral-200);">
-              <div class="relative">
-                <img src="assets/MultiAgentFlow.png" alt="Multi-Agent Architecture" class="h-52 w-full object-cover">
-                <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] ring-1" style="background: rgba(255,255,255,0.92); color: var(--color-primary-emphasis); ring-color: var(--color-neutral-200);">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><rect width="8" height="8" x="3" y="3" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h4"></path><rect width="8" height="8" x="13" y="13" rx="2"></rect></svg>
-                  Agentic AI
-                </div>
-              </div>
-              <div class="p-5 flex flex-col flex-grow">
-                <h3 class="text-base font-semibold tracking-tight group-hover:text-[color:var(--color-primary-emphasis)] transition-colors">
-                  Multi-Agent Architecture for Intelligent Calendar Scheduling
-                </h3>
-                <p class="mt-2 text-sm flex-grow" style="color: var(--color-neutral-700);">
-                  Designing and building a 4-agent system from zero - clean delegation patterns and state management for complex conversational AI.
-                </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">Context Engineering</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal); ring-color: rgba(0,212,180,0.25);">PydanticAI</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(148,163,184,0.18); color: var(--color-neutral-700); ring-color: rgba(148,163,184,0.28);">Multi-Agent</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Card 3: AI Health Coach - Onboarding -->
-            <a href="#" class="group rounded-xl overflow-hidden border transition-all backdrop-blur-md bg-white/70 hover:bg-white/60 hover:backdrop-blur-lg hover:shadow-lg" style="border-color: var(--color-neutral-200); display: none;">
-              <div class="relative">
-                <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" alt="AI Health Coach Onboarding" class="h-52 w-full object-cover">
-                <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] ring-1" style="background: rgba(255,255,255,0.92); color: var(--color-primary-emphasis); ring-color: var(--color-neutral-200);">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                  UX Design
-                </div>
-              </div>
-              <div class="p-5">
-                <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold tracking-tight group-hover:text-[color:var(--color-primary-emphasis)] transition-colors">
-                    AI Health Coach: Onboarding
-                  </h3>
-                  <span class="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-md ring-1 transition-colors group-hover:bg-[color:var(--color-primary-subtle)]" style="ring-color: var(--color-neutral-200);">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-                  </span>
-                </div>
-                <p class="mt-2 text-sm" style="color: var(--color-neutral-700);">
-                  Designed and developed an onboarding flow with user preference management and a dynamic in-app hint system that adapts to user behavior and context.
-                </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">Onboarding</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal); ring-color: rgba(0,212,180,0.25);">Personalization</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Card 4: B2B Post-Sales Portal -->
-            <a href="#" class="group rounded-xl overflow-hidden border transition-all backdrop-blur-md bg-white/70 hover:bg-white/60 hover:backdrop-blur-lg hover:shadow-lg" style="border-color: var(--color-neutral-200); display: none;">
-              <div class="relative">
-                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" alt="B2B Portal" class="h-52 w-full object-cover">
-                <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] ring-1" style="background: rgba(255,255,255,0.92); color: var(--color-primary-emphasis); ring-color: var(--color-neutral-200);">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><path d="M3 9h18"></path></svg>
-                  B2B SaaS
-                </div>
-              </div>
-              <div class="p-5">
-                <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold tracking-tight group-hover:text-[color:var(--color-primary-emphasis)] transition-colors">
-                    AI-Powered B2B Post-Sales Portal
-                  </h3>
-                  <span class="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-md ring-1 transition-colors group-hover:bg-[color:var(--color-primary-subtle)]" style="ring-color: var(--color-neutral-200);">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-                  </span>
-                </div>
-                <p class="mt-2 text-sm" style="color: var(--color-neutral-700);">
-                  Designed comprehensive user journeys and prototypes for an intelligent customer portal that streamlines post-purchase operations and enhances customer autonomy through intuitive workflows.
-                </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">User Journeys</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(148,163,184,0.18); color: var(--color-neutral-700); ring-color: rgba(148,163,184,0.28);">B2B</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Card 5: Location Analysis -->
-            <a href="locationdata.html" class="group rounded-xl overflow-hidden border transition-all backdrop-blur-md bg-white/70 hover:bg-white/60 hover:backdrop-blur-lg hover:shadow-lg flex flex-col" style="border-color: var(--color-neutral-200);">
-              <div class="relative">
-                <img src="assets/UX-hero2.jpg" alt="Location Analysis Data Tool" class="h-52 w-full object-cover">
-                <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] ring-1" style="background: rgba(255,255,255,0.92); color: var(--color-primary-emphasis); ring-color: var(--color-neutral-200);">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><path d="M3 9h18"></path></svg>
-                  B2B Data Tool
-                </div>
-              </div>
-              <div class="p-5 flex flex-col flex-grow">
-                <h3 class="text-base font-semibold tracking-tight group-hover:text-[color:var(--color-primary-emphasis)] transition-colors">
-                  Visual Location Analysis Data Tool
-                </h3>
-                <p class="mt-2 text-sm flex-grow" style="color: var(--color-neutral-700);">
-                  Led product discovery for an interactive data visualization tool that helps property developers analyze location data, predict prices, and make informed investment decisions.
-                </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">DataVis</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal); ring-color: rgba(0,212,180,0.25);">Product Discovery</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(148,163,184,0.18); color: var(--color-neutral-700); ring-color: rgba(148,163,184,0.28);">Real Estate</span>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <!-- Archive Grid -->
-          <div id="grid-archive" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
-            <!-- Card 1: Clustered -->
-            <a href="clustered.html" class="group rounded-xl overflow-hidden border transition-all backdrop-blur-md bg-white/70 hover:bg-white/60 hover:backdrop-blur-lg hover:shadow-lg flex flex-col" style="border-color: var(--color-neutral-200);">
-              <div class="relative">
-                <img src="assets/UX-hero3.png" alt="Clustered mobile networking app" class="h-52 w-full object-cover">
-                <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] ring-1" style="background: rgba(255,255,255,0.92); color: var(--color-primary-emphasis); ring-color: var(--color-neutral-200);">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                  Mobile App
-                </div>
-              </div>
-              <div class="p-5 flex flex-col flex-grow">
-                <h3 class="text-base font-semibold tracking-tight group-hover:text-[color:var(--color-primary-emphasis)] transition-colors">
-                  Clustered - Mobile Networking App
-                </h3>
-                <p class="mt-2 text-sm flex-grow" style="color: var(--color-neutral-700);">
-                  App that helps to develop valuable connections with other professionals.
-                </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">Networking</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal); ring-color: rgba(0,212,180,0.25);">Mobile</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Card 2: movingimage -->
-            <a href="movimage.html" class="group rounded-xl overflow-hidden border transition-all backdrop-blur-md bg-white/70 hover:bg-white/60 hover:backdrop-blur-lg hover:shadow-lg flex flex-col" style="border-color: var(--color-neutral-200);">
-              <div class="relative">
-                <img src="assets/UX-hero4.jpg" alt="Video Assets Management" class="h-52 w-full object-cover">
-                <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] ring-1" style="background: rgba(255,255,255,0.92); color: var(--color-primary-emphasis); ring-color: var(--color-neutral-200);">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><path d="m9 10 6 4-6 4V10z"></path></svg>
-                  Video Analytics
-                </div>
-              </div>
-              <div class="p-5 flex flex-col flex-grow">
-                <h3 class="text-base font-semibold tracking-tight group-hover:text-[color:var(--color-primary-emphasis)] transition-colors">
-                  Video Assets Management and Analytics
-                </h3>
-                <p class="mt-2 text-sm flex-grow" style="color: var(--color-neutral-700);">
-                  Video Manager, Video Analytics tool and Player.
-                </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">Video</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal); ring-color: rgba(0,212,180,0.25);">Analytics</span>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <!-- Experiments Grid -->
-          <div id="grid-experiments" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
-            <!-- Experiment 1: AI Bedtime Story Generator -->
-            <a href="bedtime-storyai.html" class="group rounded-xl overflow-hidden border transition-all backdrop-blur-md bg-white/70 hover:bg-white/60 hover:backdrop-blur-lg hover:shadow-lg" style="border-color: var(--color-neutral-200);">
-              <div class="relative">
-                <img src="assets/Bedtime-StoryAI.png" alt="AI Bedtime Story Generator" class="h-52 w-full object-cover">
-                <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] ring-1" style="background: rgba(255,255,255,0.92); color: var(--color-primary-emphasis); ring-color: var(--color-neutral-200);">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
-                  Voice AI
-                </div>
-              </div>
-              <div class="p-5">
-                <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold tracking-tight group-hover:text-[color:var(--color-primary-emphasis)] transition-colors">
-                    AI Bedtime Story Generator
-                  </h3>
-                  <span class="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-md ring-1 transition-colors group-hover:bg-[color:var(--color-primary-subtle)]" style="ring-color: var(--color-neutral-200);">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-                  </span>
-                </div>
-                <p class="mt-2 text-sm" style="color: var(--color-neutral-700);">
-                  Generates a bedtime story for a 3-year-old using Whisper speech recognition and ElevenLabs' text-to-speech API - in your language.
-                </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">OpenAI API</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal); ring-color: rgba(0,212,180,0.25);">GCP</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">Twilio</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal); ring-color: rgba(0,212,180,0.25);">ElevenLabs</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Experiment 2: Fast-Reckless Bank -->
-            <a href="bank.html" class="group rounded-xl overflow-hidden border transition-all backdrop-blur-md bg-white/70 hover:bg-white/60 hover:backdrop-blur-lg hover:shadow-lg" style="border-color: var(--color-neutral-200);">
-              <div class="relative">
-                <img src="assets/bank1.png" alt="Fast-Reckless Bank" class="h-52 w-full object-cover">
-                <div class="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] ring-1" style="background: rgba(255,255,255,0.92); color: var(--color-primary-emphasis); ring-color: var(--color-neutral-200);">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><path d="M2 10h20"></path></svg>
-                  Design Leadership
-                </div>
-              </div>
-              <div class="p-5">
-                <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold tracking-tight group-hover:text-[color:var(--color-primary-emphasis)] transition-colors">
-                    Fast-Reckless Bank
-                  </h3>
-                  <span class="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-md ring-1 transition-colors group-hover:bg-[color:var(--color-primary-subtle)]" style="ring-color: var(--color-neutral-200);">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-                  </span>
-                </div>
-                <p class="mt-2 text-sm" style="color: var(--color-neutral-700);">
-                  Full-stack banking application demonstrating strategic AI integration in design leadership with complete system architecture.
-                </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(46,91,218,0.12); color: var(--color-primary-emphasis); ring-color: rgba(46,91,218,0.20);">AI-Powered</span>
-                  <span class="text-xs px-2 py-1 rounded-md ring-1" style="background: rgba(0,212,180,0.14); color: var(--color-accent-teal); ring-color: rgba(0,212,180,0.25);">Full-Stack</span>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact -->
-      <section id="contact" class="relative mt-20 md:mt-28">
-        <div class="sm:px-6 max-w-7xl mr-auto ml-auto pr-5 pl-5">
-          <div class="mx-auto max-w-3xl rounded-2xl border shadow-xl overflow-hidden pt-4" style="border-color: var(--color-neutral-200); background: white;">
-            <div class="sm:px-8 pt-4 pr-6 pl-6">
-              <h3 class="text-base font-semibold tracking-tight" style="color: var(--color-neutral-900);">Don't panic 🌌  I'm your Human in the Loop 👋</h3>
-            </div>
-
-            <!-- Form -->
-            <form class="sm:px-8 pr-6 pl-6 space-y-4" action="https://api.web3forms.com/submit" method="POST" id="contact-form">
-              <div id="form-alert" class="hidden rounded-md px-4 py-3 text-sm mt-6 animate-gradient" role="status" style="background: linear-gradient(90deg, rgba(0,212,180,0.14), rgba(46,91,218,0.10), rgba(255,107,107,0.14)); background-size: 200% 100%; animation: gradient-shift 3s ease infinite;"></div>
-              <input type="hidden" name="access_key" value="a44e77c0-8602-426d-84ab-d457dfe1cbf2">
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="space-y-1.5">
-                  <label for="name" class="text-sm font-medium" style="color: var(--color-neutral-900);">Name</label>
-                  <input id="name" name="name" type="text" required="" class="w-full rounded-md px-3 py-2 text-sm outline-none transition-shadow" style="border: 1px solid var(--color-neutral-200); background: var(--color-neutral-50); color: var(--color-neutral-900); box-shadow: 0 0 0 0 rgba(46,91,218,0);" onfocus="this.style.boxShadow='0 0 0 3px rgba(46,91,218,0.15)';" onblur="this.style.boxShadow='0 0 0 0 rgba(46,91,218,0)';">
-                </div>
-                <div class="space-y-1.5">
-                  <label for="email" class="text-sm font-medium" style="color: var(--color-neutral-900);">Email</label>
-                  <input id="email" name="email" type="email" required="" class="w-full rounded-md px-3 py-2 text-sm outline-none transition-shadow" style="border: 1px solid var(--color-neutral-200); background: var(--color-neutral-50); color: var(--color-neutral-900);" onfocus="this.style.boxShadow='0 0 0 3px rgba(46,91,218,0.15)';" onblur="this.style.boxShadow='none';">
-                </div>
-              </div>
-
-              <div class="space-y-1.5">
-                <label for="message" class="text-sm font-medium" style="color: var(--color-neutral-900);">Message</label>
-                <textarea name="message" rows="5" required="" class="outline-none transition-shadow resize-y text-sm w-full rounded-md pt-2 pr-3 pb-2 pl-3" style="border: 1px solid var(--color-neutral-200); background: var(--color-neutral-50); color: var(--color-neutral-900); box-shadow: none;" onfocus="this.style.boxShadow='0 0 0 3px rgba(46,91,218,0.15)';" onblur="this.style.boxShadow='none';" id="message" spellcheck="false" aria-label="To enrich screen reader interactions, please activate Accessibility in Grammarly extension settings"></textarea>
-              </div>
-
-              <div class="flex gap-3 items-center justify-end">
-                <button type="submit" class="inline-flex gap-2 transition-all hover:shadow-md text-sm font-medium rounded-md pt-2.5 pr-4 pb-2.5 pl-4 gap-x-2 gap-y-2 items-center" style="background: var(--color-primary-base); color: white;" id="submit-btn">
-                  <svg id="submit-spinner" class="animate-spin hidden w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="send" class="lucide lucide-send w-4 h-4"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
-                  Shoot
-                </button>
-
-              </div>
-
-
-            </form>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="mt-24 relative">
-      <div class="max-w-7xl mx-auto px-5 sm:px-6">
-        <div class="rounded-2xl border ring-1 overflow-hidden" style="border-color: var(--color-neutral-200); ring-color: var(--color-neutral-200); background: rgba(255,255,255,0.75);">
-          <div class="sm:px-8 pt-4 pr-6 pb-4 pl-6">
-              <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                <div class="">
-                  <h3 class="text-xl font-semibold tracking-tight">Let's build the next wave of AI UX</h3>
-                  <p class="mt-1.5 text-sm hidden lg:block" style="color: var(--color-neutral-700);">Available for roles in Conversational &amp; Agentic AI, Design Systems, and complex SaaS.</p>
-                </div>
-                <div class="flex flex-wrap items-center gap-3">
-                  <a href="https://www.linkedin.com/in/yulia-vilensky/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 transition hover:shadow-sm text-sm ring-1 rounded-md pt-2 pr-3 pb-2 pl-3" style="background: white; ring-color: var(--color-neutral-200); color: var(--color-primary-emphasis);" aria-label="LinkedIn profile">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="linkedin" class="lucide lucide-linkedin w-4.5 h-4.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                    LinkedIn
-                  </a>
-                  <a href="https://github.com/Morgenmuffel" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium border transition-all hover:shadow-sm" style="border-color: var(--color-neutral-200); background: white; color: var(--color-primary-emphasis);">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="github" class="lucide lucide-github w-[24px] h-[24px]" data-icon-replaced="true" style="width: 24px; height: 24px; color: rgb(27, 59, 168);"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-                    GitHub
-                  </a>
-                </div>
-              </div>
-
-              <div class="mt-3 pt-3 border-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2" style="border-color: var(--color-neutral-200);">
-                <p class="text-xs" style="color: var(--color-neutral-700);">© <span id="year">2025</span> Senior Product Designer — Conversational &amp; Agentic AI.</p>
-                <div class="flex items-center gap-3">
-                  <a href="#top" class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-all hover:shadow-sm" style="border: 1px solid var(--color-neutral-200); background: white; color: var(--color-primary-emphasis);">
-                    Back to top
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up" class="lucide lucide-arrow-up w-3.5 h-3.5"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-
-        </div>
+      <div>
+        <h3>Contact</h3>
+        <form class="form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="a44e77c0-8602-426d-84ab-d457dfe1cbf2">
+          <input type="hidden" name="subject" value="New message from yuliavilensky.com">
+          <input type="checkbox" name="botcheck" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <label class="field"><span class="micro">Name</span><input name="name" type="text" placeholder="Your name" autocomplete="name" required></label>
+          <label class="field"><span class="micro">Email</span><input name="email" type="email" placeholder="you@company.com" autocomplete="email" required></label>
+          <label class="field"><span class="micro">Message</span><textarea name="message" placeholder="What are you building?" required></textarea></label>
+          <button class="submit" type="submit">SEND</button>
+        </form>
       </div>
-    </footer>
+      <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span><span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+    </div>
+    <p class="wordmark" aria-hidden="true">/VILENSKY</p>
+  </section>
+</main>
 
-    <!-- Scripts -->
-    <script>
-      // Initialize icons
-      if (window.lucide && typeof lucide.createIcons === 'function') {
-        lucide.createIcons();
-      }
+<svg class="crosshair tl" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0v16M0 8h16" fill="none" stroke="#050505"/></svg>
+<svg class="crosshair tr" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0v16M0 8h16" fill="none" stroke="#050505"/></svg>
+<svg class="crosshair bl" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0v16M0 8h16" fill="none" stroke="#050505"/></svg>
+<svg class="crosshair br" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0v16M0 8h16" fill="none" stroke="#050505"/></svg>
 
-      // Current year
-      document.getElementById('year').textContent = new Date().getFullYear();
-
-      // Analytics helper function
-      function trackEvent(eventName, eventParams) {
-        if (typeof gtag !== 'undefined') {
-          gtag('event', eventName, eventParams);
-        }
-      }
-
-      // Track project/use case clicks
-      function setupProjectTracking() {
-        // Track all project card clicks
-        const projectLinks = document.querySelectorAll('#grid-cases a, #grid-experiments a, #grid-archive a');
-
-        projectLinks.forEach(link => {
-          link.addEventListener('click', function(e) {
-            const title = this.querySelector('h3')?.textContent.trim() || 'Unknown Project';
-            const category = this.querySelector('.absolute div')?.textContent.trim() || 'Uncategorized';
-            let section = 'unknown';
-
-            if (this.closest('#grid-cases')) {
-              section = 'Case Studies';
-            } else if (this.closest('#grid-experiments')) {
-              section = 'AI Experiments';
-            } else if (this.closest('#grid-archive')) {
-              section = 'Archive';
-            }
-
-            trackEvent('project_click', {
-              project_title: title,
-              project_category: category,
-              project_section: section,
-              project_url: this.href
-            });
-          });
-        });
-      }
-
-      // Track CTA button clicks
-      function setupCTATracking() {
-        // Track "View Work" and "Explore Case Studies" buttons
-        document.querySelectorAll('a[href="#portfolio"]').forEach(btn => {
-          btn.addEventListener('click', function() {
-            trackEvent('cta_click', {
-              button_text: this.textContent.trim(),
-              button_location: 'hero_section'
-            });
-          });
-        });
-
-        // Track "Contact" and "Get in Touch" buttons
-        document.querySelectorAll('a[href="#contact"]').forEach(btn => {
-          btn.addEventListener('click', function() {
-            trackEvent('cta_click', {
-              button_text: this.textContent.trim(),
-              button_location: this.closest('header') ? 'header' : 'hero_section'
-            });
-          });
-        });
-      }
-
-      // Initialize tracking
-      setupProjectTracking();
-      setupCTATracking();
-
-      // Tabs logic
-      const tabCases = document.getElementById('tab-cases');
-      const tabExperiments = document.getElementById('tab-experiments');
-      const tabArchive = document.getElementById('tab-archive');
-      const gridCases = document.getElementById('grid-cases');
-      const gridExperiments = document.getElementById('grid-experiments');
-      const gridArchive = document.getElementById('grid-archive');
-
-      function activateTab(which) {
-        const activeStyles = () => {
-          return {
-            color: 'var(--color-primary-emphasis)',
-            background: 'white',
-            border: '1px solid var(--color-neutral-200)'
-          };
-        };
-        const inactiveStyles = (el) => {
-          el.style.color = 'var(--color-neutral-700)';
-          el.style.background = 'transparent';
-          el.style.border = '0';
-        };
-
-        // Hide all grids
-        gridCases.classList.add('hidden');
-        gridExperiments.classList.add('hidden');
-        gridArchive.classList.add('hidden');
-
-        // Reset all tabs to inactive
-        inactiveStyles(tabCases);
-        inactiveStyles(tabExperiments);
-        inactiveStyles(tabArchive);
-
-        // Show the selected grid and activate its tab
-        if (which === 'cases') {
-          gridCases.classList.remove('hidden');
-          Object.assign(tabCases.style, activeStyles());
-          trackEvent('tab_switch', { tab_name: 'Case Studies' });
-        } else if (which === 'experiments') {
-          gridExperiments.classList.remove('hidden');
-          Object.assign(tabExperiments.style, activeStyles());
-          trackEvent('tab_switch', { tab_name: 'AI Experiments' });
-        } else if (which === 'archive') {
-          gridArchive.classList.remove('hidden');
-          Object.assign(tabArchive.style, activeStyles());
-          trackEvent('tab_switch', { tab_name: 'Archive' });
-        }
-      }
-
-      tabCases?.addEventListener('click', () => activateTab('cases'));
-      tabExperiments?.addEventListener('click', () => activateTab('experiments'));
-      tabArchive?.addEventListener('click', () => activateTab('archive'));
-
-      // Form logic
-      const form = document.getElementById('contact-form');
-      const alertBox = document.getElementById('form-alert');
-      const submitBtn = document.getElementById('submit-btn');
-      const submitSpinner = document.getElementById('submit-spinner');
-
-      function showAlert(type, message) {
-        alertBox.classList.remove('hidden');
-        alertBox.textContent = message;
-        alertBox.style.fontWeight = '500';
-        if (type === 'success') {
-          alertBox.style.color = 'var(--color-primary-emphasis)';
-          alertBox.style.border = '1px solid rgba(46,91,218,0.20)';
-        } else {
-          alertBox.style.background = 'rgba(239,68,68,0.08)';
-          alertBox.style.color = '#7F1D1D';
-          alertBox.style.border = '1px solid rgba(239,68,68,0.20)';
-        }
-      }
-
-      function setLoading(loading) {
-        if (!submitSpinner || !submitBtn) return;
-        if (loading) {
-          submitSpinner.classList.remove('hidden');
-          submitBtn.setAttribute('disabled', 'true');
-        } else {
-          submitSpinner.classList.add('hidden');
-          submitBtn.removeAttribute('disabled');
-        }
-      }
-
-      function validateField(el) {
-        const valid = el.checkValidity();
-        el.style.borderColor = valid ? 'var(--color-neutral-200)' : '#EF4444';
-        el.style.boxShadow = valid ? '' : '0 0 0 2px rgba(239,68,68,0.1)';
-        el.setAttribute('aria-invalid', !valid);
-        return valid;
-      }
-
-      ['name','email','message'].forEach(id => {
-        const el = document.getElementById(id);
-        el?.addEventListener('input', () => validateField(el));
-      });
-
-      form?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById('name');
-        const email = document.getElementById('email');
-        const message = document.getElementById('message');
-
-        const fieldsValid = [name, email, message].map(validateField).every(Boolean);
-        if (!fieldsValid) {
-          showAlert('error', 'Please complete the required fields.');
-          return;
-        }
-
-        setLoading(true);
-
-        // Submit to Web3Forms
-        const formData = new FormData(form);
-
-        try {
-          const response = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            body: formData
-          });
-
-          const data = await response.json();
-
-          if (data.success) {
-            showAlert('success', '✨ Message received! I\'ll respond within 1-2 business days.');
-            trackEvent('form_submission', {
-              form_type: 'contact',
-              form_status: 'success'
-            });
-            form.reset();
-          } else {
-            showAlert('error', '⚠️ Oops! Something went wrong. Please try again.');
-            trackEvent('form_submission', {
-              form_type: 'contact',
-              form_status: 'error'
-            });
-          }
-        } catch (error) {
-          showAlert('error', '⚠️ Network error. Check your connection and try again.');
-        } finally {
-          setLoading(false);
-        }
-      });
-    </script>
-
-</body></html>
+<script src="/assets/site/site.js" defer></script>
+</body>
+</html>

@@ -10,3 +10,6 @@ old/
 node_modules/
 npm-debug.log
 yarn-error.log
+
+# Plaintext source of protected case studies (only encrypted output is committed)
+_private/

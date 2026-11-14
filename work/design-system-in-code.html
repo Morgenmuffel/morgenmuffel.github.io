@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design system in code: keeping generated code on the system · Yulia Vilensky</title>
+<meta name="description" content="How one designer-engineer keeps a design system coherent when much of the code is generated: by enforcing it in the repository instead of checking against it afterwards.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Valley+Sans:wght@400..900&display=swap">
+<link rel="stylesheet" href="/assets/site/site.css">
+<meta name="robots" content="noindex">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FSBYY0WW99"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-FSBYY0WW99");</script>
+</head>
+<body>
+<header class="case-header">
+  <nav class="nav appear" data-mount style="--ay:-12px" aria-label="Main">
+    <a class="micro link" href="/">Yulia Vilensky</a>
+    <div class="nav-links micro">
+      <a class="link hide-sm" href="/#about">About</a>
+      <a class="link" href="/#work">Work</a>
+      <a class="link nav-cta" href="/#contact">Let’s create</a>
+    </div>
+  </nav>
+</header>
+<section class="case-intro">
+  <h1 class="case-title reveal-words" data-mount>Design system in code: keeping generated code on the system</h1>
+  <p class="case-cap">Design-to-production · Design systems · AI-native practice</p>
+  <p class="case-sum">How one designer-engineer keeps a design system coherent when much of the code is generated: by enforcing it in the repository instead of checking against it afterwards.</p>
+</section>
+<main class="case-main">
+  <aside class="details" aria-label="Project details">
+      <div><p class="micro">Company</p><p>Dyver</p></div>
+      <div><p class="micro">Year</p><p>2025–now</p></div>
+      <div><p class="micro">Role</p><p>Founding Design Engineer</p></div>
+      <div><p class="micro">Contents</p><p>Context · Problem · Process · Proposal · Result</p></div>
+  </aside>
+  <article class="prose">
+      <div class="gate" id="gate" hidden>
+        <h2>This case study is password protected.</h2>
+        <p>It shows unreleased product work. Enter the password you received with my application, or <a href="/#contact">ask me for it</a>.</p>
+        <form autocomplete="off">
+          <label class="field"><span class="micro">Password</span><input name="password" type="password" autocomplete="current-password" required></label>
+          <p class="gate-err" role="alert"></p>
+          <button class="submit" type="submit">UNLOCK</button>
+        </form>
+      </div>
+      <div id="protected" hidden></div>
+      <noscript><p>This case study needs JavaScript to unlock.</p></noscript>
+      <script type="application/json" id="sealed">{"salt":"ZSpTkpJwI0lwmc6Ey0+zXw==","iter":600000,"body":"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"}</script>
+  </article>
+</main>
+<section class="next-case">
+  <p class="micro">Next case study</p>
+  <a href="/work/conversational-flows-ai-health-coach">Designing Adaptive Conversational Flows for an AI Health Coach</a>
+</section>
+<footer class="case-foot micro">
+  <a class="link" href="/#work">All work</a>
+  <a class="link" href="/#contact">Let’s create</a>
+</footer>
+<script src="/assets/site/site.js" defer></script>
+<script src="/assets/site/case.js" defer></script>
+</body>
+</html>

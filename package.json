@@ -1,6 +1,10 @@
 {
   "name": "portfolio-site",
-  "version": "1.0.0",
-  "description": "Portfolio website with password-protected project pages",
-  "private": true
+  "version": "2.0.0",
+  "description": "Portfolio website with password-protected (encrypted) case studies",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/dev-server.mjs"
+  }
 }

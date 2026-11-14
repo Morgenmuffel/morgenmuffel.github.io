@@ -9,7 +9,8 @@
     "year": "2025–now",
     "role": "Founding Design Engineer",
     "contents": "Context · Problem · Process · Proposal · Result",
-    "protected": true
+    "protected": true,
+    "cover": "/assets/site/covers/design-test-enrich.webp"
   },
   {
     "slug": "self-serve-activation",
@@ -21,7 +22,8 @@
     "year": "2025–now",
     "role": "Founding Design Engineer",
     "contents": "Context · Problem · Process · Proposal · Result",
-    "protected": true
+    "protected": true,
+    "cover": "/assets/site/covers/self-serve-activation.webp"
   },
   {
     "slug": "customer-journeys",
@@ -33,7 +35,8 @@
     "year": "2025–now",
     "role": "Founding Design Engineer",
     "contents": "Context · Problem · Process · Proposal · Result",
-    "protected": true
+    "protected": true,
+    "cover": "/assets/site/covers/customer-journeys.webp"
   },
   {
     "slug": "design-system-in-code",
@@ -45,7 +48,8 @@
     "year": "2025–now",
     "role": "Founding Design Engineer",
     "contents": "Context · Problem · Process · Proposal · Result",
-    "protected": true
+    "protected": true,
+    "cover": "/assets/site/covers/design-system-in-code.webp"
   },
   {
     "slug": "conversational-flows-ai-health-coach",

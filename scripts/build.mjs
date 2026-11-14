@@ -138,7 +138,7 @@ function casePage(c, next, sealed) {
   <p class="case-cap">${esc(c.capability)}</p>
   <p class="case-sum">${esc(c.summary)}</p>
 </section>
-${c.cover ? `<div class="case-cover" role="img" aria-label="${esc(c.title)} cover" style="background-image:url('${c.cover}')"></div>\n` : ""}<main class="case-main">
+${c.cover ? `<figure class="case-cover"><img src="${c.cover}" alt="${esc(c.title)}: cover image"></figure>\n` : ""}<main class="case-main">
   <aside class="details" aria-label="Project details">
       ${details}
   </aside>
@@ -162,9 +162,8 @@ ${next ? `<section class="next-case">
 
 function workRow(c, i) {
   const n = String(i + 1).padStart(2, "0");
-  const cover = c.protected
-    ? `<div class="lock-panel micro">${LOCK.replace("<svg", '<svg width="22" height="26"')}<span>Password protected</span></div>`
-    : c.cover ? `<img src="${c.cover}" alt="" loading="lazy">` : `<span class="micro">Screens to add</span>`;
+  const cover = (c.cover ? `<img src="${c.cover}" alt="" loading="lazy">` : `<span class="micro">Screens to add</span>`)
+    + (c.protected ? `<span class="lock-tag micro">${LOCK}Password protected</span>` : "");
   return `      <a class="wrow" href="/work/${c.slug}">
         <div class="wrow-a"><p class="wrow-n">${n}</p><span class="btn-line micro">View project${c.protected ? " " + LOCK : ""}</span></div>
         <div class="wrow-cover">${cover}<div class="squares trail" data-grid="hover" data-cols="8" aria-hidden="true"></div></div>

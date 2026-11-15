@@ -7,20 +7,18 @@
 <meta name="description" content="I design how AI agents behave and the interfaces they act through. Senior design engineer in Berlin: agent behaviour, conversational flows and production front ends.">
 <meta property="og:title" content="Yulia Vilensky · Senior Design Engineer">
 <meta property="og:description" content="I design how AI agents behave and the interfaces they act through.">
-<meta property="og:image" content="/assets/site/glass-wave.webp">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Valley+Sans:wght@400..900&display=swap">
 <link rel="stylesheet" href="/assets/site/site.css">
-<link rel="preload" as="image" href="/assets/site/glass-wave.webp">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSBYY0WW99"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-FSBYY0WW99");</script>
 </head>
 <body>
 
 <header class="hero" id="top">
-  <div class="wave" aria-hidden="true"></div>
+  <canvas class="valley" data-valley="day" aria-hidden="true"></canvas>
   <nav class="nav appear" data-mount style="--ay:-12px" aria-label="Main">
     <a class="micro link" href="/">Yulia Vilensky</a>
     <div class="nav-links micro">
@@ -129,39 +127,48 @@
     <div class="squares rise-strip" data-rise="strip" data-cols="13" data-cols-phone="7" aria-hidden="true"></div>
   </section>
 
-  <section class="contact" id="contact" aria-labelledby="contact-title">
-    <div class="contact-grid appear">
-      <div>
-        <h2 id="contact-title">TELL ME WHAT YOU’RE BUILDING.</h2>
-        <p>Berlin-based, open to remote work across Europe.</p>
-      </div>
-      <div>
-        <h3>Links</h3>
-        <div class="contact-links micro">
-          <a class="link" href="#about">About</a>
-          <a class="link" href="#work">Work</a>
-          <a class="link" href="#contact">Let’s create</a>
-          <a class="link" href="https://www.linkedin.com/in/yulia-vilensky/" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="link" href="https://github.com/Morgenmuffel" target="_blank" rel="noopener">GitHub</a>
-        </div>
-      </div>
-      <div>
-        <h3>Contact</h3>
-        <form class="form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
-          <input type="hidden" name="access_key" value="a44e77c0-8602-426d-84ab-d457dfe1cbf2">
-          <input type="hidden" name="subject" value="New message from yuliavilensky.com">
-          <input type="checkbox" name="botcheck" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <label class="field"><span class="micro">Name</span><input name="name" type="text" placeholder="Your name" autocomplete="name" required></label>
-          <label class="field"><span class="micro">Email</span><input name="email" type="email" placeholder="you@company.com" autocomplete="email" required></label>
-          <label class="field"><span class="micro">Message</span><textarea name="message" placeholder="What are you building?" required></textarea></label>
-          <button class="submit" type="submit">SEND</button>
-        </form>
-      </div>
-      <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span><span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
-    </div>
-    <p class="wordmark" aria-hidden="true">/VILENSKY</p>
-  </section>
 </main>
+
+<footer class="foot" id="contact" aria-labelledby="contact-title">
+  <canvas class="valley" data-valley="night" aria-hidden="true"></canvas>
+  <div class="foot-main">
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="#top">Home</a>
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#toolkit">Toolkit</a>
+    </nav>
+    <div class="foot-cols">
+      <div class="foot-col">
+        <p class="micro">Elsewhere</p>
+        <a class="link" href="https://www.linkedin.com/in/yulia-vilensky/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="link" href="https://github.com/Morgenmuffel" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="foot-col">
+        <p class="micro">Based in</p>
+        <p>Berlin</p>
+        <p>Remote across Europe</p>
+      </div>
+    </div>
+    <div class="foot-form">
+      <h2 id="contact-title">TELL ME WHAT YOU’RE BUILDING.</h2>
+      <form class="form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="a44e77c0-8602-426d-84ab-d457dfe1cbf2">
+        <input type="hidden" name="subject" value="New message from yuliavilensky.com">
+        <input type="checkbox" name="botcheck" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label class="field"><span class="micro">Name</span><input name="name" type="text" placeholder="Your name" autocomplete="name" required></label>
+        <label class="field"><span class="micro">Email</span><input name="email" type="email" placeholder="you@company.com" autocomplete="email" required></label>
+        <label class="field"><span class="micro">Message</span><textarea name="message" placeholder="What are you building?" required></textarea></label>
+        <button class="submit" type="submit">SEND</button>
+      </form>
+    </div>
+  </div>
+  <div class="foot-base micro">
+    <span>Berlin, Germany</span>
+    <a class="link" href="#top">Back to top ↑</a>
+    <span>© 2026 Yulia Vilensky</span>
+  </div>
+</footer>
 
 <svg class="crosshair tl" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0v16M0 8h16" fill="none" stroke="#050505"/></svg>
 <svg class="crosshair tr" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0v16M0 8h16" fill="none" stroke="#050505"/></svg>
@@ -169,5 +176,6 @@
 <svg class="crosshair br" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0v16M0 8h16" fill="none" stroke="#050505"/></svg>
 
 <script src="/assets/site/site.js" defer></script>
+<script type="module" src="/assets/site/valley.js"></script>
 </body>
 </html>

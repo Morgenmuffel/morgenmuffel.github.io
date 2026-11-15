@@ -52,7 +52,8 @@
     var grain = document.createElement("div");
     grain.className = "grain";
     grain.setAttribute("aria-hidden", "true");
-    try {
+    // case studies are mostly screens: no grain over them
+    if (!document.body.classList.contains("case")) try {
       var c = document.createElement("canvas");
       c.width = c.height = 180;
       var g = c.getContext("2d"), img = g.createImageData(180, 180);
@@ -62,7 +63,8 @@
       document.body.appendChild(grain);
     } catch (e) { /* grain is decorative */ }
 
-    if (!finePointer) return;
+    // case studies keep the normal cursor: no orb, no trail of squares over the work
+    if (!finePointer || document.body.classList.contains("case")) return;
     var orb = document.createElement("div");
     orb.className = "orb";
     orb.setAttribute("aria-hidden", "true");
@@ -109,7 +111,8 @@
       tx = e.clientX; ty = e.clientY;
       if (!seen) { x = tx; y = ty; seen = true; }
       orb.style.opacity = "1";
-      if (!calm && e.pointerType === "mouse") trail();
+      // no squares over screens and films: they would cover the work being shown
+      if (!calm && e.pointerType === "mouse" && !(e.target.closest && e.target.closest("img, video, .flow-frame, .lightbox"))) trail();
     }, { passive: true });
     document.documentElement.addEventListener("mouseleave", function () { orb.style.opacity = "0"; });
     requestAnimationFrame(tick);

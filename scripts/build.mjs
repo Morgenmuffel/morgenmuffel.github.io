@@ -76,19 +76,138 @@ ${extra}<script async src="https://www.googletagmanager.com/gtag/js?id=G-FSBYY0W
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-FSBYY0WW99");</script>
 </head>`;
 const NAV = `<nav class="nav appear" data-mount style="--ay:-12px" aria-label="Main">
-    <a class="micro link" href="/">Yulia Vilensky</a>
+    <a class="hero-name link" href="/">Yulia Vilensky</a>
     <div class="nav-links micro">
-      <a class="link hide-sm" href="/#about">About</a>
       <a class="link" href="/#work">Work</a>
-      <a class="link nav-cta" href="/#contact">Let’s create</a>
+      <a class="link hide-sm" href="/#about">What I do</a>
+      <a class="link nav-cta" href="#contact">Contact</a>
     </div>
   </nav>`;
 const LOCK = `<svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg>`;
 
+/* The hills and the night footer are the home page's own markup, so the two never drift apart. */
+const HOME = readFileSync(at("index.html"), "utf8");
+const HILLS = (/<div class="hills" aria-hidden="true">[\s\S]*?<\/div>/.exec(HOME) || [""])[0];
+// on case studies only the top edge of each hill carries the ink line: the fill shapes lose their stroke
+// (which ran down the sides and along the bottom) and a separate open path draws the ridge
+const HILLS_CASE = HILLS.replace(/<path class="(back|front)" d="M0 200V(\d+)(C[^"]*?)V200Z"\/>/g,
+  (all, k, y, curve) => k === "back"
+    ? `<g class="far">${all}<path class="ridge" d="M0 ${y}${curve}"/></g>` // the far hill and its line rise together on scroll
+    : `${all}<path class="ridge" d="M0 ${y}${curve}"/>`);
+// the full site header: the role, the focus and the intro sit under the navigation, as on the home page
+const HERO_INFO = (/<div class="hero-info appear" data-mount>[\s\S]*?<\/div>/.exec(HOME) || [""])[0];
+// the sky of the home scene in flat shapes, no outlines: long pale-gold streaks and white clouds with a flat gold underside
+const STREAK = (k) => `<svg class="cs-streak ${k}" viewBox="0 0 600 40" preserveAspectRatio="none"><path d="M0 22C120 6 300 0 420 8C520 14 580 20 600 24C500 34 330 40 200 36C110 33 40 28 0 22Z"/></svg>`;
+const PUFF = (k) => `<svg class="cs-puff ${k}" viewBox="0 0 240 70"><ellipse class="u" cx="120" cy="52" rx="118" ry="15"/><ellipse cx="122" cy="34" rx="60" ry="27"/><ellipse cx="62" cy="45" rx="50" ry="16"/><ellipse cx="182" cy="46" rx="50" ry="14"/></svg>`;
+const SKY = `<div class="cs-sky" aria-hidden="true">
+    ${STREAK("s1")}${STREAK("s2")}${STREAK("s3")}${PUFF("p1")}${PUFF("p2")}
+    <svg class="cs-birds" viewBox="0 0 68 30"><path d="M2 14q8-10 14 0q6-10 14 0M40 24q6-8 11 0q5-8 11 0"/></svg>
+  </div>`;
+const FOOTER = ((/<div class="hills dark"[\s\S]*?<\/footer>/.exec(HOME) || [""])[0])
+  .replace(/href="#(?!top")/g, 'href="/#');
+if (!HILLS || !FOOTER || !HERO_INFO) throw new Error("index.html: hills or footer markup not found");
+
+/* ---------- image sizes ----------
+   Every <img> gets its real width and height, so the page keeps its length while pictures load. */
+function imgSize(file) {
+  try {
+    const b = readFileSync(file);
+    if (b.readUInt32BE(0) === 0x89504e47) return [b.readUInt32BE(16), b.readUInt32BE(20)];
+    if (b.toString("ascii", 0, 4) === "RIFF" && b.toString("ascii", 8, 12) === "WEBP") {
+      const kind = b.toString("ascii", 12, 16);
+      if (kind === "VP8X") return [1 + b.readUIntLE(24, 3), 1 + b.readUIntLE(27, 3)];
+      if (kind === "VP8L") { const v = b.readUInt32LE(21); return [1 + (v & 0x3fff), 1 + ((v >> 14) & 0x3fff)]; }
+      if (kind === "VP8 ") return [b.readUInt16LE(26) & 0x3fff, b.readUInt16LE(28) & 0x3fff];
+    }
+    if (b[0] === 0xff && b[1] === 0xd8) {
+      for (let i = 2; i < b.length;) {
+        const m = b[i + 1], len = b.readUInt16BE(i + 2);
+        if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) return [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)];
+        i += 2 + len;
+      }
+    }
+  } catch { /* unknown or missing: leave the tag as it is */ }
+  return null;
+}
+const sized = (html, resolve) => html.replace(/<img\b([^>]*?)\ssrc="([^"]+)"([^>]*)>/g, (all, a, src, b) => {
+  if (/\swidth=/.test(a + b)) return all;
+  const s = imgSize(resolve(src));
+  if (!s) return all;
+  const tall = s[1] / s[0] > 1.2 ? ' style="width:min(100%, 880px)"' : ""; // tall screens at reading width: narrower would make them illegible
+  return `<img${a} src="${src}" width="${s[0]}" height="${s[1]}"${tall}${b}>`;
+});
+const sizedSite = (html) => sized(html, (src) => at(src.replace(/^\//, "")));
+
+/* ---------- body: split into sections ----------
+   A body is a flat run of elements. Each h2 starts a section: the heading sits in the left columns,
+   text runs in the right ones, and wide pieces (journeys, films, screens) take the full width. */
+const VOID = new Set(["img", "br", "hr", "input", "source", "meta", "link", "wbr", "col", "embed", "track"]);
+function topLevel(html) {
+  const out = [], re = /<!--[\s\S]*?-->|<(\/?)([a-zA-Z][a-zA-Z0-9-]*)\b[^>]*?(\/?)>/g;
+  let m, depth = 0, start = 0, end = 0;
+  while ((m = re.exec(html))) {
+    if (m[0].startsWith("<!--")) continue;
+    const closing = m[1] === "/", single = m[3] === "/" || VOID.has(m[2].toLowerCase());
+    if (depth === 0 && !closing) {
+      if (html.slice(end, m.index).trim()) throw new Error("loose text between elements: " + html.slice(end, m.index).trim().slice(0, 60));
+      start = m.index;
+    }
+    if (closing) depth--; else if (!single) depth++;
+    if (depth === 0) { out.push(html.slice(start, re.lastIndex)); end = re.lastIndex; }
+  }
+  return out;
+}
+const isWide = (n) => /^<(div class="(board|routes)|figure(?! class="merge"))/.test(n);
+function sectionize(html) {
+  // Each h2 starts a numbered section. Before it goes a slim bar (number, name, title) that holds at the top of
+  // the window once its section has been scrolled past, so the read sections stack up as an index.
+  // The title is the h2's data-title, or the lead sentence that opens the section.
+  const two = (n) => String(n).padStart(2, "0"), plain = (h) => h.replace(/<[^>]+>/g, "").trim();
+  let out = "", open = false, staged = false, text = [], head = "", idx = 0; // staged: inside the wrapper the bars hold within
+  const flush = () => {
+    if (text.length || head) out += `<div class="cs-row">\n${head}${text.length ? `<div class="cs-text">\n${text.join("\n")}\n</div>\n` : ""}</div>\n`;
+    text = []; head = "";
+  };
+  const nodes = topLevel(html);
+  let skip = -1;
+  nodes.forEach((n, k) => {
+    if (k === skip) return;
+    if (/^<h2[\s>]/.test(n)) {
+      flush();
+      const name = n.replace(/^<h2[^>]*>|<\/h2>$/g, "");
+      const own = (/^<h2[^>]*\sdata-title="([^"]*)"/.exec(n) || [])[1];
+      const lead = (/^<p class="lead">([\s\S]*?)<\/p>$/.exec(nodes[k + 1] || "") || [])[1];
+      const title = own || (lead ? plain(lead) : "");
+      if (/^<div class="board/.test(nodes[k + 1] || "")) { // a heading straight over a journey announces it: no number, no bar
+        out += (open ? "</section>\n" : "") + (staged ? "</div>\n" : "");
+        out = out.replace("__N__", idx); // how many headings stack here, so they can leave together
+        out += `<section class="cs-sec cs-plain" style="--i:${idx - 1}">\n`;
+        head = `<div class="cs-head"><h2 class="cs-h">${name}</h2>${own ? `<p class="cs-sub">${own}</p>` : ""}</div>\n`;
+        open = true; staged = false; // the stack of bars ends here and scrolls away with the sections
+        return;
+      }
+      idx++;
+      // the heading is one element in both states: number, name and title. Expanded it opens the section; once
+      // the section is scrolled past it holds at the top as a bar, the same three pieces only smaller.
+      out += (open ? "</section>\n" : "") + (staged ? "" : `<div class="cs-stages" style="--n:__N__">\n`)
+        + `<header class="cs-bar" style="--i:${idx - 1}"><span class="cs-bar-n" aria-hidden="true">${two(idx)}</span><h2 class="cs-bar-name">${name}</h2>${title ? `<p class="cs-bar-t">${title}</p>` : ""}</header>\n`
+        + `<section class="cs-sec" id="s${idx}" style="--i:${idx - 1}">\n`;
+      staged = true;
+      if (!own && lead) skip = k + 1; // the lead sentence is the title now, so it is not repeated in the text
+      open = true;
+    } else {
+      if (!open) { out += `<section class="cs-sec cs-open">\n`; open = true; }
+      if (isWide(n)) { flush(); out += `<div class="cs-wide${/^<div class="board/.test(n) ? " cs-band" : ""}">\n${n}\n</div>\n`; } else text.push(n);
+    }
+  });
+  flush();
+  return (out + (open ? "</section>\n" : "") + (staged ? "</div>\n" : "")).replace("__N__", idx);
+}
+
 /* ---------- protected body ---------- */
 function sealFragment(slug, cipher, used) {
   const dir = at("_private/dyver");
-  let html = readFileSync(join(dir, slug + ".html"), "utf8");
+  let html = sized(readFileSync(join(dir, slug + ".html"), "utf8"), (src) => join(dir, src));
   const sealFile = (rel) => {
     const file = join(dir, rel);
     const bytes = cipher.seal(readFileSync(file));
@@ -107,54 +226,63 @@ function sealFragment(slug, cipher, used) {
     return `<div class="video" data-enc="${mv.url}" data-size="${Math.round(mv.size / 1e6)} MB" data-poster="${mp.url}" data-poster-type="${mp.type}"`;
   });
   if (/(src|data-video|data-poster)="media\//.test(html)) throw new Error(slug + ": unconverted media reference");
-  return cipher.seal(Buffer.from(html)).toString("base64");
+  return cipher.seal(Buffer.from(sectionize(html))).toString("base64");
 }
 
 /* ---------- page ---------- */
 function casePage(c, next, sealed) {
-  const details = [["Company", c.company], ["Year", c.year], ["Role", c.role], ["Contents", c.contents]]
-    .filter(([, v]) => v).map(([k, v]) => `<div><p class="micro">${k}</p><p>${esc(v)}</p></div>`).join("\n      ");
+  // "Short title: the claim" splits into the display title and the line under it
+  const cut = c.title.indexOf(": ");
+  const short = cut > 0 ? c.title.slice(0, cut) : c.title, claim = cut > 0 ? c.title.slice(cut + 2) : (c.outcome || ""); // no claim in the title: the study's stated outcome
+  const facts = [["Company", c.company], ["Year", c.year], ["Role", c.role], ["Focus", c.capability]]
+    .filter(([, v]) => v).map(([k, v]) => `<div><dt class="micro">${k}</dt><dd>${esc(v)}</dd></div>`).join("\n      ");
+  const raw = sealed ? "" : sizedSite(readFileSync(at("content/cases", c.slug + ".html"), "utf8").trim());
+  // A body that opens on a film already leads with a picture, so the cover would only repeat it.
+  const cover = c.cover && !/^<figure class="film"/.test(raw)
+    ? sizedSite(`<figure class="cs-cover"${sealed ? " data-cover" : ""}><img src="${c.cover}" alt="${esc(short)}: the main screen"></figure>\n`) : "";
   const body = sealed
-    ? `<div class="gate" id="gate" hidden>
-        <h2>This case study is password protected.</h2>
-        <p>It shows unreleased product work. Enter the password you received with my application, or <a href="/#contact">ask me for it</a>.</p>
-        <form autocomplete="off">
-          <label class="field"><span class="micro">Password</span><input name="password" type="password" autocomplete="current-password" required></label>
-          <p class="gate-err" role="alert"></p>
-          <button class="submit" type="submit">UNLOCK</button>
-        </form>
-      </div>
-      <div id="protected" hidden></div>
-      <noscript><p>This case study needs JavaScript to unlock.</p></noscript>
-      <script type="application/json" id="sealed">${JSON.stringify(sealed)}</script>`
-    : readFileSync(at("content/cases", c.slug + ".html"), "utf8").trim();
+    ? `<section class="cs-sec cs-gate" id="gate" hidden><div class="cs-row">
+    <div class="cs-head"><h2 class="cs-h">Unreleased work</h2></div>
+    <div class="cs-text">
+      <p>This case study shows product work that is not public yet. Enter the password you received with my application, or <a href="#contact">ask me for it</a>.</p>
+      <form autocomplete="off">
+        <label class="field"><span class="micro">Password</span><input name="password" type="password" autocomplete="current-password" required></label>
+        <p class="gate-err" role="alert"></p>
+        <button class="submit" type="submit">UNLOCK</button>
+      </form>
+    </div>
+  </div></section>
+  <div id="protected" hidden></div>
+  <noscript><p class="cs-noscript">This case study needs JavaScript to unlock.</p></noscript>
+  <script type="application/json" id="sealed">${JSON.stringify(sealed)}</script>`
+    : sectionize(raw);
   return `${HEAD(c.title + " · Yulia Vilensky", c.summary, sealed ? '<meta name="robots" content="noindex">\n' : "")}
-<body>
-<header class="case-header">
+<body class="case">
+<header class="cs-hero" id="top">
+  ${SKY}
   ${NAV}
+  ${HERO_INFO}
+  <div class="cs-hero-body">
+    <h1 class="cs-title reveal-words${short.length > 30 ? " long" : ""}" data-mount>${esc(short)}</h1>
+    <div class="cs-lede appear" data-mount style="--ay:14px">
+      ${claim ? `<p class="cs-claim">${esc(claim)}</p>\n      ` : ""}<p class="cs-sum">${esc(c.summary)}</p>
+    </div>
+    <dl class="cs-facts appear" data-mount style="--ay:10px">
+      ${facts}
+    </dl>
+  </div>
+  ${HILLS_CASE}
 </header>
-<section class="case-intro">
-  <h1 class="case-title reveal-words" data-mount>${esc(c.title)}</h1>
-  <p class="case-cap">${esc(c.capability)}</p>
-  <p class="case-sum">${esc(c.summary)}</p>
-</section>
-${c.cover ? `<figure class="case-cover"><img src="${c.cover}" alt="${esc(c.title)}: cover image"></figure>\n` : ""}<main class="case-main">
-  <aside class="details" aria-label="Project details">
-      ${details}
-  </aside>
-  <article class="prose">
-      ${body}
-  </article>
+<main class="cs-main">
+  ${cover}${body}
 </main>
-${next ? `<section class="next-case">
-  <p class="micro">Next case study</p>
-  <a href="/work/${next.slug}">${esc(next.title)}</a>
-</section>\n` : ""}<footer class="case-foot micro">
-  <a class="link" href="/#work">All work</a>
-  <a class="link" href="/#contact">Let’s create</a>
-</footer>
+${next ? `<a class="cs-next" href="/work/${next.slug}">
+  <span class="cs-next-txt"><span class="cs-next-t">Next: ${esc(next.listTitle)}</span><svg class="cs-next-arrow" viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+  ${next.cover ? sizedSite(`<img src="${next.cover}" alt="" loading="lazy">`) : ""}
+</a>\n` : ""}${FOOTER}
 <script src="/assets/site/site.js" defer></script>
 <script src="/assets/site/case.js" defer></script>
+<script type="module" src="/assets/site/valley.js"></script>
 </body>
 </html>
 `;
@@ -165,7 +293,7 @@ function workRow(c, i) {
   const cover = (c.cover ? `<img src="${c.cover}" alt="" loading="lazy">` : `<span class="micro">Screens to add</span>`)
     + (c.protected ? `<span class="lock-tag micro">${LOCK}Password protected</span>` : "");
   return `      <a class="wrow" href="/work/${c.slug}">
-        <div class="wrow-a"><p class="wrow-n">${n}</p><span class="btn-line micro">View project${c.protected ? " " + LOCK : ""}</span></div>
+        <div class="wrow-a"><p class="wrow-n">${n}</p><span class="btn-line micro">View case study${c.protected ? " " + LOCK : ""}</span></div>
         <div class="wrow-cover">${cover}</div>
         <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">${esc(c.listTitle)}</h3><p class="micro">${esc(c.capability)}</p></div><p>${esc(c.summary)}</p></div>
       </a>`;
@@ -186,7 +314,7 @@ cases.forEach((c, i) => {
     return;
   }
   const sealed = c.protected ? { salt: cipher.salt, iter: ITER, body: sealFragment(c.slug, cipher, used) } : null;
-  writeFileSync(target, casePage(c, cases[i + 1], sealed));
+  writeFileSync(target, casePage(c, cases[(i + 1) % cases.length], sealed));
   console.log(`✓ work/${c.slug}.html${c.protected ? " (encrypted)" : ""}`);
 });
 

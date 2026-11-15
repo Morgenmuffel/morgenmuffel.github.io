@@ -1,4 +1,4 @@
-<h2>Problem</h2>
+<h2 data-title="From conversation design to technical architecture.">Problem</h2>
 <h3>From Conversation Design to Technical Architecture</h3>
 <p>After designing 6 conversational flows for the AI health coach (see <a href="/work/conversational-flows-ai-health-coach">Case Study #1</a>), I implemented the system with a single agent containing all logic in one 157-line system prompt.</p>
 <p>The conversation flows required:</p>
@@ -9,7 +9,7 @@
 <blockquote><p>“How do you architect an AI system that separates concerns cleanly (calendar logic ≠ conversation logic), is testable at multiple levels, and enables rapid iteration without breaking existing functionality?”</p><cite>The redesign challenge</cite></blockquote>
 <figure><img src="/assets/MultiAgentFlow.png" alt="Multi-Agent Architecture - 4-agent system showing Orchestrator, Schedule Intelligence Agent, Conflict Checker, and Calendar Ops with their connections and context flows" loading="lazy"></figure>
 
-<h2>Approach: Multi-Agent Architecture</h2>
+<h2 data-title="Capability mapping first, then agents.">Approach: Multi-Agent Architecture</h2>
 <h3>Phase 1: Capability Mapping, Conversational States &amp; Tool Registration Pattern</h3>
 <p>I mapped all action nodes and state transitions across the 6 conversation flows designed in Case Study #1. Each node type revealed a distinct capability that should have been separated:</p>
 <ul><li><strong>Decision nodes</strong> (intent classification, flow routing) → Conversation management</li><li><strong>Action nodes</strong> (fetch calendar, suggest times) → Calendar intelligence</li><li><strong>Validation nodes</strong> (check conflicts, enforce buffers) → Conflict resolution</li><li><strong>Execution nodes</strong> (create events, handle APIs) → Calendar operations</li></ul>
@@ -38,7 +38,7 @@
 <p><strong>Benefits:</strong></p>
 <ul><li>66% reduction in average prompt size</li><li>Response time: 0.6s average vs 1.2s with static prompts</li><li>~500 tokens saved per conversation</li><li>Instructions live in code next to logic, not separate prompt files</li><li>Easier to maintain and update</li></ul>
 
-<h2>Outcome</h2>
+<h2 data-title="Four focused agents instead of one 157-line prompt.">Outcome</h2>
 <p>The refactored multi-agent system solved all problems from the monolithic implementation:</p>
 <div class="stats">
   <div class="stat"><p class="stat-value">4</p><h3>Focused agents</h3><p>20-80 line prompts each vs. 157-line monolith. Independently maintainable and scalable</p></div>
@@ -54,7 +54,7 @@
 <h4>Multi-Turn Conversation Performance &amp; Reliability:</h4>
 <ul><li>98% accuracy in multi-turn conversations through explicit state management (<code>pending_suggestions</code> with clear lifecycle)</li><li>Context window kept lean through conversation history compaction and dynamic instructions</li><li>Pattern matching eliminated nested if/else logic that broke in monolithic version</li><li>Type system catches missing cases, preventing runtime routing errors</li><li>Graceful error handling with 94% API failure recovery rate</li><li>Contrast: Monolithic version “forgot” context mid-conversation due to implicit state</li></ul>
 
-<h2>Reflection</h2>
+<h2 data-title="What worked well, and what I’d do differently.">Reflection</h2>
 <h3>What Worked Well</h3>
 <p><strong>Design-first approach prevented over-engineering.</strong> Mapping conversation flows to agent boundaries before implementation revealed the natural architecture. Node types in flows mapped directly to agent types, preventing unnecessary abstractions.</p>
 <p><strong>Output types as flow control was effective.</strong> Using the type system for conversation state management made complex multi-turn flows readable. Type safety caught routing errors early. Pattern matching eliminated nested conditionals from the monolithic version.</p>

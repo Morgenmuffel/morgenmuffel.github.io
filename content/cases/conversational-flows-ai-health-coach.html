@@ -1,4 +1,4 @@
-<h2>Problem</h2>
+<h2 data-title="The gap in workplace physical health.">Problem</h2>
 <h3>The gap in workplace physical health</h3>
 <p>1.7 billion people worldwide suffer from musculoskeletal disorders caused by prolonged sitting (WHO). The solution—regular movement breaks—requires sustained behavior change, which existing workplace tools fail to support:</p>
 <ul><li><strong>Movement apps</strong> (Stretchy, Desk Yogi): Evidence-based exercises but no calendar awareness, requiring users to remember and interrupt work</li><li><strong>Calendar assistants</strong> (x.ai, Reclaim): Schedule breaks but provide no movement guidance or adaptation to physical needs</li><li><strong>Wellness chatbots</strong> (Headspace Bot, Calm): Generic reminders with static prompts regardless of schedule stress or context</li></ul>
@@ -9,7 +9,7 @@
 <h3>Success criteria for pilot</h3>
 <ul><li>Agent feels “helpful, not pushy” in qualitative testing</li><li>Multi-turn conversations complete in ≤3 turns</li><li>Conversation flows handle edge cases gracefully (missing info, conflicts, API failures)</li><li>95% scheduling accuracy (no double-bookings, correct buffers)</li><li>System ready for deployment with ~200 users at a pilot government company</li></ul>
 
-<h2>Approach</h2>
+<h2 data-title="Research first: 15 interviews and 50+ surveys.">Approach</h2>
 <h3>Research foundation</h3>
 <p>The founding team conducted initial user research (15 interviews + surveys with 50+ desk workers) revealing key insights for conversational flow design:</p>
 <ul><li><strong>Pattern references dominate:</strong> “Like yesterday”, “my usual breaks”, “same as last week” appeared in 40% of conversations—users think in patterns, not discrete time slots</li><li><strong>Incomplete initial requests:</strong> 60% lacked time, duration, or date (“Schedule a break”)—flows need progressive clarification</li><li><strong>Multi-turn refinement expected:</strong> Users modify suggestions conversationally (“Move the 1 PM to 2 PM”) rather than starting over</li><li><strong>Schedule queries as entry point:</strong> Users would use the AI health coach for general schedule queries—creating an opportunity to suggest break scheduling when none exist</li><li><strong>Efficiency target:</strong> Scheduling should complete in ≤3 turns</li><li><strong>Conflict handling must be conversational:</strong> Alternatives with reasoning, not just “unavailable”</li></ul>
@@ -17,10 +17,10 @@
 <p>Mapping complete conversation paths before implementation served three purposes. First, understanding conversation patterns shaped technical architecture: what data must persist between turns (pending suggestions, conflict alternatives, conversation context), how agents communicate decisions to the coordinator (structured outputs), and which calendar operations were needed. Second, each decision node in the flows revealed edge cases that became test scenarios directly. Third, could demonstrate conversation paths to the founding team using mockups before implementation.</p>
 <p><strong>Query → suggestion integration is critical to the behavioral science layer.</strong> Users who ask “What’s my schedule today?” often discover they have no breaks planned—the ideal moment to offer value while they’re already engaged in scheduling.</p>
 
-<h2>Flow design methodology</h2>
+<h2 data-title="Node types used in conversational flow design.">Flow design methodology</h2>
 <figure><img src="/assets/ai-coach-flow1.png" alt="Node types in conversation flow design" loading="lazy"><figcaption>Node types used in conversational flow design</figcaption></figure>
 
-<h2>Core intent mapping</h2>
+<h2 data-title="Five core intents, from user research.">Core intent mapping</h2>
 <p>From user research and prototype testing, I mapped all user needs to 5 primary intents that would structure the conversational system.</p>
 <pre class="dialog">Primary Intents:
 ├── SCHEDULE_SINGLE_BREAK
@@ -52,7 +52,7 @@
     └── "Compare today with yesterday's schedule"</pre>
 <p><strong>Intent hierarchy:</strong> Organized by time scope (single → daily → multi-day) as complexity increases with coordination across more time units. Reschedule is distinct (identify existing → modify vs. create new). Query serves a dual purpose as both information retrieval and a primary entry point for behavior change.</p>
 
-<h2>Flow 1: Single break scheduling</h2>
+<h2 data-title="Five minutes by default, alternatives in the same response.">Flow 1: Single break scheduling</h2>
 <figure><img src="/assets/ai-coach-flow2.png" alt="Single break scheduling flow" loading="lazy"></figure>
 <h3>Key design decisions:</h3>
 <ul><li>Default duration: 5 minutes if unspecified</li><li>Conflict alternatives in same response: Generate 2-3 nearby times with reasoning</li><li>Pattern support: “Same break as yesterday” requires historical lookup → apply to today</li></ul>
@@ -62,7 +62,7 @@ Agent: "Your Design Review runs until 2:30 PM.
        How about 2:45 PM? That gives you a
        buffer after the meeting wraps up."</pre>
 
-<h2>Flow 2: Daily break scheduling</h2>
+<h2 data-title="The whole adapted plan in a single response.">Flow 2: Daily break scheduling</h2>
 <figure><img src="/assets/ai-coach-flow3.png" alt="Daily break scheduling conversation pattern" loading="lazy"></figure>
 <h3>Key design decisions:</h3>
 <ul><li>Batch conflict checking: Present entire adapted plan in single response</li><li>Partial conflict handling: Show available breaks + alternatives for conflicts</li></ul>
@@ -79,7 +79,7 @@ Agent: "Based on your pattern: 9:30 AM, 1:15 PM, 3:45 PM.
        All slots are free today - should I schedule
        your usual rhythm?"</pre>
 
-<h2>Flow 3: Multi-day break scheduling</h2>
+<h2 data-title="Break placement across several days of meetings.">Flow 3: Multi-day break scheduling</h2>
 <h3>Key design decisions:</h3>
 <ul><li>Schedule coordination: Analyze meeting density across multiple days to optimize break placement</li><li>Pattern consistency: Apply learned user preferences (typical break times, duration) across all days</li><li>Batch presentation: Show entire week’s plan with per-day conflict status</li><li>Adaptive frequency: Increase break frequency on meeting-heavy days, maintain minimum on lighter days</li></ul>
 <h3>Examples:</h3>
@@ -101,7 +101,7 @@ Agent: "Planning Thu-Fri and Mon:
 
        Should I proceed?"</pre>
 
-<h2>Flow 4: Reschedule request</h2>
+<h2 data-title="Move, cancel or change a break.">Flow 4: Reschedule request</h2>
 <h3>Key design decisions:</h3>
 <ul><li>Identify target: Resolve ambiguous references (<em>“my next break”</em>, <em>“today’s breaks”</em>) using calendar + time context</li><li>Modification types: Move (change time), cancel (remove), bulk reschedule (pattern shift)</li><li>Preserve intent: Maintain break frequency and spacing when rescheduling multiple breaks</li><li>Pattern learning: Remember and suggest previous reschedule patterns (“like we did last week”)</li></ul>
 <h3>Examples:</h3>
@@ -121,7 +121,7 @@ Agent: "Current: 10 AM, 1 PM, 4 PM
        Keep: 4:00 PM ✓
        Should I update?"</pre>
 
-<h2>Flow 5: Query schedule (with proactive suggestions)</h2>
+<h2 data-title="Information retrieval and a behaviour change opportunity.">Flow 5: Query schedule (with proactive suggestions)</h2>
 <h3>Key design decisions:</h3>
 <ul><li>Dual purpose: Information retrieval + behavior change opportunity</li><li>Proactive detection: If query reveals no breaks scheduled, offer suggestions immediately</li><li>Adaptive persuasion: Light schedule → gentle nudge; heavy schedule → stronger recommendation with stress framing</li><li>Comparison intelligence: Support temporal comparisons (“today vs yesterday”) to surface break gaps</li></ul>
 <h3>Examples:</h3>
@@ -147,7 +147,7 @@ Agent: "Yesterday: 3 meetings, 3 breaks taken ✓
        12:45 PM and 3:00 PM to maintain energy.
        Sound good?"</pre>
 
-<h2>Advanced patterns</h2>
+<h2 data-title="Complex reference resolution and error recovery.">Advanced patterns</h2>
 <p>Complex reference resolution and error recovery patterns ensure robust, intelligent conversations.</p>
 <h3>Complex reference resolution</h3>
 <p><strong>Reference types:</strong> Specific date (“Like last Friday”), historical pattern (“My usual”), comparative optimization (“Better than yesterday”)</p>
@@ -173,7 +173,7 @@ Agent: "I'm having trouble accessing your calendar.
        Tell me about your meetings and I'll
        suggest break times manually."</pre>
 
-<h2>Flow coverage</h2>
+<h2 data-title="7 flows designed.">Flow coverage</h2>
 <div class="stats">
   <div class="stat"><p class="stat-value">7</p><h3>Flows designed</h3><p>5 core intents + 2 supporting (complex reference resolution, error recovery)</p></div>
   <div class="stat"><p class="stat-value">≤3</p><h3>Turn completion target</h3><p>Complete conversations in 3 turns or less through batched suggestions with reasoning</p></div>

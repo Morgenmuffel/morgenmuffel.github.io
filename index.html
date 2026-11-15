@@ -18,21 +18,21 @@
 <body>
 
 <header class="hero" id="top">
-  <canvas class="valley" data-valley="day" data-pinned aria-hidden="true"></canvas>
+  <canvas class="valley" data-valley="day" data-pinned data-text="#hero-statement" aria-hidden="true"></canvas>
   <nav class="nav appear" data-mount style="--ay:-12px" aria-label="Main">
-    <a class="micro link" href="/">Yulia Vilensky</a>
+    <a class="hero-name link" href="/">Yulia Vilensky</a>
     <div class="nav-links micro">
       <a class="link" href="#work">Work</a>
-      <a class="link hide-sm" href="#about">About</a>
-      <a class="link nav-cta" href="#contact">Let’s create</a>
+      <a class="link hide-sm" href="#about">What I do</a>
+      <a class="link nav-cta" href="#contact">Contact</a>
     </div>
   </nav>
   <div class="hero-info appear" data-mount>
-    <p class="hero-role">Senior Design<br>Engineer</p>
-    <p class="hero-tag">Conversational and<br>agentic AI.</p>
+    <p class="hero-role">Senior Design Engineer</p>
+    <p class="hero-tag">Conversational and agentic&nbsp;AI</p>
     <p class="hero-intro">15+ years across engineering, UX and AI design. I began in embedded and software engineering, moved into UX for complex B2B SaaS and data-heavy products, and now work in the codebase again.</p>
   </div>
-  <h1 class="hero-statement reveal-words" data-mount>I design how AI agents behave and the interfaces they act through</h1>
+  <h1 class="hero-statement reveal-words" id="hero-statement" data-mount>I design how AI agents behave and the interfaces they act through</h1>
   <div class="hero-base micro appear" data-mount>
     <span>Berlin · Open to remote across Europe</span>
     <a class="link" href="#work">Scroll ↓</a>
@@ -93,7 +93,7 @@
     </div>
   </section>
 
-  <section class="focus" id="about" data-focus aria-label="Focus">
+  <section class="focus" id="about" data-focus aria-label="What I do">
     <div class="band"><div class="squares" aria-hidden="true"></div></div>
     <div class="band"><div class="squares" aria-hidden="true"></div>
       <div class="frow"><span class="frow-n">[01]</span><h3 class="frow-t">Agent behaviour</h3><p class="frow-c">I write and fine-tune the prompts, tool contracts and conversational flows that govern how an agent asks, explains and recovers.</p></div>
@@ -137,12 +137,30 @@
 </div>
 <footer class="foot" id="contact" aria-labelledby="contact-title">
   <canvas class="valley" data-valley="night" aria-hidden="true"></canvas>
-  <h2 class="foot-quote reveal-words" id="contact-title">“Don’t panic. I’m your human in the loop.”</h2>
+  <h2 class="foot-quote" id="contact-title" aria-label="Don’t panic. I’m your human in the loop.">
+    <span class="reveal-words">Don’t panic.</span>
+    <span class="reveal-words">I’m your human in the loop.</span>
+    <svg class="moon" viewBox="0 0 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="moon-light" cx="40%" cy="36%" r="72%"><stop offset="0" stop-color="#F7EFD2"/><stop offset=".62" stop-color="#E9DDB1"/><stop offset="1" stop-color="#CFC193"/></radialGradient>
+        <filter id="moon-seas" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".014 .019" numOctaves="4" seed="8"/><feColorMatrix values="0 0 0 0 .52  0 0 0 0 .54  0 0 0 0 .6  -9 0 0 0 4.05"/></filter>
+        <filter id="moon-grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 .77  0 0 0 0 .6  0 0 0 0 .04  0 0 0 .5 -.12"/></filter>
+        <clipPath id="moon-disc"><circle cx="100" cy="100" r="99"/></clipPath>
+      </defs>
+      <circle cx="100" cy="100" r="99" fill="url(#moon-light)"/>
+      <g clip-path="url(#moon-disc)">
+        <rect width="200" height="200" filter="url(#moon-seas)" opacity=".5"/>
+        <rect width="200" height="200" filter="url(#moon-grain)" opacity=".4"/>
+        <g fill="none" stroke="#B5A77D" stroke-width=".8" opacity=".55"><circle cx="128" cy="62" r="7"/><circle cx="70" cy="134" r="10"/><circle cx="146" cy="128" r="4.5"/><circle cx="92" cy="58" r="3.5"/><circle cx="112" cy="156" r="5"/></g>
+      </g>
+    </svg>
+  </h2>
   <div class="foot-main">
     <nav class="foot-nav" aria-label="Footer">
+      <p class="micro">Site</p>
       <a href="#top">Home</a>
       <a href="#work">Work</a>
-      <a href="#about">About</a>
+      <a href="#about">What I do</a>
       <a href="#toolkit">Toolkit</a>
     </nav>
     <div class="foot-col">
@@ -154,10 +172,11 @@
       <input type="hidden" name="access_key" value="a44e77c0-8602-426d-84ab-d457dfe1cbf2">
       <input type="hidden" name="subject" value="New message from yuliavilensky.com">
       <input type="checkbox" name="botcheck" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <label class="field"><span class="micro">Name</span><input name="name" type="text" placeholder="Your name" autocomplete="name" required></label>
-      <label class="field"><span class="micro">Email</span><input name="email" type="email" placeholder="you@company.com" autocomplete="email" required></label>
-      <label class="field"><span class="micro">Message</span><textarea name="message" placeholder="What are you building?" required></textarea></label>
-      <button class="submit" type="submit">SEND</button>
+      <p class="micro">Write to me</p>
+      <label class="field half"><span class="micro">Name</span><input name="name" type="text" placeholder="Your name" autocomplete="name" required></label>
+      <label class="field half"><span class="micro">Email</span><input name="email" type="email" placeholder="you@company.com" autocomplete="email" required></label>
+      <label class="field"><span class="micro">Message</span><textarea name="message" placeholder="A few lines about the role or project" required></textarea></label>
+      <button class="submit" type="submit">SEND MESSAGE</button>
     </form>
   </div>
   <div class="foot-base micro">

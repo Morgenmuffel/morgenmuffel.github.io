@@ -4,6 +4,8 @@
   --ink: #050505;
   --accent: #5F86FF;
   --cursor: #D4573B; /* the scene's red; through mix-blend-mode: difference it reads teal on the canvas and red on ink */
+  --night: #0A1233; /* the scene's ink line */
+  --sun: #F5D75E; /* the scene's sunlight: the home headline */
   --select: #5EE1EB;
   --tint: rgba(95, 134, 255, 0.14);
   --gutter: 44px;
@@ -51,16 +53,23 @@ h1, h2, h3, h4, p { margin: 0; }
 }
 
 /* ===== Home ===== */
-.hero { position: sticky; top: 0; z-index: 0; height: 100vh; height: 100svh; min-height: 640px; padding: 28px var(--gutter) 30px; display: flex; flex-direction: column; overflow: clip; }
+.hero { position: sticky; top: 0; z-index: 0; height: 100vh; height: 100svh; min-height: 640px; padding: 28px var(--gutter) 30px; display: flex; flex-direction: column; overflow: clip;
+  /* The scene in flat colour: sky down to a hard horizon, then meadow. It shows until the canvas fades in, and
+     instead of it where WebGL is missing, so the yellow headline always stands on blue. */
+  background: linear-gradient(to bottom, #AFC0FA 0%, #DCE4FD 34%, #FBEFC6 52%, #3A62EE 52%, #2448DC 100%); }
 .valley { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 1.2s var(--ease); }
 .valley.on { opacity: 1; }
 .hero > :not(.valley) { position: relative; z-index: 1; }
-.hero-info { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 3.5fr) minmax(0, 4.5fr); gap: 24px; margin-top: 44px; align-items: start; --ay: 14px; transition-delay: 0.25s; }
-.hero-role { font-weight: 600; font-size: 28px; letter-spacing: -0.02em; line-height: 1.1; }
-.hero-tag, .hero-intro { font: 400 13px/1.6 var(--mono); }
-.hero-intro { max-width: 48ch; }
-.hero-statement { margin-top: auto; max-width: 16em; font-weight: 900; font-size: clamp(34px, 4.9vw, 80px); letter-spacing: -0.04em; line-height: 0.92; text-transform: uppercase; --rise: 36px; }
-.hero-base { display: flex; justify-content: space-between; gap: 16px; margin-top: 28px; transition-delay: 0.6s; }
+/* Type roles on the hero: the name leads, role and focus share one step below it, the intro is plain body text,
+   and the statement is the one display line, in the scene's sunlight. */
+.hero .nav { align-items: baseline; }
+.hero-name { font-weight: 600; font-size: clamp(28px, 2.6vw, 40px); letter-spacing: -0.025em; line-height: 1; }
+.hero-info { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 3.5fr) minmax(0, 4.5fr); gap: 24px; margin-top: 14px; align-items: start; --ay: 14px; transition-delay: 0.25s; }
+.hero-role, .hero-tag { max-width: 15ch; font-weight: 500; font-size: clamp(18px, 1.6vw, 23px); letter-spacing: -0.015em; line-height: 1.18; text-wrap: balance; }
+.hero-intro { max-width: 44ch; font-size: 16px; line-height: 1.45; text-wrap: pretty; }
+.hero-statement { margin-top: auto; max-width: 16em; color: var(--sun); font-weight: 900; font-size: clamp(34px, 4.9vw, 80px); letter-spacing: -0.04em; line-height: 0.92; text-transform: uppercase; --rise: 36px; -webkit-text-stroke: 0.07em var(--night); paint-order: stroke fill; } /* the scene's ink line around each letter keeps the yellow legible on pale ground */
+.hero.text-in-scene .hero-statement { opacity: 0; user-select: none; pointer-events: none; } /* on wide screens the scene sets these words up in the meadow instead */
+.hero-base { display: flex; justify-content: space-between; gap: 16px; margin-top: 28px; color: var(--canvas); transition-delay: 0.6s; }
 
 /* Everything after the hero slides over it; the pinned scene stays underneath. */
 main { position: relative; z-index: 1; background: var(--canvas); }
@@ -133,13 +142,20 @@ main { position: relative; z-index: 1; background: var(--canvas); }
 /* Footer: the valley at night; the quote, links and contact form sit straight on the picture */
 .foot { position: relative; z-index: 1; min-height: 100vh; min-height: 100svh; padding: 88px var(--gutter) 28px; display: flex; flex-direction: column; gap: 56px; overflow: clip; background: var(--ink); color: var(--canvas); }
 .foot > :not(.valley) { position: relative; z-index: 1; }
-.foot-quote { max-width: 12em; font-weight: 900; font-size: clamp(36px, 5.6vw, 90px); letter-spacing: -0.03em; line-height: 0.95; text-transform: uppercase; --rise: 30px; }
-.foot-main { margin-top: auto; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.8fr) minmax(300px, 420px); gap: 40px; align-items: end; }
-.foot-nav { display: grid; justify-items: start; gap: 4px; }
-.foot-nav a { font-weight: 600; font-size: clamp(40px, 4.6vw, 64px); letter-spacing: -0.03em; line-height: 1.05; text-decoration: none; transition: color 0.2s var(--ease), transform 0.3s var(--ease); }
-.foot-nav a:hover, .foot-nav a:focus-visible { color: var(--accent); transform: translateX(10px); }
-.foot-col { display: grid; gap: 8px; align-content: start; justify-items: start; padding-bottom: 10px; }
-.foot-col .micro { opacity: 0.7; margin-bottom: 6px; }
+/* The near ground falls into the dark, so the links and the form read on it at every width. */
+.foot::after { content: ""; position: absolute; inset: auto 0 0 0; height: min(54%, 520px); background: linear-gradient(to top, var(--ink) 0%, rgba(10, 12, 20, 0.94) 34%, rgba(10, 12, 20, 0.62) 68%, rgba(10, 12, 20, 0) 100%); pointer-events: none; }
+/* The quote is set light and large, one sentence per block. The moon is part of the heading and sized in its
+   ems, so the two always meet; where it lies over the letters it inverts them (difference), dark on the moon. */
+.foot-quote { font-weight: 400; font-size: clamp(40px, 5.4vw, 84px); letter-spacing: -0.035em; line-height: 1; text-transform: uppercase; --rise: 30px; }
+.foot-quote > span { display: block; }
+.moon { position: absolute; left: 10.2em; top: -0.95em; width: 4.3em; height: 4.3em; max-width: none; mix-blend-mode: difference; pointer-events: none; }
+/* One band along the bottom: three columns that start on the same line, each under a small label. */
+.foot-main { margin-top: auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(320px, 460px); gap: 40px; align-items: start; }
+.foot-main > * > p.micro { opacity: 0.72; margin-bottom: 12px; }
+.foot-nav { display: grid; justify-items: start; gap: 2px; }
+.foot-nav a { font-weight: 500; font-size: clamp(26px, 2.5vw, 36px); letter-spacing: -0.02em; line-height: 1.15; text-decoration: none; transition: color 0.2s var(--ease), transform 0.3s var(--ease); }
+.foot-nav a:hover, .foot-nav a:focus-visible { color: var(--accent); transform: translateX(8px); }
+.foot-col { display: grid; gap: 6px; align-content: start; justify-items: start; font-size: 18px; }
 .foot-base { display: flex; justify-content: space-between; gap: 16px; padding-top: 16px; border-top: 1px solid rgba(238, 240, 244, 0.35); }
 .foot :focus-visible { outline-color: var(--canvas); }
 .form { display: grid; gap: 16px; }
@@ -149,6 +165,10 @@ main { position: relative; z-index: 1; background: var(--canvas); }
   background: transparent; color: inherit; font: 400 16px/1.2 var(--sans); outline: none; resize: vertical;
 }
 .field textarea { height: 96px; }
+.foot .form { grid-template-columns: 1fr 1fr; gap: 14px 20px; } /* name and email share a row, so the band stays low */
+.foot .form > * { grid-column: 1 / -1; }
+.foot .form > .half { grid-column: auto; }
+.foot .field textarea { height: 68px; }
 .field input:focus, .field textarea:focus { border-bottom-width: 2px; padding-bottom: 7px; }
 .foot .field input:focus, .foot .field textarea:focus { border-bottom-color: var(--accent); }
 .field input::placeholder, .field textarea::placeholder { color: inherit; opacity: 0.7; }
@@ -172,8 +192,8 @@ main { position: relative; z-index: 1; background: var(--canvas); }
 /* ===== Tablet ===== */
 @media (max-width: 1199px) {
   .hero { min-height: 600px; padding: 24px var(--gutter) 28px; }
-  .hero-info { grid-template-columns: 1fr 1fr; margin-top: 36px; }
-  .hero-tag { display: none; }
+  .hero-info { grid-template-columns: 1fr 1fr; gap: 14px 24px; margin-top: 12px; }
+  .hero-intro { grid-column: 1 / -1; }
   .hero-statement { font-size: clamp(36px, 7.4vw, 76px); }
   .display { font-size: 72px; letter-spacing: -0.03em; line-height: 0.82; }
   .work { padding: 120px var(--gutter) 140px; }
@@ -194,9 +214,9 @@ main { position: relative; z-index: 1; background: var(--canvas); }
 /* ===== Phone ===== */
 @media (max-width: 809px) {
   .hero { padding: 20px 18px 24px; }
-  .hero-info { grid-template-columns: 1fr; gap: 14px; margin-top: 28px; }
-  .hero-role { font-size: 22px; }
-  .hero-intro { font-size: 12px; }
+  .hero-info { grid-template-columns: 1fr; gap: 2px; margin-top: 10px; }
+  .hero-role, .hero-tag { max-width: none; }
+  .hero-intro { margin-top: 10px; font-size: 15px; }
   .hero-statement { font-size: clamp(30px, 9.6vw, 56px); }
   .hero-base { margin-top: 20px; }
   .hero-base a { display: none; }
@@ -214,9 +234,11 @@ main { position: relative; z-index: 1; background: var(--canvas); }
   .tools { grid-template-columns: 1fr; gap: 24px; }
   .foot { padding-top: 56px; gap: 40px; }
   .foot .valley { bottom: auto; height: 640px; -webkit-mask-image: linear-gradient(#000 74%, transparent); mask-image: linear-gradient(#000 74%, transparent); } /* the scene fills the top and fades into the dark below */
-  .foot-quote { margin-bottom: 340px; } /* leaves a clear window onto the valley */
+  .foot-quote { margin-bottom: 280px; } /* leaves a clear window onto the valley */
   .foot-main { grid-template-columns: 1fr; gap: 32px; }
-  .foot-nav a { font-size: 36px; }
+  .foot-nav a { font-size: 28px; }
+  .moon { left: 3.9em; top: -0.7em; }
+  .foot .form > .half { grid-column: 1 / -1; }
   .foot-base { flex-wrap: wrap; }
 }
 

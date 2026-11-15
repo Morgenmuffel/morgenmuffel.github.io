@@ -48,7 +48,7 @@ const THEMES = {
     stone: [C.pale, C.blue], wood: [C.ink, C.ink],
     crowns: [[C.deep, C.navy], [C.navy, C.night], [C.blue, C.deep]], spruce: [C.navy, C.night],
     disc: [C.paper, C.paper], cloud: null, stars: [C.paper, C.paper],
-    view: { pos: [-44, 7, 38], tgt: [54, 15, -47], fov: 36 },
+    view: { pos: [-44, 7, 38], tgt: [54, 25, -47], fov: 36 },
   },
 };
 const PAIRS = ["meadow", "rock", "hill", "wall", "roof", "trim", "pane", "stone", "wood", "spruce", "disc", "cloud", "stars"];
@@ -78,7 +78,7 @@ function riverDist(x, z) {
   }
   return best;
 }
-const HOUSE = [32, -34];
+const HOUSE = [32, -34], MOON = [860, 300, -300];
 function height(x, z) {
   let h = 2.2 + (noise(x * 0.03 + 3, z * 0.03 + 7) - 0.5) * 4.5 + (noise(x * 0.07, z * 0.07) - 0.5) * 1.0;
   h += ss(30, 70, z) * ss(14, 60, Math.abs(x + 2)) * 5;                          // shoulders framing the foreground
@@ -394,7 +394,7 @@ function buildWorld(T) {
   // sky
   const flat = { lit: 0, hatch: 0, fog: 0 };
   if (T.stars) {
-    B.add(B.style(T.disc, flat), new THREE.CircleGeometry(26, 56), M(330, 215, -760, 1, 1, 1, -0.5));
+    B.add(B.style(T.disc, flat), new THREE.CircleGeometry(26, 56), M(...MOON, 1, 1, 1, -1.21));
     const st = B.style(T.stars, { ...flat, id: 1 }); // same id as the sky, so stars get no outline
     for (let k = 0; k < 120; k++) {
       const s = 1.2 + rnd() * 2.6;
@@ -555,7 +555,7 @@ function mount(canvas) {
 
   const L = V3(...T.light).normalize();
   const pos = V3(...T.view.pos), tgt = V3(...T.view.tgt), arm = V3();
-  const discAt = T.stars ? V3(330, 215, -760) : V3(-110, 30, -700);
+  const discAt = T.stars ? V3(...MOON) : V3(-110, 30, -700);
   const geo = buildWorld(T);
   const mats = { col: colMat(T, L), data: dataMat(), depth: depthMat(), sea: seaMat(T), sky: skyMat(T, discAt.clone().sub(pos).normalize()), ink: inkMat(T) };
   const land = new THREE.Mesh(geo.land, mats.col), sea = new THREE.Mesh(geo.sea, mats.sea);
@@ -585,6 +585,7 @@ function mount(canvas) {
 
   const blank = new THREE.Color(0, 0, 0), bg = new THREE.Color(0, 0, 1); // the background shares the sea's id, so the horizon gets no line
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pinned = canvas.hasAttribute("data-pinned"), look = V3(), fwd = V3(); // a pinned scene stays put while the page slides over it
   let mx = 0, my = 0, visible = false, raf = 0, shown = false, last = 0;
   const ease = { y1: 0, y2: 0, p1: 0, p2: 0 };
 
@@ -611,7 +612,13 @@ function mount(canvas) {
     ease.p1 += (my * 0.022 - ease.p1) * k; ease.p2 += (ease.p1 - ease.p2) * k;
     arm.copy(pos).sub(tgt).applyAxisAngle(THREE.Object3D.DEFAULT_UP, ease.y2);
     arm.y += arm.length() * ease.p2;
-    camera.position.copy(tgt).add(arm); camera.lookAt(tgt);
+    camera.position.copy(tgt).add(arm); look.copy(tgt);
+    if (pinned) { // scrolling walks the camera a little way down into the valley
+      const sp = ss(0, 1, clamp(window.scrollY / (canvas.clientHeight || 1), 0, 1));
+      fwd.copy(arm).setY(0).normalize();
+      camera.position.addScaledVector(fwd, -16 * sp); camera.position.y -= 2.5 * sp; look.y -= 9 * sp;
+    }
+    camera.lookAt(look);
     mats.sea.uniforms.uT.value = still ? 0 : t / 1000;
     sky.visible = true; land.material = mats.col; sea.material = mats.sea;
     renderer.setRenderTarget(rtC); renderer.setClearColor(blank, 1); renderer.render(scene, camera);
@@ -620,7 +627,11 @@ function mount(canvas) {
     renderer.setRenderTarget(null); renderer.render(post, postCam);
     if (!shown) { shown = true; canvas.classList.add("on"); }
   }
-  function loop(t) { raf = 0; if (!visible || document.hidden) { last = 0; return; } draw(t); if (!still) raf = requestAnimationFrame(loop); }
+  function loop(t) {
+    raf = 0; if (!visible || document.hidden) { last = 0; return; }
+    if (pinned && window.scrollY > canvas.clientHeight * 1.3) { last = 0; raf = requestAnimationFrame(loop); return; } // covered by the page: skip the drawing
+    draw(t); if (!still) raf = requestAnimationFrame(loop);
+  }
   const kick = () => { if (!raf && visible) raf = requestAnimationFrame(loop); };
 
   new ResizeObserver(resize).observe(canvas);

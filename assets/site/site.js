@@ -67,43 +67,49 @@
     orb.className = "orb";
     orb.setAttribute("aria-hidden", "true");
     document.body.appendChild(orb);
-    var css = getComputedStyle(document.documentElement);
-    var probe = function (v) { var p = document.createElement("div"); p.style.color = v; document.body.appendChild(p); var out = getComputedStyle(p).color; p.remove(); return out; };
-    var accentRgb = probe(css.getPropertyValue("--accent").trim());
-    var inkRgb = probe(css.getPropertyValue("--ink").trim());
-    var tx = 0, ty = 0, x = 0, y = 0, seen = false, mode = "";
-    function surface() {
-      var stack = document.elementsFromPoint(tx, ty);
-      for (var i = 0; i < stack.length; i++) {
-        var n = stack[i];
-        if (n === orb || n === grain || n.tagName === "HTML" || n.tagName === "BODY") continue;
-        if (n.tagName === "IMG" || n.tagName === "VIDEO" || n.tagName === "IFRAME") return "";
-        var s = getComputedStyle(n);
-        if (s.opacity === "0") continue;
-        if (s.backgroundImage !== "none") return "";
-        var bg = s.backgroundColor;
-        if (bg && bg !== "transparent" && !/,\s*0\)$/.test(bg)) return bg;
+    var tx = 0, ty = 0, x = 0, y = 0, seen = false;
+
+    /* A trail of squares under the cursor. Orb and squares are one red, blended by difference,
+       so they read teal on the paper, red on ink and violet on the blues: never black on black. */
+    var layer = document.createElement("div");
+    layer.className = "trail-layer";
+    layer.setAttribute("aria-hidden", "true");
+    document.body.appendChild(layer);
+    var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var live = new Map(), sweeping = 0, lastKey = "";
+    var cellSize = function () { return Math.max(34, Math.round(window.innerWidth / 30)); };
+    function light(c, r, ms) {
+      var key = c + "," + r, hit = live.get(key), size = cellSize();
+      if (!hit) {
+        hit = { el: document.createElement("span"), until: 0 };
+        hit.el.style.cssText = "left:" + c * size + "px;top:" + r * size + "px;width:" + size + "px;height:" + size + "px";
+        layer.appendChild(hit.el); live.set(key, hit);
       }
-      return "";
+      hit.until = Math.max(hit.until, performance.now() + ms);
     }
-    function paint() {
-      var bg = seen ? surface() : "";
-      var next = bg === accentRgb ? "blue" : bg === inkRgb ? "black" : "base";
-      if (next === mode) return;
-      mode = next;
-      orb.style.background = next === "blue" ? "var(--ink)" : next === "black" ? "var(--accent)" : "var(--cursor)";
-      orb.style.mixBlendMode = next === "base" ? "difference" : "normal";
+    function sweep() {
+      var now = performance.now();
+      live.forEach(function (hit, key) { if (now >= hit.until) { hit.el.remove(); live.delete(key); } });
+      sweeping = live.size ? requestAnimationFrame(sweep) : 0;
+    }
+    function trail() {
+      var size = cellSize(), c = Math.floor(tx / size), r = Math.floor(ty / size), key = c + "," + r;
+      if (key === lastKey) return;
+      lastKey = key;
+      light(c, r, 420 + Math.random() * 320);
+      [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(function (d) { if (Math.random() < 0.3) light(c + d[0], r + d[1], 220 + Math.random() * 280); });
+      if (!sweeping) sweeping = requestAnimationFrame(sweep);
     }
     function tick() {
       x += (tx - x) * 0.4; y += (ty - y) * 0.4;
       orb.style.transform = "translate(" + (x - 12.5) + "px," + (y - 12.5) + "px)";
-      paint();
       requestAnimationFrame(tick);
     }
     window.addEventListener("pointermove", function (e) {
       tx = e.clientX; ty = e.clientY;
       if (!seen) { x = tx; y = ty; seen = true; }
       orb.style.opacity = "1";
+      if (!calm && e.pointerType === "mouse") trail();
     }, { passive: true });
     document.documentElement.addEventListener("mouseleave", function () { orb.style.opacity = "0"; });
     requestAnimationFrame(tick);

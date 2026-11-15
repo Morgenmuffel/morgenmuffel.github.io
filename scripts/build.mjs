@@ -166,7 +166,7 @@ function workRow(c, i) {
     + (c.protected ? `<span class="lock-tag micro">${LOCK}Password protected</span>` : "");
   return `      <a class="wrow" href="/work/${c.slug}">
         <div class="wrow-a"><p class="wrow-n">${n}</p><span class="btn-line micro">View project${c.protected ? " " + LOCK : ""}</span></div>
-        <div class="wrow-cover">${cover}<div class="squares trail" data-grid="hover" data-cols="8" aria-hidden="true"></div></div>
+        <div class="wrow-cover">${cover}</div>
         <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">${esc(c.listTitle)}</h3><p class="micro">${esc(c.capability)}</p></div><p>${esc(c.summary)}</p></div>
       </a>`;
 }

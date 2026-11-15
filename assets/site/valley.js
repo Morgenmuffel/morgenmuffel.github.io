@@ -8,7 +8,6 @@
  *    filled with soft gradients instead of realistic lighting.
  *  - Light is ambient: a gentle darkening on the side facing away from the light, plus cast shadows
  *    that land as flat darker shapes with no outline.
- *  - Shaded areas get pencil hatching; the sky gets short horizontal pencil dashes.
  *  - Distance fades everything towards the horizon colour, which keeps the picture near-monochrome.
  *  - A second, invisible drawing of the scene records object ids, surface direction and distance; a
  *    final pass draws a thin line wherever those jump (silhouettes, creases, the snow line).
@@ -27,8 +26,8 @@ const C = {
 /* Pairs are [top or far colour, bottom or near colour]. */
 const THEMES = {
   day: {
-    zenith: "#C9D5FB", horizon: "#F5F7FC", fog: "#F5F7FC", glow: C.white, line: C.night, shade: C.navy, pencil: C.ink,
-    skyDash: 0.22, dashCol: C.navy, glowK: [0.75, 26], blotch: 1, fogK: 0.0018, light: [-0.6, 0.55, -0.25],
+    zenith: "#C9D5FB", horizon: "#F5F7FC", fog: "#F5F7FC", glow: C.white, line: C.night, shade: C.navy,
+    glowK: [0.75, 26], blotch: 1, fogK: 0.0018, light: [-0.6, 0.55, -0.25],
     meadow: ["#C6D2FC", "#8AA4FF"], sand: C.mist, flowers: C.sun,
     rock: [C.blue, "#AFC0FA"], snow: [C.white, C.mist], hill: [C.deep, C.blue],
     sea: C.deep, dashA: C.white, dashB: C.blue,
@@ -39,13 +38,14 @@ const THEMES = {
     view: { pos: [-4, 10, 66], tgt: [8, 13, -30], fov: 34 },
   },
   night: {
-    zenith: C.ink, horizon: C.navy, fog: C.navy, glow: C.pale, line: C.ink, shade: "#02040C", pencil: C.ink,
-    skyDash: 0.5, dashCol: C.deep, glowK: [0.3, 90], blotch: 0, fogK: 0.0018, light: [0.5, 0.55, -0.45],
+    // a flat black sky: the moon, the stars and the snow are the only light things in it
+    zenith: C.ink, horizon: C.ink, fog: C.navy, glow: C.pale, line: C.ink, shade: "#02040C",
+    glowK: [0, 90], blotch: 0, fogK: 0.0007, light: [-0.75, 0.55, 0.2], // lit from the viewer's side, so snow and walls face the light
     meadow: [C.navy, C.night], sand: C.deep, flowers: C.sun,
-    rock: [C.deep, C.navy], snow: [C.white, C.pale], hill: [C.navy, C.night],
+    rock: [C.blue, C.deep], snow: [C.white, C.mist], hill: [C.navy, C.night],
     sea: C.deep, dashA: C.blue, dashB: C.navy,
-    wall: [C.blue, C.deep], roof: [C.red, C.rust], trim: [C.pale, C.blue], pane: [C.sun, C.sun], paneLit: 0,
-    stone: [C.pale, C.blue], wood: [C.ink, C.ink],
+    wall: [C.blue, C.deep], roof: [C.red, C.rust], trim: [C.white, C.pale], pane: [C.sun, C.sun], paneLit: 0,
+    stone: [C.white, C.pale], wood: [C.ink, C.ink],
     crowns: [[C.deep, C.navy], [C.navy, C.night], [C.blue, C.deep]], spruce: [C.navy, C.night],
     disc: [C.paper, C.paper], cloud: null, stars: [C.paper, C.paper],
     view: { pos: [-44, 7, 38], tgt: [54, 25, -47], fov: 36 },
@@ -95,14 +95,14 @@ function height(x, z) {
 class Builder {
   constructor() { this.p = []; this.n = []; this.a = []; this.b = []; this.g = []; this.i = []; this.m = []; this.s = []; this.next = 2; }
   id() { return this.next++; }
-  /* A style is how a surface is painted: its two colours, its outline group (id), how much pencil it takes,
+  /* A style is how a surface is painted: its two colours, its outline group (id),
      whether it is shaded at all (lit), how much distance haze it gets, and an optional snow line height. */
   style(pair, o = {}) {
-    return { A: pair[0], B: pair[1], id: o.id ?? this.id(), hatch: o.hatch ?? 1, lit: o.lit ?? 1, fog: o.fog ?? 1, snow: o.snow ?? 0, range: o.range };
+    return { A: pair[0], B: pair[1], id: o.id ?? this.id(), lit: o.lit ?? 1, fog: o.fog ?? 1, snow: o.snow ?? 0, range: o.range };
   }
   vert(st, p, n, g) {
     this.p.push(p[0], p[1], p[2]); this.n.push(n[0], n[1], n[2]); this.a.push(st.A[0], st.A[1], st.A[2]); this.b.push(st.B[0], st.B[1], st.B[2]);
-    this.g.push(g); this.i.push(st.id); this.m.push(st.hatch, st.lit, st.fog); this.s.push(st.snow);
+    this.g.push(g); this.i.push(st.id); this.m.push(st.lit, st.fog); this.s.push(st.snow);
   }
   tri(st, P, N, G, i0, i1, i2) {
     const a = P[i0], b = P[i1], c = P[i2];
@@ -179,7 +179,7 @@ class Builder {
     const g = new THREE.BufferGeometry(), f = (arr, n) => new THREE.Float32BufferAttribute(arr, n);
     g.setAttribute("position", f(this.p, 3)); g.setAttribute("normal", f(this.n, 3));
     g.setAttribute("aA", f(this.a, 3)); g.setAttribute("aB", f(this.b, 3)); g.setAttribute("aG", f(this.g, 1));
-    g.setAttribute("aId", f(this.i, 1)); g.setAttribute("aM", f(this.m, 3)); g.setAttribute("aS", f(this.s, 1));
+    g.setAttribute("aId", f(this.i, 1)); g.setAttribute("aM", f(this.m, 2)); g.setAttribute("aS", f(this.s, 1));
     return g;
   }
 }
@@ -222,7 +222,7 @@ function mountain(B, st, cx, cz, R, h, baseY, seed, shape = "peak") {
 /* ---------- trees ---------- */
 function roundTree(B, T, x, z, s, pair, rnd) {
   const y = height(x, z) - 0.2, lx = (rnd() - 0.5) * 1.2 * s, lz = (rnd() - 0.5) * 1.2 * s;
-  const wood = B.style(T.wood, { lit: 0, hatch: 0 });
+  const wood = B.style(T.wood, { lit: 0 });
   B.tube(wood, [V3(x, y, z), V3(x + lx * 0.15, y + 1.3 * s, z + lz * 0.15), V3(x + lx * 0.6, y + 3 * s, z + lz * 0.6), V3(x + lx, y + 4.6 * s, z + lz)],
     [0.5 * s, 0.27 * s, 0.21 * s, 0.15 * s], 8);
   const cx = x + lx, cy = y + 5.6 * s, cz = z + lz;
@@ -239,7 +239,7 @@ function roundTree(B, T, x, z, s, pair, rnd) {
 
 function spruce(B, T, x, z, s) {
   const y = height(x, z) - 0.2;
-  B.tube(B.style(T.wood, { lit: 0, hatch: 0 }), [V3(x, y, z), V3(x, y + 1.6 * s, z)], [0.3 * s, 0.22 * s], 7);
+  B.tube(B.style(T.wood, { lit: 0 }), [V3(x, y, z), V3(x, y + 1.6 * s, z)], [0.3 * s, 0.22 * s], 7);
   const tiers = 5, top = y + (1.1 + tiers * 1.5 + 1.2) * s, st = B.style(T.spruce, { range: [y + s, top] });
   for (let k = 0; k < tiers; k++) {
     const yb = (1.1 + k * 1.5) * s, r = (2.5 - k * 0.42) * s, hgt = 2.7 * s;
@@ -248,7 +248,7 @@ function spruce(B, T, x, z, s) {
 }
 
 function bareTree(B, T, x, z, s, rnd) {
-  const st = B.style(T.wood, { lit: 0, hatch: 0 });
+  const st = B.style(T.wood, { lit: 0 });
   const limb = (from, dir, len, r, depth) => {
     const pts = [from.clone()], radii = [r], d = dir.clone(), cur = from.clone(), steps = 3;
     for (let k = 1; k <= steps; k++) {
@@ -277,22 +277,22 @@ function house(B, T) {
   const box = (st, w, h, d, ...m) => B.add(st, new THREE.BoxGeometry(w, h, d), at(...m));
   const wallR = (ly) => 3.4 - 0.5 * (ly - 0.8) / 14;
   const out = (a, r) => [Math.sin(a) * r, Math.cos(a) * r];
-  const trim = () => B.style(T.trim, { hatch: 0.5 }), red = () => B.style(T.roof, { hatch: 0.6 }), stone = () => B.style(T.stone, { hatch: 0.5 });
+  const trim = () => B.style(T.trim), red = () => B.style(T.roof), stone = () => B.style(T.stone);
 
   B.revolve(stone(), [[4.1, 0], [3.9, 0.8], [0.1, 0.8]], 36, x, y, z, s);                                           // stone foot
-  B.revolve(B.style(T.wall, { hatch: 0.8 }), [[3.4, 0.8], [2.9, 14.8]], 44, x, y, z, s);                            // the round tower
+  B.revolve(B.style(T.wall), [[3.4, 0.8], [2.9, 14.8]], 44, x, y, z, s);                            // the round tower
   for (const ly of [5.6, 10.2]) B.revolve(trim(), [[wallR(ly) + 0.02, ly - 0.12], [wallR(ly) + 0.14, ly - 0.06], [wallR(ly) + 0.14, ly + 0.06], [wallR(ly) + 0.02, ly + 0.12]], 44, x, y, z, s);
   // pointed roof with flared eaves, a spire and a pennant
   B.revolve(red(), [[2.8, 14.9], [4.7, 14.6], [4.75, 14.85], [3.6, 15.9], [2.5, 17.7], [1.5, 19.9], [0.7, 21.9], [0.16, 23.4], [0.02, 23.7]], 44, x, y, z, s);
-  B.add(B.style(T.wood, { lit: 0, hatch: 0 }), new THREE.CylinderGeometry(0.05, 0.07, 2.6, 6), at(0, 24.6, 0));
-  B.add(B.style(T.disc, { lit: 0, hatch: 0 }), new THREE.SphereGeometry(0.22, 12, 8), at(0, 25.9, 0));
+  B.add(B.style(T.wood, { lit: 0 }), new THREE.CylinderGeometry(0.05, 0.07, 2.6, 6), at(0, 24.6, 0));
+  B.add(B.style(T.disc, { lit: 0 }), new THREE.SphereGeometry(0.22, 12, 8), at(0, 25.9, 0));
   box(red(), 1.5, 0.7, 0.05, 0.8, 25.2, 0);
 
   // windows: frame, dark pane, glazing bars, sill
   const win = (a, ly, w = 1.05, h = 1.6) => {
     const [fx, fz] = out(a, wallR(ly) - 0.05), [px, pz] = out(a, wallR(ly) + 0.03), [bx, bz] = out(a, wallR(ly) + 0.1);
     box(trim(), w + 0.34, h + 0.34, 0.3, fx, ly, fz, 1, 1, 1, a);
-    box(B.style(T.pane, { lit: T.paneLit, hatch: 0 }), w, h, 0.26, px, ly, pz, 1, 1, 1, a);
+    box(B.style(T.pane, { lit: T.paneLit }), w, h, 0.26, px, ly, pz, 1, 1, 1, a);
     const bars = trim();
     box(bars, 0.09, h, 0.16, bx, ly, bz, 1, 1, 1, a); box(bars, w, 0.09, 0.16, bx, ly + 0.1, bz, 1, 1, 1, a);
     box(trim(), w + 0.6, 0.14, 0.5, fx, ly - h / 2 - 0.22, fz, 1, 1, 1, a);
@@ -327,11 +327,11 @@ function house(B, T) {
 
 function observatory(B, T, p) {
   const s = 1.3, [x, y, z] = p;
-  const white = (o) => B.style(T.trim, { hatch: 0.8, ...o });
-  B.revolve(B.style(T.stone, { hatch: 0.8 }), [[4.2, -1.2], [3.6, 0.5], [0.1, 0.5]], 30, x, y, z, s);           // rock plinth
+  const white = (o) => B.style(T.trim, { ...o });
+  B.revolve(B.style(T.stone), [[4.2, -1.2], [3.6, 0.5], [0.1, 0.5]], 30, x, y, z, s);           // rock plinth
   B.revolve(white(), [[2.9, 0.5], [2.35, 11]], 36, x, y, z, s);                                                  // tapered tower
   B.revolve(white(), [[2.3, 10.7], [3.35, 10.9], [3.35, 11.25], [0.1, 11.25]], 36, x, y, z, s);                  // gallery deck
-  const rail = white({ hatch: 0 });
+  const rail = white();
   B.revolve(rail, [[3.22, 12.25], [3.3, 12.25], [3.3, 12.4], [3.22, 12.4]], 36, x, y, z, s);
   for (let k = 0; k < 14; k++) {
     const a = k / 14 * Math.PI * 2;
@@ -340,15 +340,15 @@ function observatory(B, T, p) {
   const dome = [];
   for (let k = 0; k <= 12; k++) { const a = k / 12 * Math.PI / 2; dome.push([Math.cos(a) * 2.65, 11.25 + Math.sin(a) * 2.75]); }
   B.revolve(white(), dome, 36, x, y, z, s);
-  const dark = () => B.style(T.pane, { lit: T.paneLit, hatch: 0 });
+  const dark = () => B.style(T.pane, { lit: T.paneLit });
   B.add(dark(), new THREE.BoxGeometry(0.75, 2.5, 3), M(x - 0.9 * s, y + 13.2 * s, z + 1.5 * s, s, s, s, -0.55, -0.62));  // the slit in the dome
-  B.add(white({ hatch: 0 }), new THREE.SphereGeometry(0.3, 10, 8), M(x, y + 14.2 * s, z, s));
+  B.add(white(), new THREE.SphereGeometry(0.3, 10, 8), M(x, y + 14.2 * s, z, s));
   for (const [a, ly] of [[-0.55, 4.6], [-0.2, 7.6], [-0.9, 8.6]]) {
     const r = (2.9 - 0.55 * (ly - 0.5) / 10.5) * s;
     B.add(dark(), new THREE.BoxGeometry(0.6, 1.1, 0.3), M(x + Math.sin(a) * r, y + ly * s, z + Math.cos(a) * r, s, s, s, a));
   }
   const r = 2.86 * s, a = -0.55;
-  B.add(B.style(T.roof, { hatch: 0 }), new THREE.BoxGeometry(1.1, 2, 0.3), M(x + Math.sin(a) * r, y + 1.6 * s, z + Math.cos(a) * r, s, s, s, a)); // door
+  B.add(B.style(T.roof), new THREE.BoxGeometry(1.1, 2, 0.3), M(x + Math.sin(a) * r, y + 1.6 * s, z + Math.cos(a) * r, s, s, s, a)); // door
 }
 
 function buildWorld(T) {
@@ -392,7 +392,7 @@ function buildWorld(T) {
   }
 
   // sky
-  const flat = { lit: 0, hatch: 0, fog: 0 };
+  const flat = { lit: 0, fog: 0 };
   if (T.stars) {
     B.add(B.style(T.disc, flat), new THREE.CircleGeometry(26, 56), M(...MOON, 1, 1, 1, -1.21));
     const st = B.style(T.stars, { ...flat, id: 1 }); // same id as the sky, so stars get no outline
@@ -403,7 +403,7 @@ function buildWorld(T) {
   } else {
     B.add(B.style(T.disc, flat), new THREE.CircleGeometry(46, 72), M(-110, 20, -700));
     for (const [x, y, z, w] of [[-330, 150, -820, 64], [80, 210, -900, 84], [340, 125, -800, 56]]) {
-      const st = B.style(T.cloud, { fog: 0, hatch: 0.5, lit: 0.35, range: [y - w * 0.14, y + w * 0.2] });
+      const st = B.style(T.cloud, { fog: 0, lit: 0.35, range: [y - w * 0.14, y + w * 0.2] });
       for (const [ox, oy, sc] of [[0, 0, 1], [-0.6, -0.03, 0.62], [0.58, -0.02, 0.7], [0.15, 0.07, 0.6]])
         B.add(st, new THREE.IcosahedronGeometry(1, 3), M(x + ox * w, y + oy * w, z, w * sc * 0.62, w * sc * 0.15, w * sc * 0.3));
     }
@@ -428,19 +428,18 @@ const SNOWLINE = "float snowLine(vec3 w, float s){ return s + 3.2*sin(w.x*0.2 + 
 const colMat = (T, L) => new THREE.ShaderMaterial({
   uniforms: {
     tS: { value: null }, uSM: { value: new THREE.Matrix4() }, uSTex: { value: 1 / 2048 }, uL: { value: L },
-    uShade: u3(T.shade), uFog: u3(T.fog), uPencil: u3(T.pencil), uSnowA: u3(T.snow[0]), uSnowB: u3(T.snow[1]),
+    uShade: u3(T.shade), uFog: u3(T.fog), uSnowA: u3(T.snow[0]), uSnowB: u3(T.snow[1]),
     uSand: u3(T.sand), uFlowers: u3(T.flowers), uFogK: { value: T.fogK }, uBlotch: { value: T.blotch },
   },
   vertexShader: `
-    attribute vec3 aA, aB, aM; attribute float aG, aS; uniform mat4 uSM;
-    varying vec3 vA, vB, vM, vN, vW; varying float vG, vS; varying vec4 vSh;
+    attribute vec3 aA, aB; attribute vec2 aM; attribute float aG, aS; uniform mat4 uSM;
+    varying vec3 vA, vB, vN, vW; varying vec2 vM; varying float vG, vS; varying vec4 vSh;
     void main(){ vA=aA; vB=aB; vM=aM; vG=aG; vS=aS; vN=normal; vW=position;
       vSh = uSM * vec4(position + normal*0.3, 1.); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
   fragmentShader: `
-    uniform sampler2D tS; uniform vec3 uL, uShade, uFog, uPencil, uSnowA, uSnowB, uSand, uFlowers; uniform float uFogK, uSTex, uBlotch;
-    varying vec3 vA, vB, vM, vN, vW; varying float vG, vS; varying vec4 vSh;
+    uniform sampler2D tS; uniform vec3 uL, uShade, uFog, uSnowA, uSnowB, uSand, uFlowers; uniform float uFogK, uSTex, uBlotch;
+    varying vec3 vA, vB, vN, vW; varying vec2 vM; varying float vG, vS; varying vec4 vSh;
     ${NOISE} ${SNOWLINE}
-    float stroke(float u, float wd){ float w = fwidth(u); return 1. - smoothstep(wd - w, wd + w, abs(fract(u) - 0.5)); }
     float occluded(vec2 uv, float z){ return step(texture2D(tS, uv).r + 0.0006, z); }
     void main(){
       vec3 N = normalize(vN);
@@ -460,16 +459,9 @@ const colMat = (T, L) => new THREE.ShaderMaterial({
         float o = uSTex*0.75;
         shadow = 0.25*(occluded(sp.xy + vec2(o, o), sp.z) + occluded(sp.xy + vec2(-o, o), sp.z) + occluded(sp.xy + vec2(o, -o), sp.z) + occluded(sp.xy + vec2(-o, -o), sp.z));
       }
-      float dark = max(form*0.85, shadow) * vM.y;
+      float dark = max(form*0.85, shadow) * vM.x;
       vec3 col = mix(base, uShade, 0.55*dark);
-      // pencil hatching inside the shade; spacing follows distance so it stays even on screen
-      float dist = length(vW - cameraPosition);
-      float lod = log2(max(dist, 10.)/40.), l0 = floor(lod), f = lod - l0, s0 = 0.26*exp2(l0);
-      float c = dot(vW, vec3(0.62, 0.71, -0.33)) + s0*0.5*sin(dot(vW, vec3(-0.3, 0.2, 0.9))/s0*0.35);
-      float pen = mix(stroke(c/s0, 0.1), stroke(c/(s0*2.), 0.1), f);
-      pen *= 0.35 + 0.65*vn(vec2(dot(vW, vec3(0.7, -0.2, 0.68))/s0*0.22, c/s0*0.5));
-      col = mix(col, uPencil, pen * smoothstep(0.3, 0.62, dark) * vM.x * 0.62);
-      col = mix(col, uFog, (1. - exp(-dist*uFogK)) * vM.z);
+      col = mix(col, uFog, (1. - exp(-length(vW - cameraPosition)*uFogK)) * vM.y);
       gl_FragColor = vec4(col, 1.);
     }`,
 });
@@ -491,7 +483,7 @@ const seaMat = (T) => new THREE.ShaderMaterial({
   fragmentShader: `
     uniform float uT, uFogK; uniform vec3 uBase, uA, uB, uFog; varying vec3 vW; ${NOISE}
     void main(){
-      // short pencil dashes in rows, each row drifting at its own pace and bobbing a little
+      // wave marks: short dashes in rows, each row drifting at its own pace and bobbing a little
       vec2 p = mat2(0.94, -0.34, 0.34, 0.94)*vW.xz;
       float dist = length(vW - cameraPosition);
       float sp = 2.4, row = floor(p.y/sp);
@@ -507,22 +499,15 @@ const seaMat = (T) => new THREE.ShaderMaterial({
     }`,
 });
 const skyMat = (T, sunDir) => new THREE.ShaderMaterial({
-  uniforms: { uZen: u3(T.zenith), uHor: u3(T.horizon), uGlow: u3(T.glow), uSun: { value: sunDir }, uDash: { value: T.skyDash }, uDashCol: u3(T.dashCol), uGlowK: { value: new THREE.Vector2(...T.glowK) } },
+  uniforms: { uZen: u3(T.zenith), uHor: u3(T.horizon), uGlow: u3(T.glow), uSun: { value: sunDir }, uGlowK: { value: new THREE.Vector2(...T.glowK) } },
   vertexShader: "varying vec3 vW; void main(){ vW=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }",
   fragmentShader: `
-    uniform vec3 uZen, uHor, uGlow, uSun, uDashCol; uniform float uDash; uniform vec2 uGlowK; varying vec3 vW; ${NOISE}
+    uniform vec3 uZen, uHor, uGlow, uSun; uniform vec2 uGlowK; varying vec3 vW;
     void main(){
       vec3 d = normalize(vW - cameraPosition);
       vec3 col = mix(uHor, uZen, pow(clamp(d.y*2.4, 0., 1.), 0.75));        // glow at the horizon, deeper overhead
       col = mix(col, uGlow, uGlowK.x*pow(max(dot(d, uSun), 0.), uGlowK.y));
-      // rows of short pencil dashes, densest near the horizon
-      float el = asin(clamp(d.y, -1., 1.)), az = atan(d.x, -d.z);
-      float ru = el*120., row = floor(ru), u = az*26. + h11(row)*37.;
-      float cell = floor(u), f = fract(u), len = 0.25 + 0.55*h11(cell + row*7.);
-      float wy = fwidth(ru), wx = fwidth(u);
-      float a = (1. - smoothstep(0.05 - wy, 0.05 + wy, abs(fract(ru) - 0.5))) * smoothstep(0., wx, f) * (1. - smoothstep(len - wx, len + wx, f));
-      a *= step(0.5, h11(cell*1.9 + row*3.1)) * smoothstep(0.004, 0.03, d.y) * (1. - smoothstep(0.06, 0.36, d.y));
-      gl_FragColor = vec4(mix(col, uDashCol, a*uDash), 1.);
+      gl_FragColor = vec4(col, 1.);
     }`,
   side: THREE.BackSide, depthWrite: false,
 });

@@ -5,12 +5,18 @@
  *   <canvas class="valley" data-valley="day" data-pinned data-text="#some-heading"></canvas>
  *
  * How the look is made:
- *  - Every surface carries two colours and blends between them (usually bottom to top).
- *  - Shade is a flat shape, not a gradient: a surface is either facing the light or it is not, and cast
- *    shadows land as the same flat tone with no outline. Only the ground keeps a soft falloff.
+ *  - Every surface carries two colours. The ground and the mountains blend between them; everything smaller
+ *    (trees, rocks, the buildings) is painted in flat tones: a light one where it faces the light, a middle
+ *    one, and one shade.
+ *  - Shade is a flat shape, not a gradient, and cast shadows land as the same flat tone with no outline.
+ *    Only the ground keeps a soft falloff.
  *  - Rocks are built from flat panels, so they take light, shade and outline plane by plane.
- *  - By day the sun sits on the horizon. It is painted in the sky (no outline), throws a path of glints
- *    across the sea and puts a touch of gold on whatever faces it.
+ *  - By day the sun sits on the horizon: a ball painted in the sky (no outline) with short brush arcs close
+ *    around it. Gold is kept for the sun, a narrow path of glints on the sea straight under it, and a touch
+ *    on the side of whatever faces it; the land, the sky and the clouds stay blue and white.
+ *  - The headline stands on the grass as a sign. Its shadow is worked out on its own, from a light standing high
+ *    behind it, so it falls just in front of the words instead of far across the meadow.
+ *  - At the water's edge the sea runs up over the land now and then, so the coastline comes and goes.
  *  - Distance fades everything towards the horizon colour.
  *  - A second, invisible drawing of the scene records object ids, surface direction and distance; a
  *    final pass draws a thin line wherever those jump (silhouettes, creases, the snow line).
@@ -31,15 +37,15 @@ const C = {
 /* Pairs are [top or far colour, bottom or near colour]. */
 const THEMES = {
   day: { // sunset: a glowing horizon over land that is already in blue dusk
-    zenith: "#AFC0FA", mid: C.mist, horizon: C.cream, fog: "#F4EEDA", line: C.night, shade: C.navy,
-    sunset: 1, sunCol: C.glow, sunDeep: C.gold, glint: C.glow, glintK: 0.75, blotch: 1, fogK: 0.0018, light: [-0.7, 0.32, -0.62],
-    meadow: ["#4D74F3", "#2448DC"], sand: C.sky, flowers: C.sun, path: "#F1E2B0",
+    zenith: "#AFC0FA", mid: C.mist, horizon: "#EEF0F6", fog: "#E6EAF7", line: C.night, shade: C.navy,
+    sunset: 1, sunCol: C.glow, sunDeep: C.gold, glint: C.glow, glintK: 1.25, blotch: 0, fogK: 0.0018, light: [-0.7, 0.32, -0.62],
+    meadow: ["#4D74F3", "#2448DC"], sand: C.sky, flowers: C.sun, path: C.mist,
     rock: [C.sky, C.blue], snow: [C.white, C.mist], hill: [C.deep, C.navy],
     sea: C.navy, wave: C.pale, foam: C.white, glitter: C.glow, glitterK: 1,
     wall: [C.sky, C.blue], roof: [C.red, C.rust], trim: [C.white, C.mist], pane: [C.navy, C.navy], paneLit: 1,
     stone: [C.white, C.pale], wood: ["#A9B1CE", "#737DA3"],
-    crowns: [[C.sky, C.blue], ["#B4C3FA", C.sky], [C.glow, C.gold], [C.blue, C.deep]], spruce: [C.sky, C.deep],
-    cloud: [C.white, "#F6E3A6"], stars: null, text: C.glow,
+    crowns: [[C.sky, C.blue], ["#B4C3FA", C.sky], [C.pale, C.sky], [C.blue, C.deep]], spruce: [C.sky, C.deep],
+    cloud: [C.white, C.mist], stars: null, text: C.glow,
     view: { pos: [-4, 10, 66], tgt: [8, 13, -30], fov: 34 },
   },
   night: { // a flat black sky: the stars and the snow are the only light things in it (the moon is on the page)
@@ -96,6 +102,8 @@ function height(x, z) {
   let h = 2.2 + (noise(x * 0.03 + 3, z * 0.03 + 7) - 0.5) * 4.5 + (noise(x * 0.07, z * 0.07) - 0.5) * 1.0;
   h += ss(30, 70, z) * ss(14, 60, Math.abs(x + 2)) * 5;                          // shoulders framing the foreground
   h += 4.5 * Math.exp(-((x - HOUSE[0]) ** 2 + (z - HOUSE[1]) ** 2) / 260);       // knoll under the house
+  h += ss(1, 7, x) * ss(16, 26, z) * ss(52, 42, z) * 0.6;                         // the right bank of the stream stands higher
+  h += 1.15 * Math.exp(-((x - 11) ** 2 / 40 + (z - 31) ** 2 / 22));                // and a low hill on it, under the end of the headline
   h += ss(45, 130, x) * ss(-40, -150, z) * 16;                                   // foothills on the right
   const shore = -z - (40 + 0.5 * x + 7 * Math.sin(x * 0.06));                    // the coast runs diagonally
   const sea = Math.max(ss(-3, 9, shore) * (1 - ss(22, 58, x)), ss(-228, -256, z));
@@ -103,7 +111,27 @@ function height(x, z) {
   const r = ss(7, 2.5, riverDist(x, z));                                          // the river is carved below sea level
   return h > -1 ? h * (1 - r) - 1 * r : h;
 }
-
+/* The land is drawn as a mesh of square cells, flat between their corners, so on a steep bank the drawn ground
+   can sit well away from height(). Small things that must touch the ground ask for the drawn one. */
+const LAND = { x0: -204, x1: 224, z0: -264, z1: 84, step: 3.5 };
+function ground(x, z) {
+  const { x0, z0, step } = LAND, i = Math.floor((x - x0) / step), j = Math.floor((z - z0) / step), u = (x - x0) / step - i, v = (z - z0) / step - j;
+  const H = (a, b) => height(x0 + (i + a) * step, z0 + (j + b) * step);
+  return u + v <= 1 ? H(0, 0) + (H(1, 0) - H(0, 0)) * u + (H(0, 1) - H(0, 0)) * v : H(1, 1) + (H(0, 1) - H(1, 1)) * (1 - u) + (H(1, 0) - H(1, 1)) * (1 - v);
+}
+const norm3 = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
+/* A bed for something that lies on sloping ground: a point of the drawn ground (o), the ground's normal there (n),
+   a heading along the ground (a) and the direction across it that faces the viewer (s). at(along, up, front)
+   turns a position in the bed into a place in the world. */
+function bed(x, z, turn, e = 0.9) {
+  const dx = (ground(x + e, z) - ground(x - e, z)) / (2 * e), dz = (ground(x, z + e) - ground(x, z - e)) / (2 * e);
+  const n = norm3([-dx, 1, -dz]), h = [Math.cos(turn), 0, Math.sin(turn)], d = h[0] * n[0] + h[2] * n[2];
+  const a = norm3([h[0] - n[0] * d, -n[1] * d, h[2] - n[2] * d]);
+  let s = [a[1] * n[2] - a[2] * n[1], a[2] * n[0] - a[0] * n[2], a[0] * n[1] - a[1] * n[0]];
+  if (s[2] < 0) s = s.map((q) => -q);
+  const o = [x, ground(x, z), z];
+  return { o, n, a, s, at: (u, v, w) => o.map((q, k) => q + a[k] * u + n[k] * v + s[k] * w) };
+}
 /* ---------- geometry builder: everything static ends up in one mesh ---------- */
 class Builder {
   constructor() { this.p = []; this.n = []; this.a = []; this.b = []; this.g = []; this.i = []; this.m = []; this.s = []; this.next = 2; }
@@ -201,6 +229,14 @@ class Builder {
     for (let k = 0; k < P.length; k += 3) this.vert(st, [P[k], P[k + 1], P[k + 2]], [N[k], N[k + 1], N[k + 2]], clamp((P[k + 1] - y0) / (y1 - y0 || 1), 0, 1));
     g.dispose();
   }
+  get count() { return this.p.length / 3; }
+  /* Press what was built since vertex `from` into the drawn ground: lower it until its lowest point, measured from
+     the ground under each point, sits `depth` below the surface. */
+  sink(from, depth) {
+    let off = Infinity;
+    for (let k = from * 3; k < this.p.length; k += 3) off = Math.min(off, this.p[k + 1] - ground(this.p[k], this.p[k + 2]));
+    for (let k = from * 3 + 1; k < this.p.length; k += 3) this.p[k] -= off + depth;
+  }
   build() {
     const g = new THREE.BufferGeometry(), f = (arr, n) => new THREE.Float32BufferAttribute(arr, n);
     g.setAttribute("position", f(this.p, 3)); g.setAttribute("normal", f(this.n, 3));
@@ -213,7 +249,7 @@ const M = (x, y, z, sx = 1, sy = sx, sz = sx, ry = 0, rx = 0, rz = 0) =>
   new THREE.Matrix4().compose(V3(x, y, z), new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz, "YXZ")), V3(sx, sy, sz));
 
 function terrain(B, T) {
-  const x0 = -204, x1 = 224, z0 = -264, z1 = 84, step = 3.5;
+  const { x0, x1, z0, z1, step } = LAND;
   const nx = Math.round((x1 - x0) / step), nz = Math.round((z1 - z0) / step), cols = nx + 1;
   const id = B.id(), meadow = B.style(T.meadow, { id, snow: -1 }), rock = B.style(T.rock, { id, snow: -1 });
   const P = [], N = [], G = [], S = [];
@@ -285,6 +321,128 @@ function spruce(B, T, x, z, s, slim) {
     const yb = (1.1 + k * rise) * s, r = (wide - k * taper) * s, hgt = 2.7 * s;
     B.revolve(st, [[0.12 * s, yb + 0.5 * s], [r * 0.86, yb], [r, yb + 0.14 * s], [r * 0.62, yb + hgt * 0.34], [r * 0.3, yb + hgt * 0.7], [0.02, yb + hgt]], 18, x, y, z, 1, k * 0.7);
   }
+}
+
+/* A young tree for the foreground: a leaning stem, a few bare branches and a small flat crown at the end of each. */
+function sapling(B, T, x, z, s, rnd) {
+  const y = height(x, z) - 0.2, wood = B.style(T.wood);
+  const P = (a, b, c) => V3(x + a * s, y + b * s, z + c * s);
+  B.tube(wood, [P(0, 0, 0), P(0.28, 1.4, 0.05), P(0.12, 2.9, -0.05), P(-0.32, 4.3, 0), P(-0.5, 5.4, 0.05)], [0.3 * s, 0.24 * s, 0.19 * s, 0.13 * s, 0.08 * s], 8);
+  const crown = B.style(T.crowns[1], { range: [y + 2.6 * s, y + 6.8 * s], glint: 0.5 });
+  // a branch leaves the stem at [x, y] and ends at [x, y, z]; the last number is the size of its crown
+  for (const [ax, ay, bx, by, bz, r] of [[0.2, 2.0, 2.0, 3.3, 0.3, 0.95], [0.12, 2.8, -1.8, 4.0, -0.2, 0.85], [-0.2, 3.7, 1.3, 5.0, -0.3, 0.8], [-0.5, 5.3, -0.75, 5.9, 0.1, 1.05]]) {
+    B.tube(wood, [P(ax, ay, 0), P((ax + bx) / 2, (ay + by) / 2 - 0.18, bz / 2), P(bx, by, bz)], [0.12 * s, 0.09 * s, 0.05 * s], 6);
+    const side = bx > ax ? 1 : -1;
+    B.add(crown, new THREE.IcosahedronGeometry(r * s, 2), M(x + bx * s, y + (by + r * 0.3) * s, z + bz * s, 1, 0.6, 1, rnd() * 6));
+    B.add(crown, new THREE.IcosahedronGeometry(r * 0.62 * s, 2), M(x + (bx + side * 0.75 * r) * s, y + (by + r * 0.12) * s, z + (bz + 0.3) * s, 1, 0.58, 1, rnd() * 6));
+  }
+}
+
+/* A scallop shell lying back on the ground: a fan of ribs in two alternating flat tones, with a wavy rim.
+   `F` is the bed it lies in; `lean` is how far it is tipped back from upright. */
+function scallop(B, T, F, r, lean) {
+  const tones = [0, 1].map((g) => [B.style(T.stone, { lit: 0, glint: 0.3 }), () => g]);
+  const ribs = 9, cl = Math.cos(lean), sl = Math.sin(lean);
+  // u runs across the fan, v up it, d out of its face (towards the viewer)
+  const P = (u, v, d) => F.at(r * u, r * (v * cl + d * sl), r * (d * cl - v * sl));
+  const ray = (a, q) => { const R = q * (1.5 - 0.22 * a * a); return P(Math.sin(a) * R, Math.cos(a) * R, 0.34 * Math.sin(Math.PI * Math.min(1, q * 0.92))); };
+  const inside = P(0, 0.6, -4), span = 1.12, steps = [0, 0.3, 0.55, 0.78, 1];
+  for (let k = 0; k < ribs; k++) {
+    const a0 = -span + 2 * span * k / ribs, a1 = -span + 2 * span * (k + 1) / ribs, [st, g] = tones[k % 2];
+    for (let i = 0; i < steps.length - 1; i++)
+      B.panel(st, i ? [ray(a0, steps[i]), ray(a1, steps[i]), ray(a1, steps[i + 1]), ray(a0, steps[i + 1])] : [ray(a0, 0), ray(a1, steps[1]), ray(a0, steps[1])], inside, g);
+    B.panel(st, [ray(a0, 1), ray(a1, 1), ray((a0 + a1) / 2, 1.07)], inside, g);       // the scallop at the end of the rib
+  }
+  // the hinge: a small bar across the foot of the fan
+  B.panel(tones[1][0], [P(-0.42, 0, 0.02), P(0.42, 0, 0.02), P(0.3, 0.3, 0.1), P(-0.3, 0.3, 0.1)], inside, tones[1][1]);
+}
+
+/* A conch lying on its back with its opening up: a stepped spire, a knobbed shoulder and a body narrowing into a
+   long canal; the opening is a long dark almond on the side turned up and towards the viewer, and beyond it stands
+   the flared lip, its rim cut into points. It is painted in flat tones from a light of its own (above, left, in
+   front), so its form reads whatever the valley's light is doing. `F` is the bed it lies in: the canal points
+   along the bed's heading and the spire back along it. */
+function conch(B, T, F, len) {
+  const shell = () => B.style(T.stone, { lit: 0, glint: 0.3 });
+  const body = shell(), lip = shell(), mouth = B.style([T.stone[1], T.rock[0]], { lit: 0 });
+  const cols = 32, R = len * 0.6, rest = 0.42 * R, light = [-0.36, 0.78, 0.5];   // the widest whorl sits a little into the ground
+  // [how far along the shell, radius]
+  const prof = [[0, 0.015], [0.06, 0.1], [0.085, 0.085], [0.15, 0.2], [0.175, 0.18], [0.25, 0.33], [0.275, 0.3], [0.36, 0.5], [0.43, 0.5], [0.55, 0.39], [0.7, 0.23], [0.85, 0.11], [1, 0.03]];
+  const rAt = (t) => { for (let i = 1; i < prof.length; i++) if (t <= prof[i][0]) { const q = (t - prof[i - 1][0]) / (prof[i][0] - prof[i - 1][0]); return (prof[i - 1][1] + (prof[i][1] - prof[i - 1][1]) * q) * R; } return 0; };
+  const mid = (t) => F.at((t - 0.42) * len, rest, 0);
+  const out = (f) => F.n.map((q, k) => q * Math.cos(f) + F.s[k] * Math.sin(f));     // f = 0 points up out of the ground; a quarter turn on, it faces the viewer
+  const P = [], N = [], G = [];
+  prof.forEach(([t, pr], i) => {
+    const lo = prof[Math.max(0, i - 1)], hi = prof[Math.min(prof.length - 1, i + 1)], slope = (hi[1] - lo[1]) * R / ((hi[0] - lo[0]) * len), c = mid(t);
+    for (let j = 0; j < cols; j++) {
+      const f = j / cols * Math.PI * 2, rad = out(f), n = norm3(rad.map((q, k) => q - F.a[k] * slope));
+      const knob = i === 7 ? 1 + 0.1 * Math.pow(Math.max(0, Math.cos(5 * f + 0.6)), 2) : 1;         // the knobs around the shoulder
+      P.push(c.map((q, k) => q + rad[k] * pr * R * knob)); N.push(n);
+      G.push(clamp(0.5 + (n[0] * light[0] + n[1] * light[1] + n[2] * light[2] - 0.08) * 5, 0, 1));
+    }
+  });
+  B.grid(body, prof.length, cols, P, N, G);
+  // the opening: a dark sheet lying just clear of the body, from the shoulder to the tip of the canal
+  const t0 = 0.37, t1 = 0.97, f0 = 0.45, rows = 12, across = 5;
+  const half = (q) => 0.52 * Math.pow(Math.sin(Math.PI * Math.pow(q, 0.8)), 0.6);
+  const skin = (t, f, lift) => { const c = mid(t), d = out(f), r = rAt(t) * lift + 0.015; return c.map((q, k) => q + d[k] * r); };
+  const MP = [], MN = [], MG = [];
+  for (let i = 0; i <= rows; i++) for (let j = 0; j <= across; j++) {
+    const q = i / rows, f = f0 + half(q) * (j / across * 2 - 1);
+    MP.push(skin(t0 + (t1 - t0) * q, f, 1.05)); MN.push(out(f)); MG.push(0);
+  }
+  for (let i = 0; i < rows; i++) for (let j = 0; j < across; j++) {
+    const k = i * (across + 1) + j;
+    B.tri(mouth, MP, MN, MG, k, k + 1, k + across + 1); B.tri(mouth, MP, MN, MG, k + 1, k + across + 2, k + across + 1);
+  }
+  // the lip: a wing rising from the far edge of the opening, leaning away and back towards the spire, its rim cut into points
+  const jag = [0, 0.26, 0.04, 0.34, 0.08, 0.36, 0.1, 0.3, 0.06, 0.18, 0], n = jag.length - 1;
+  const edge = (k, far) => {
+    const q = k / n, f = f0 - half(q), base = skin(t0 + (t1 - t0) * q, f, 1), w = out(f - 0.5);
+    const reach = far ? R * (0.3 + jag[k]) * Math.pow(Math.sin(Math.PI * Math.pow(q, 0.7)), 0.5) : 0;
+    return base.map((v, c) => v + (w[c] - F.a[c] * 0.5) * reach);
+  };
+  for (let k = 0; k < n; k++) B.panel(lip, [edge(k, 0), edge(k + 1, 0), edge(k + 1, 1), edge(k, 1)], mid(0.6), () => 1);
+}
+
+/* Two shells in a heap on the top of the hill: the conch on the right with its opening up, the scallop tipped back
+   in front of its narrow end, and a few pebbles around. Each is laid in the plane of the drawn ground and then
+   pressed a little into it. */
+function shells(B, T, x, z, rnd) {
+  const F = bed(x, z, Math.PI);
+  let from = B.count;
+  conch(B, T, F, 2.1);
+  B.sink(from, 0.14);
+  const [sx, , sz] = F.at(1.2, 0, 0.8);
+  from = B.count;
+  scallop(B, T, bed(sx, sz, 2.95), 0.72, 0.95);
+  B.sink(from, 0.05);
+  const stone = B.style(T.rock, { glint: 0.3 });
+  // [along the heap, towards the viewer, size]
+  for (const [u, w, r] of [[-1.5, 0.9, 0.2], [-0.5, 1.6, 0.14], [2.3, 0.2, 0.18], [0.5, 1.9, 0.12], [2.0, 1.3, 0.13]]) {
+    const [px, , pz] = F.at(u, 0, w);
+    pebble(B, stone, px, pz, r, rnd);
+  }
+}
+
+/* Settle a solid into the ground: shift it down so its lowest point, measured from the drawn ground under each
+   point, sits `sink` below the surface. On a slope that buries the uphill side a little, as it would. */
+function settle(P, sink) {
+  let off = Infinity;
+  for (const q of P) off = Math.min(off, q[1] - ground(q[0], q[2]));
+  for (const q of P) q[1] -= off + sink;
+  return P;
+}
+/* A pebble: a squashed stone pressed a little into the ground. */
+function pebble(B, st, x, z, r, rnd) {
+  const g = new THREE.IcosahedronGeometry(r, 1).toNonIndexed();
+  g.applyMatrix4(M(x, 0, z, 1, 0.65, 1.15, rnd() * 6));
+  const a = g.attributes.position.array, P = [];
+  for (let k = 0; k < a.length; k += 3) P.push([a[k], a[k + 1], a[k + 2]]);
+  settle(P, r * 0.3);
+  P.forEach((q, i) => { a[i * 3 + 1] = q[1]; });
+  g.computeVertexNormals();
+  B.add(st, g, new THREE.Matrix4());
 }
 
 /* ---------- buildings ---------- */
@@ -384,23 +542,30 @@ function buildWorld(T) {
   observatory(B, T, seat.top);
 
   // a few dark rocks standing in the sea on the left; the middle of the bay stays open for the sun
-  for (const [x, z, r, h, seed, top] of [[-66, -74, 22, 15, 21, 6], [-46, -57, 6, 3.2, 22, 2.2], [-120, -106, 30, 20, 24, 8], [-152, -72, 22, 12, 25, 6]])
+  for (const [x, z, r, h, seed, top] of [[-66, -74, 22, 15, 21, 6], [-40, -60, 12, 7.5, 22, 4], [-120, -106, 30, 20, 24, 8], [-152, -72, 22, 12, 25, 6]])
     islands.push(crag(B, B.style(T.hill, { glint: 0.7 }), x, z, r, h, -1.5, seed, { top, ribs: 10 }).foot);
 
   house(B, T);
 
   // trees: some placed by hand where they frame the view, the rest scattered on the meadow.
-  // kinds: 0 round, 1 spruce, 2 round (light), 3 tall, 4 wide, 5 round (gold), 6 slim spruce, 7 bush, 8 tall (light)
-  const plant = (x, z, s, kind, anywhere) => {
+  // kinds: 0 round, 1 spruce, 2 round (light), 3 tall, 4 wide, 5 round (pale), 6 slim spruce, 7 bush, 8 tall (light)
+  const unseen = new Builder();   // a tree taken out of the picture is still built, into nothing, so the scatter below keeps its places
+  const rnd2 = rngFrom(77);        // its own dice for the foreground pebbles, so they do not shift the trees
+  const lowest = (x, z, R) => { let y = height(x, z); for (let k = 0; k < 8; k++) y = Math.min(y, height(x + Math.cos(k * 0.785) * R, z + Math.sin(k * 0.785) * R)); return y; };
+  const plant = (x, z, s, kind, anywhere, into = B) => {
     if (!anywhere && height(x, z) < 1.2) return;
-    if (kind === 1 || kind === 6) return spruce(B, T, x, z, s, kind === 6);
+    if (kind === 1 || kind === 6) return spruce(into, T, x, z, s, kind === 6);
     const pair = T.crowns[[0, 0, 1, 3, 0, 2, 0, 1, 1][kind]];
-    leafTree(B, T, x, z, s, pair, rnd, [, , , "tall", "wide", , , "bush", "tall"][kind] || "round");
+    leafTree(into, T, x, z, s, pair, rnd, [, , , "tall", "wide", , , "bush", "tall"][kind] || "round");
   };
   const spots = [[19, -31, 1.05, 0], [44, -40, 0.8, 1], [48, -36, 1.0, 6], [41, -27, 0.7, 5], [-34, -10, 0.9, 2], [-42, -4, 0.8, 3], [52, -8, 1.0, 4], [58, -14, 0.8, 1], [12, -23, 0.75, 6], [37, -19, 0.7, 7], [-31, -19, 0.8, 8]];
   for (const [x, z, s, kind] of spots) plant(x, z, s, kind);
-  // two close to the viewer, in front of the headline: they cover a little of it and slide across as the camera moves
-  plant(8, 38.3, 0.7, 6, true); plant(-6.1, 36.5, 1.05, 7, true);
+  // a young tree in the crook of the path's last bend, beyond the path
+  sapling(B, T, 22.6, 8.6, 0.8, rnd);
+  // low in the picture: a rock at the far left, and two shells in a heap on the top of the hill, under the end of the headline
+  crag(B, B.style(T.rock, { glint: 0.5 }), -13.6, 36.9, 2.2, 2.3, lowest(-13.6, 36.9, 2.7) - 0.35, 31, { ribs: 8, top: 0.8 });
+  shells(B, T, 10.4, 34.1, rnd2);
+  for (const [px, pz, r] of [[-10.3, 37.1, 0.2], [-9.9, 37.7, 0.13]]) pebble(B, B.style(T.rock, { glint: 0.3 }), px, pz, r, rnd2);
   let placed = 0, tries = 0;
   while (placed < 13 && tries++ < 900) {
     const x = -62 + rnd() * 136, z = -56 + rnd() * 70;
@@ -410,7 +575,8 @@ function buildWorld(T) {
     if (spots.some(([sx, sz]) => Math.hypot(x - sx, z - sz) < 9)) continue;
     spots.push([x, z]);
     const k = rnd();
-    plant(x, z, 0.6 + rnd() * 0.45, k < 0.2 ? 1 : k < 0.36 ? 6 : k < 0.52 ? 0 : k < 0.64 ? 2 : k < 0.76 ? 3 : k < 0.86 ? 4 : k < 0.93 ? 7 : 5);
+    const hide = Math.hypot(x + 20.8, z + 7.6) < 1;       // the one on the left shore: only its crown showed, over the sea rock
+    plant(x, z, 0.6 + rnd() * 0.45, k < 0.2 ? 1 : k < 0.36 ? 6 : k < 0.52 ? 0 : k < 0.64 ? 2 : k < 0.76 ? 3 : k < 0.86 ? 4 : k < 0.93 ? 7 : 5, false, hide ? unseen : B);
     placed++;
   }
 
@@ -423,7 +589,7 @@ function buildWorld(T) {
     }
   } else {
     for (const [x, y, z, w] of [[-330, 150, -820, 64], [80, 210, -900, 84], [340, 125, -800, 56]]) {
-      const st = B.style(T.cloud, { fog: 0, lit: 0, glint: 1, range: [y - w * 0.14, y + w * 0.2] });
+      const st = B.style(T.cloud, { fog: 0, lit: 0, glint: 0.2, range: [y - w * 0.14, y + w * 0.2] });
       for (const [ox, oy, sc] of [[0, 0, 1], [-0.6, -0.03, 0.62], [0.58, -0.02, 0.7], [0.15, 0.07, 0.6]])
         B.add(st, new THREE.IcosahedronGeometry(1, 3), M(x + ox * w, y + oy * w, z, w * sc * 0.62, w * sc * 0.15, w * sc * 0.3));
     }
@@ -486,6 +652,22 @@ const NOISE = `
   float h11(float n){ return fract(sin(n * 127.1) * 43758.5453); }
   float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.-2.*f);
     return mix(mix(h21(i), h21(i+vec2(1.,0.)), f.x), mix(h21(i+vec2(0.,1.)), h21(i+vec2(1.,1.)), f.x), f.y); }`;
+/* How high the water has run up the land at a spot, and the beat it runs to (shared by the land, the outlines and the sea). */
+const TIDE = `
+  float tideBeat(vec3 w, float t){ return sin(t*0.6 + 6.283*vn(w.xz*0.05)); }
+  float tideLine(vec3 w, float t){ return 0.24*smoothstep(-0.1, 1., tideBeat(w, t)); }`;
+/* The shadow of the headline: follow the sign's own light from a point back to the sign and see if a letter is in the way. */
+const SIGN_SHADE = `
+  uniform sampler2D tSign; uniform vec3 uSgC, uSgR, uSgN, uSgL; uniform vec2 uSgS; uniform float uSgOn;
+  float signShade(vec3 p){
+    float t = dot(uSgC - p, uSgN)/dot(uSgL, uSgN);
+    vec3 h = p + uSgL*t - uSgC;
+    vec2 uv = vec2(dot(h, uSgR)/uSgS.x, h.y/uSgS.y) + 0.5;
+    float hit = step(0., t)*step(0., uv.x)*step(uv.x, 1.)*step(0., uv.y)*step(uv.y, 1.);
+    return uSgOn*hit*step(0.5, texture2D(tSign, clamp(uv, 0., 1.)).a);
+  }`;
+const signUniforms = () => ({ tSign: { value: null }, uSgC: { value: new THREE.Vector3() }, uSgR: { value: new THREE.Vector3(1, 0, 0) }, uSgN: { value: new THREE.Vector3(0, 0, 1) },
+  uSgL: { value: new THREE.Vector3(0, 1, 0.5) }, uSgS: { value: new THREE.Vector2(1, 1) }, uSgOn: { value: 0 } });
 const SNOWLINE = "float snowLine(vec3 w, float s){ return s + 3.2*sin(w.x*0.2 + w.z*0.16) + 1.7*sin(w.x*0.6 - w.z*0.47); }";
 
 const colMat = (T, L, glintDir) => new THREE.ShaderMaterial({
@@ -494,6 +676,7 @@ const colMat = (T, L, glintDir) => new THREE.ShaderMaterial({
     uShade: u3(T.shade), uFog: u3(T.fog), uSnowA: u3(T.snow0), uSnowB: u3(T.snow1), uGlint: u3(T.glint), uGlintK: { value: T.glintK },
     uSand: u3(T.sand), uFlowers: u3(T.flowers), uPathCol: u3(T.path), uFogK: { value: T.fogK }, uBlotch: { value: T.blotch },
     uPath: { value: PATH.map((p) => new THREE.Vector2(p[0], p[1])) },
+    uT: { value: 0 }, uSea: u3(T.sea), uFoam: u3(T.foam), ...signUniforms(),
   },
   vertexShader: `
     attribute vec3 aA, aB, aM; attribute float aG, aS; uniform mat4 uSM;
@@ -502,9 +685,9 @@ const colMat = (T, L, glintDir) => new THREE.ShaderMaterial({
       vSh = uSM * vec4(position + normal*0.3, 1.); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
   fragmentShader: `
     uniform sampler2D tS; uniform vec3 uL, uGL, uShade, uFog, uSnowA, uSnowB, uSand, uFlowers, uGlint, uPathCol;
-    uniform float uFogK, uSTex, uBlotch, uGlintK; uniform vec2 uPath[${PATH_N}];
+    uniform float uFogK, uSTex, uBlotch, uGlintK, uT; uniform vec2 uPath[${PATH_N}]; uniform vec3 uSea, uFoam;
     varying vec3 vA, vB, vM, vN, vW; varying float vG, vS; varying vec4 vSh;
-    ${NOISE} ${SNOWLINE}
+    ${NOISE} ${SNOWLINE} ${TIDE} ${SIGN_SHADE}
     float occluded(vec2 uv, float z){ return step(texture2D(tS, uv).r + 0.0006, z); }
     float seg(vec2 p, vec2 a, vec2 b){ vec2 pa = p - a, ba = b - a; return length(pa - ba*clamp(dot(pa, ba)/dot(ba, ba), 0., 1.)); }
     void main(){
@@ -532,18 +715,32 @@ const colMat = (T, L, glintDir) => new THREE.ShaderMaterial({
         float o = uSTex*0.75;
         shadow = 0.25*(occluded(sp.xy + vec2(o, o), sp.z) + occluded(sp.xy + vec2(-o, o), sp.z) + occluded(sp.xy + vec2(o, -o), sp.z) + occluded(sp.xy + vec2(-o, -o), sp.z));
       }
+      shadow = max(shadow, signShade(vW));              // the headline's own shadow, just in front of it
       vec3 col = mix(base, uShade, 0.5*max(form, shadow)*vM.x);
+      if (!ground && vS < 0.5) {                        // trees, rocks, buildings: flat tones, no blend
+        vec3 tone = mix(mix(vA, vB, 0.5), vA, smoothstep(0.4, 0.46, ndl));      // a light tone where the surface faces the light, a middle one elsewhere
+        if (vM.x < 0.5) tone = mix(vB, vA, step(0.5, vG));                      // unlit things (clouds, window panes): two flat bands by height
+        col = mix(tone, mix(vB, uShade, 0.45), max(form, shadow)*vM.x);         // and one shade
+      }
       // a flat touch of gold where a surface turns towards the sun
-      col = mix(col, uGlint, smoothstep(0.55, 0.61, dot(N, uGL)) * (1. - shadow) * vM.z * uGlintK);
+      col = mix(col, uGlint, smoothstep(0.8, 0.84, dot(N, uGL)) * (1. - shadow) * vM.z * uGlintK);
+      if (ground) {                                     // the water runs up over the edge of the land, with a thin line of foam at its lip
+        float tide = tideLine(vW, uT);
+        if (vW.y < tide) col = mix(uSea, uFoam, smoothstep(tide - 0.04, tide - 0.015, vW.y));
+      }
       col = mix(col, uFog, (1. - exp(-dist*uFogK)) * vM.y);
       gl_FragColor = vec4(col, 1.);
     }`,
 });
 const dataMat = () => new THREE.ShaderMaterial({
-  uniforms: { uFar: { value: FAR } },
+  uniforms: { uFar: { value: FAR }, uT: { value: 0 } },
   vertexShader: "attribute float aId, aS; varying vec3 vN, vW; varying float vId, vZ, vS; void main(){ vec4 mv=modelViewMatrix*vec4(position,1.); vN=normalMatrix*normal; vId=aId; vS=aS; vW=position; vZ=-mv.z; gl_Position=projectionMatrix*mv; }",
-  fragmentShader: `uniform float uFar; varying vec3 vN, vW; varying float vId, vZ, vS; ${SNOWLINE}
-    void main(){ float id = vId + ((vS > 0.5 && vW.y > snowLine(vW, vS)) ? 500. : 0.); gl_FragColor = vec4(normalize(vN).xy, id, clamp(vZ/uFar, 0., 1.)); }`,
+  fragmentShader: `uniform float uFar, uT; varying vec3 vN, vW; varying float vId, vZ, vS; ${NOISE} ${SNOWLINE} ${TIDE}
+    void main(){
+      float id = vId + ((vS > 0.5 && vW.y > snowLine(vW, vS)) ? 500. : 0.); vec2 n = normalize(vN).xy;
+      if (vS < -0.5 && vW.y < tideLine(vW, uT)) { id = 1.; n = normalize((viewMatrix*vec4(0., 1., 0., 0.)).xyz).xy; }   // under water: same as the sea
+      gl_FragColor = vec4(n, id, clamp(vZ/uFar, 0., 1.));
+    }`,
   blending: THREE.NoBlending,
 });
 const depthMat = () => new THREE.ShaderMaterial({
@@ -556,11 +753,13 @@ const seaMat = (T, shore, sunDir) => new THREE.ShaderMaterial({
     uT: { value: 0 }, uBase: u3(T.sea), uWave: u3(T.wave), uFoam: u3(T.foam), uGlit: u3(T.glitter), uGlitK: { value: T.glitterK },
     uFog: u3(T.fog), uFogK: { value: T.fogK }, tSh: { value: shoreTexture(shore) }, uBox: { value: shore.box }, uReach: { value: shore.reach },
     uSunXZ: { value: new THREE.Vector2(sunDir.x, sunDir.z).normalize() },
+    uRiver: { value: RIVER.map((p) => new THREE.Vector2(p[0], p[1])) }, ...signUniforms(),
   },
   vertexShader: "varying vec3 vW; void main(){ vW=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }",
   fragmentShader: `
     uniform float uT, uFogK, uGlitK, uReach; uniform vec3 uBase, uWave, uFoam, uGlit, uFog; uniform vec4 uBox; uniform vec2 uSunXZ;
-    uniform sampler2D tSh; varying vec3 vW; ${NOISE}
+    uniform sampler2D tSh; varying vec3 vW; uniform vec2 uRiver[${RIVER.length}]; ${NOISE} ${TIDE} ${SIGN_SHADE}
+    float seg(vec2 p, vec2 a, vec2 b){ vec2 pa = p - a, ba = b - a; return length(pa - ba*clamp(dot(pa, ba)/dot(ba, ba), 0., 1.)); }
     float shoreDist(vec2 p){                                 // distance to the nearest land, in world units
       vec2 uv = (p - uBox.xy)*uBox.zw;
       float on = step(0., uv.x)*step(uv.x, 1.)*step(0., uv.y)*step(uv.y, 1.);
@@ -568,6 +767,11 @@ const seaMat = (T, shore, sunDir) => new THREE.ShaderMaterial({
     }
     void main(){
       float dist = length(vW - cameraPosition), d = shoreDist(vW.xz);
+      // the stream: its banks are measured from its own middle line, which is smoother up close than the shore picture
+      float rd = 1e9;
+      for (int i = 0; i < ${RIVER.length - 1}; i++) rd = min(rd, seg(vW.xz, uRiver[i], uRiver[i + 1]));
+      float stream = (1. - smoothstep(6., 8., rd)) * smoothstep(-36., -22., vW.z);
+      d = mix(d, max(4.1 - rd, 0.), stream);
 
       // open water: long thin crests, nearly parallel, gently bent, rolling slowly
       vec2 p = mat2(0.94, -0.34, 0.34, 0.94)*vW.xz;          // p.x runs along a crest, p.y across the crests
@@ -584,23 +788,29 @@ const seaMat = (T, shore, sunDir) => new THREE.ShaderMaterial({
       float s = (d + wob)/2.4 + uT*0.14, sp = fwidth(s), srow = floor(s);
       float close = 1. - smoothstep(4., 12., d);
       float gap = smoothstep(0.36, 0.44, vn(vW.xz*0.13 + vec2(srow*5.7, srow*2.3)));
-      float sw = sp*(0.5 + 0.9*close);
+      float sw = sp*(0.5 + 0.9*close)*mix(1., 0.55, stream);                   // in the stream the rings are finer and fainter
       float swash = (1. - smoothstep(sw - sp*0.5, sw + sp*0.5, abs(fract(s) - 0.5))) * gap * close * (1. - smoothstep(0.14, 0.4, sp));
-      vec3 col = mix(uBase, uWave, 0.85*max(open, swash));
+      vec3 col = mix(uBase, uWave, 0.85*max(open, swash*mix(1., 0.6, stream)));
 
-      // the sun's path on the water: short bright dashes that flicker, melting into a sheen far away
+      // the sun's path on the water: short bright dashes that flicker, melting into a sheen far away.
+      // It is about as wide as the sun itself, stops at its edges, and keeps to the open sea: it ends where the
+      // waves begin to turn towards the shore, and never reaches the stream.
       vec2 rel = vW.xz - cameraPosition.xz;
-      float along = dot(rel, uSunXZ), side = rel.x*uSunXZ.y - rel.y*uSunXZ.x, spread = 7. + along*0.085;
-      float gv = along/2.4 + 0.35*sin(side*0.5 + uT*0.6), gp = fwidth(gv), grow = floor(gv);
-      float gu = side/2.6 + h11(grow)*13., gc = floor(gu);
-      float lit = step(0.5, h11(gc*1.7 + grow*3.3 + floor(uT*1.3 + h11(grow + gc)*7.)));
-      float dash = (1. - smoothstep(gp*0.6, gp*1.6, abs(fract(gv) - 0.5))) * step(fract(gu), 0.35 + 0.5*h11(gc + grow*9.)) * lit;
-      dash = mix(dash, 0.6, smoothstep(0.25, 0.6, gp)) * exp(-side*side/(spread*spread)) * step(0., along) * uGlitK;
+      float along = dot(rel, uSunXZ), side = rel.x*uSunXZ.y - rel.y*uSunXZ.x, spread = 1.6 + along*0.042;
+      float gv = log(max(along, 1.))*13. + 0.3*sin(side*0.3 + uT*0.6), gp = fwidth(gv), grow = floor(gv);   // rows deepen with distance: even steps on screen
+      float gu = side/(spread*0.5) + h11(grow)*13., gc = floor(gu);
+      float lit = step(0.42, h11(gc*1.7 + grow*3.3 + floor(uT*1.3 + h11(grow + gc)*7.)));
+      float dash = (1. - smoothstep(gp*0.9, gp*1.9, abs(fract(gv) - 0.5))) * step(fract(gu), 0.4 + 0.45*h11(gc + grow*9.)) * lit;   // the same thin line near and far
+      dash = mix(dash, 0.6, smoothstep(0.25, 0.6, gp)) * exp(-side*side/(spread*spread)) * (1. - smoothstep(1.05, 1.45, abs(side)/spread)) * step(0., along) * uGlitK;
+      dash *= smoothstep(16., 30., d) * (1. - stream);
 
-      // foam: a white edge along the coast that runs up and slides back
-      float reachIn = 0.9 + 0.55*sin(uT*0.6 + 6.283*vn(vW.xz*0.05));
+      // foam: a white edge along the coast that slides back as the water runs up the land, and returns as it falls.
+      // Close to the viewer it is kept thin, so the stream's edge is a line rather than a band.
+      float beat = tideBeat(vW, uT);
+      float reachIn = (0.9 + 0.55*beat) * (1. - smoothstep(-0.1, 0.45, beat)) * mix(0.3, 1., smoothstep(30., 110., dist));
       float fd = fwidth(d) + 0.01;
-      col = mix(col, uFoam, 1. - smoothstep(reachIn - fd, reachIn + fd, d + 0.5*(vn(vW.xz*0.6) - 0.5)));
+      col = mix(col, uFoam, (1. - smoothstep(reachIn - fd, reachIn + fd, d + 0.5*(vn(vW.xz*0.6) - 0.5)*mix(1., 0.3, stream))) * step(0.02, reachIn));
+      col = mix(col, uBase*0.45, 0.8*signShade(vW));    // the headline's shadow crosses the stream too
 
       col = mix(col, uFog, 1. - exp(-dist*uFogK*1.25));
       gl_FragColor = vec4(mix(col, uGlit, dash), 1.);                      // the glints stay bright through the haze
@@ -619,23 +829,28 @@ const skyMat = (T, sunDir) => new THREE.ShaderMaterial({
       if (uSunset > 0.5) {
         float az = atan(d.x, -d.z) - atan(uSun.x, -uSun.z), el = asin(clamp(d.y, -1., 1.)) - asin(uSun.y);
         float R = 0.055, k = acos(clamp(dot(d, uSun), -1., 1.))/R;            // k = 1 at the rim of the sun
-        col = mix(col, uSunCol, 0.5*exp(-az*az*3.)*exp(-e*9.) + 0.22*exp(-k*k*0.07));
+        col = mix(col, uSunCol, 0.26*exp(-az*az*10.)*exp(-e*16.) + 0.2*exp(-k*k*0.2));   // the warmth stays close to the sun
 
-        // long flat clouds with hard edges, golden where they are near the sun
+        // long flat clouds with hard edges: white, with only a breath of the sun's colour right beside it
         float band = vn(vec2(az*2.3 + 4., d.y*30.)) + 0.45*vn(vec2(az*6. + 1., d.y*64.));
         float zone = smoothstep(0.025, 0.075, d.y)*(1. - smoothstep(0.2, 0.42, d.y));
         float cut = mix(1.5, 0.9, zone);
-        col = mix(col, mix(vec3(1.), uSunCol, 0.8*exp(-az*az*1.5)), 0.85*smoothstep(cut - 0.012, cut + 0.012, band));
+        col = mix(col, mix(vec3(1.), uSunCol, 0.16*exp(-az*az*8.)), 0.85*smoothstep(cut - 0.012, cut + 0.012, band));
 
-        // short brush arcs circling the sun
-        float rr = (k - 1.3)/0.3, ring = floor(rr);
-        float u = atan(el, az)/6.2832*(9. + ring*4.) + h11(ring + 2.)*7., cell = floor(u), f = fract(u), len = 0.25 + 0.4*h11(cell*1.7 + ring*17.);
-        float arc = (1. - smoothstep(0.1, 0.14, abs(fract(rr) - 0.5))) * smoothstep(0., 0.05, f) * (1. - smoothstep(len - 0.05, len, f));
-        arc *= step(0.3, h11(cell*3.1 + ring*7.)) * step(0., rr) * (1. - smoothstep(4., 6., rr));
+        // short brush arcs circling the sun: packed close to it, shorter and fewer with every ring, gone by twice its size
+        float rr = (k - 1.13)/0.17, ring = floor(rr), thin = clamp(ring/6., 0., 1.);
+        float u = atan(el, az)/6.2832*(11. + ring*5.) + h11(ring + 2.)*7., cell = floor(u), f = fract(u);
+        float len = mix(0.78, 0.3, thin)*(0.6 + 0.4*h11(cell*1.7 + ring*17.));
+        float arc = (1. - smoothstep(0.15, 0.21, abs(fract(rr) - 0.5))) * smoothstep(0., 0.05, f) * (1. - smoothstep(len - 0.05, len, f));
+        arc *= step(thin*0.8, h11(cell*3.1 + ring*7.)) * step(0., rr) * step(rr, 7.);
         col = mix(col, mix(uSunDeep, uSunCol, 0.55*step(0.5, h11(cell + ring*5.))), 0.9*arc);
 
-        // the sun itself: a plain bright disc, palest in the middle
-        col = mix(col, mix(vec3(1., 0.98, 0.86), uSunCol, smoothstep(0.15, 1., k)), 1. - smoothstep(0.985, 1.015, k));
+        // the sun itself: a ball in three flat tones, lit from the upper left, with no outline
+        vec2 q = vec2(az*sqrt(1. - uSun.y*uSun.y), el)/R;
+        float lit = dot(vec3(q, sqrt(max(0., 1. - dot(q, q)))), normalize(vec3(-0.5, 0.58, 0.64)));
+        vec3 ball = mix(mix(uSunDeep, uSunCol, 0.45), uSunCol, smoothstep(0.2, 0.24, lit));
+        ball = mix(ball, vec3(1., 0.97, 0.82), smoothstep(0.8, 0.84, lit));
+        col = mix(col, ball, 1. - smoothstep(0.985, 1.015, k));
       }
       gl_FragColor = vec4(col, 1.);
     }`,
@@ -689,10 +904,9 @@ async function sign(el, hex, renderer) {
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), null);
   mesh.frustumCulled = false;
   return {
-    mesh, aspect: c.width / c.height,
+    mesh, tex, aspect: c.width / c.height,
     col: signMat(tex, "gl_FragColor = vec4(uCol, 1.);", { uCol: u3(hex) }),
     data: signMat(tex, "gl_FragColor = vec4(0., 0., 900., clamp(vZ/uFar, 0., 1.));"),
-    depth: signMat(tex, "gl_FragColor = vec4(gl_FragCoord.z, 0., 0., 1.);"),
   };
 }
 
@@ -706,7 +920,7 @@ function mount(canvas) {
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
   renderer.setPixelRatio(1);
 
-  const L = V3(...T.light).normalize(), glintDir = V3(-0.5, 0.62, -0.6).normalize();
+  const L = V3(...T.light).normalize(), glintDir = V3(-0.9, 0.3, -0.2).normalize();
   const pos = V3(...T.view.pos), tgt = V3(...T.view.tgt), arm = V3();
   const sunDir = V3(-106, 12, -766).normalize(); // half set over the sea, left of the house
   const geo = buildWorld(T);
@@ -726,7 +940,7 @@ function mount(canvas) {
   const rtG = new THREE.WebGLRenderTarget(2, 2, near);
   mats.ink.uniforms.tC.value = rtC.texture; mats.ink.uniforms.tG.value = rtG.texture;
 
-  // cast shadows: one picture of the middle of the valley as seen from the light, retaken only when the sign moves
+  // cast shadows: one picture of the middle of the valley as seen from the light (the headline has a shadow of its own)
   const SM = 2048, rtS = new THREE.WebGLRenderTarget(SM, SM, near), white = new THREE.Color(1, 1, 1);
   const ext = 105, centre = V3(4, 0, -8), lightCam = new THREE.OrthographicCamera(-ext, ext, ext, -ext, 1, 800);
   lightCam.position.copy(centre).add(L.clone().multiplyScalar(400)); lightCam.lookAt(centre); lightCam.updateMatrixWorld();
@@ -734,7 +948,7 @@ function mount(canvas) {
   mats.col.uniforms.uSM.value.multiplyMatrices(lightCam.projectionMatrix, lightCam.matrixWorldInverse);
   let label = null;
   function bake() {
-    sky.visible = sea.visible = false; land.material = mats.depth; if (label) label.mesh.material = label.depth;
+    sky.visible = sea.visible = false; land.material = mats.depth;
     renderer.setRenderTarget(rtS); renderer.setClearColor(white, 1); renderer.render(scene, lightCam);
     sky.visible = sea.visible = true;
   }
@@ -743,28 +957,39 @@ function mount(canvas) {
   const blank = new THREE.Color(0, 0, 0), bg = new THREE.Color(0, 0, 1); // the background shares the sea's id, so the horizon gets no line
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const pinned = canvas.hasAttribute("data-pinned"), look = V3(), fwd = V3(); // a pinned scene stays put while the page slides over it
-  let mx = 0, my = 0, visible = false, raf = 0, shown = false, last = 0, signW = 0;
+  let mx = 0, my = 0, visible = false, raf = 0, shown = false, last = 0, swing = 0.02;
   const ease = { y1: 0, y2: 0, p1: 0, p2: 0 };
 
-  /* Stand the headline in the meadow, a little way in front of the viewer and filling most of the width.
-     On tall screens there is no room for it, so the page keeps its own heading there. */
+  /* Stand the headline in the meadow, close in front of the viewer (so it sits low, well below the horizon) and
+     filling most of the width. On tall screens there is no room for it, so the page keeps its own heading there. */
   const heading = canvas.dataset.text && T.text ? document.querySelector(canvas.dataset.text) : null;
+  const TURN = 0.2;
   function place() {
     if (!label) return;
     const on = camera.aspect >= 1.2;
     label.mesh.visible = on; canvas.parentElement.classList.toggle("text-in-scene", on);
+    mats.col.uniforms.uSgOn.value = mats.sea.uniforms.uSgOn.value = on ? 1 : 0;
     if (!on) return;
-    const D = 38, f = V3(tgt.x - pos.x, 0, tgt.z - pos.z).normalize(), r = V3(-f.z, 0, f.x);
+    const D = 32, edge = 0.455, f = V3(tgt.x - pos.x, 0, tgt.z - pos.z).normalize(), r = V3(-f.z, 0, f.x);
     const span = 2 * D * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect;
     const W = Math.min(span * 0.84, 46), H = W / label.aspect;
-    const left = V3(pos.x, 0, pos.z).addScaledVector(f, D).addScaledVector(r, -span * 0.465);
+    const left = V3(pos.x, 0, pos.z).addScaledVector(f, D).addScaledVector(r, -span * edge);
+    label.mesh.rotation.y = Math.atan2(-f.x, -f.z) + TURN;   // the left end stays put; the right end swings away
+    const across = V3(1, 0, 0).applyQuaternion(label.mesh.quaternion), facing = V3(0, 0, 1).applyQuaternion(label.mesh.quaternion);
+    // it stands on the ground of its left part (the right end walks into the hill there and sinks into it)
     const hs = [];
-    for (let k = 0; k <= 12; k++) hs.push(height(left.x + r.x * W * k / 12, left.z + r.z * W * k / 12));
+    for (let k = 0; k <= 7; k++) hs.push(height(left.x + across.x * W * k / 12, left.z + across.z * W * k / 12));
     hs.sort((a, b) => a - b);
     label.mesh.scale.set(W, H, 1);
-    label.mesh.position.copy(left).addScaledVector(r, W / 2).setY(Math.max(0.4, hs[8]) - 0.15 + H / 2);
-    label.mesh.rotation.y = Math.atan2(-f.x, -f.z);
-    if (Math.abs(W - signW) > 0.2) { signW = W; bake(); }
+    label.mesh.position.copy(left).addScaledVector(across, W / 2).setY(Math.max(0.4, hs[5]) - 0.15 + H / 2);
+    // its shadow: from a light behind it and a little to the left, so the words lie on the grass just in front
+    for (const m of [mats.col, mats.sea]) {
+      const u = m.uniforms;
+      u.tSign.value = label.tex; u.uSgC.value.copy(label.mesh.position); u.uSgR.value.copy(across); u.uSgN.value.copy(facing); u.uSgS.value.set(W, H);
+      u.uSgL.value.copy(f).multiplyScalar(1.15).addScaledVector(r, -0.3).setY(1).normalize();
+    }
+    // how far the camera may swing before the first letter would leave the picture on the left
+    swing = Math.min(0.045, 0.85 * span * (0.5 - edge) / (V3(tgt.x - pos.x, 0, tgt.z - pos.z).length() - D));
   }
   if (heading) sign(heading, T.text, renderer).then((s) => { if (!s) return; label = s; scene.add(s.mesh); place(); draw(performance.now()); });
 
@@ -788,7 +1013,8 @@ function mount(canvas) {
   function draw(t) {
     // the mouse sets where the camera wants to be; two slow followers in a row give it a soft start and a soft stop
     const dt = Math.min(0.1, last ? (t - last) / 1000 : 0.016), k = 1 - Math.exp(-dt / 0.55); last = t;
-    ease.y1 += (mx * -0.07 - ease.y1) * k; ease.y2 += (ease.y1 - ease.y2) * k;
+    // (swinging right pushes the headline left, so that side is held to what its margin allows)
+    ease.y1 += (mx * (mx < 0 ? -swing : -0.045) - ease.y1) * k; ease.y2 += (ease.y1 - ease.y2) * k;
     ease.p1 += (my * 0.022 - ease.p1) * k; ease.p2 += (ease.p1 - ease.p2) * k;
     arm.copy(pos).sub(tgt).applyAxisAngle(THREE.Object3D.DEFAULT_UP, ease.y2);
     arm.y += arm.length() * ease.p2;
@@ -799,7 +1025,7 @@ function mount(canvas) {
       camera.position.addScaledVector(fwd, -16 * sp); camera.position.y -= 2.5 * sp; look.y -= 9 * sp;
     }
     camera.lookAt(look);
-    mats.sea.uniforms.uT.value = still ? 0 : t / 1000;
+    mats.sea.uniforms.uT.value = mats.col.uniforms.uT.value = mats.data.uniforms.uT.value = still ? 0 : t / 1000;
     sky.visible = true; land.material = mats.col; sea.material = mats.sea; if (label) label.mesh.material = label.col;
     renderer.setRenderTarget(rtC); renderer.setClearColor(blank, 1); renderer.render(scene, camera);
     sky.visible = false; land.material = sea.material = mats.data; if (label) label.mesh.material = label.data;

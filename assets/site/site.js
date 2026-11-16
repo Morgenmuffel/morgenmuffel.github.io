@@ -1,34 +1,8 @@
-/* Site interactions, ported from the Framer code components: SiteFX, PixelRise, PixelGrid, FocusRows. */
+/* Site interactions: load reveals, the comet at the pointer, What I do, the Work list, the contact form.
+   Scroll reveals are CSS (scroll timelines in site.css). */
 (function () {
   "use strict";
-  var clamp = function (v) { return Math.min(1, Math.max(0, v)); };
-  var seed = function (a, b, k) { var s = Math.sin(a * 12.9898 + b * 78.233 + k) * 43758.5453; return s - Math.floor(s); };
-  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  var vh = function () { return window.innerHeight; };
-
-  /* One scroll/resize loop shared by every effect */
-  var scrollers = [];
-  var queued = false;
-  function runAll() { queued = false; for (var i = 0; i < scrollers.length; i++) scrollers[i](); }
-  function queue() { if (!queued) { queued = true; requestAnimationFrame(runAll); } }
-  window.addEventListener("scroll", queue, { passive: true });
-  window.addEventListener("resize", queue);
-  function onScroll(fn) { scrollers.push(fn); fn(); }
-
-  function cells(el, cols, rows, color) {
-    el.style.gridTemplateColumns = "repeat(" + cols + ", 1fr)";
-    var frag = document.createDocumentFragment();
-    for (var i = 0; i < cols * rows; i++) frag.appendChild(document.createElement("span"));
-    el.textContent = "";
-    el.appendChild(frag);
-    if (color) el.style.setProperty("--c", color);
-    return Array.prototype.slice.call(el.children);
-  }
-  function colsFor(el) {
-    var w = window.innerWidth;
-    return Number(w < 810 ? el.dataset.colsPhone || el.dataset.cols : w < 1200 ? el.dataset.colsTablet || el.dataset.cols : el.dataset.cols);
-  }
 
   /* ---------- Word reveal and appear effects ---------- */
   document.querySelectorAll(".reveal-words").forEach(function (el) {
@@ -47,13 +21,13 @@
     });
   });
 
-  /* ---------- Cursor orb and grain (SiteFX) ---------- */
+  /* ---------- Grain, and the comet that follows the pointer over the 3D scenes ---------- */
   (function siteFX() {
-    var grain = document.createElement("div");
-    grain.className = "grain";
-    grain.setAttribute("aria-hidden", "true");
     // case studies are mostly screens: no grain over them
     if (!document.body.classList.contains("case")) try {
+      var grain = document.createElement("div");
+      grain.className = "grain";
+      grain.setAttribute("aria-hidden", "true");
       var c = document.createElement("canvas");
       c.width = c.height = 180;
       var g = c.getContext("2d"), img = g.createImageData(180, 180);
@@ -63,198 +37,248 @@
       document.body.appendChild(grain);
     } catch (e) { /* grain is decorative */ }
 
-    // case studies keep the normal cursor: no orb, no trail of squares over the work
-    if (!finePointer || document.body.classList.contains("case")) return;
-    var orb = document.createElement("div");
-    orb.className = "orb";
-    orb.setAttribute("aria-hidden", "true");
-    document.body.appendChild(orb);
-    var tx = 0, ty = 0, x = 0, y = 0, seen = false;
-
-    /* A trail of squares under the cursor. Orb and squares are one red, blended by difference,
-       so they read teal on the paper, red on ink and violet on the blues: never black on black. */
-    var layer = document.createElement("div");
-    layer.className = "trail-layer";
-    layer.setAttribute("aria-hidden", "true");
-    document.body.appendChild(layer);
+    /* The comet: a pale core in a gold ball in a red coat, each a rounded shape with a torn, restless edge, and a
+       tail along the way it came that closes to a single point. It is drawn in the scene's own colours, as flat
+       shapes. Under it lies a lens: where the comet is and has just been, the page shows through in black and
+       white, tinted orange and yellow nearer the fire. The lens fades more slowly than the tail.
+       It exists only over the scenes (the home hero, the footer, a case study's hero); everywhere else the pointer
+       is the plain one. */
+    if (!finePointer) return;
+    var SCENES = ".hero, .foot, .cs-hero";
+    function layer(name) {
+      var el = document.createElement("canvas");
+      el.className = name;
+      el.setAttribute("aria-hidden", "true");
+      document.body.appendChild(el);
+      return el;
+    }
+    var glass = layer("comet-lens"), cv = layer("comet");
+    var ctx = cv.getContext("2d"), lens = glass.getContext("2d");
+    if (!ctx || !lens) return;
     var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var live = new Map(), sweeping = 0, lastKey = "";
-    var cellSize = function () { return Math.max(34, Math.round(window.innerWidth / 30)); };
-    function light(c, r, ms) {
-      var key = c + "," + r, hit = live.get(key), size = cellSize();
-      if (!hit) {
-        hit = { el: document.createElement("span"), until: 0 };
-        hit.el.style.cssText = "left:" + c * size + "px;top:" + r * size + "px;width:" + size + "px;height:" + size + "px";
-        layer.appendChild(hit.el); live.set(key, hit);
+    var RED = "#D4573B", RUST = "#A9402A", SUN = "#E6C046", GLOW = "#F5D75E", CREAM = "#FBEFC6";
+    var GREY = "#808080", AMBER = "#E2873A", STRAW = "#EFC44A";   // the lens: these give the page their hue and keep its light and dark
+    var R = 18, LIFE = 560, BURN = 1300; // head radius; how long a point of the tail lasts, and of the lens behind it, ms
+    var tx = 0, ty = 0, x = 0, y = 0, seen = false, inside = false, show = 0, raf = 0, last = 0;
+    var path = [];                       // where the head has been, newest first: {x, y, t}
+    function size() {
+      var d = Math.min(2, window.devicePixelRatio || 1);
+      [[cv, ctx], [glass, lens]].forEach(function (p) {
+        p[0].width = Math.round(window.innerWidth * d); p[0].height = Math.round(window.innerHeight * d);
+        p[1].setTransform(d, 0, 0, d, 0, 0);
+      });
+    }
+    /* Roughness for the silhouettes: a value between -1 and 1 that changes abruptly every few pixels along an
+       edge and again a few times a second, like a torn or grainy outline. */
+    function rough(along, seed, now) {
+      var s = Math.sin(Math.floor(along / 3) * 12.9898 + seed * 78.233 + Math.floor(now / 90) * 37.719) * 43758.5453;
+      return (s - Math.floor(s)) * 2 - 1;
+    }
+    /* One flame: a ribbon along the path, from `from` to `to` of `life`. It starts `off` to one side and `w` wide,
+       then closes in on the path and narrows to a point, so all the flames end together as one tip. `lick` makes
+       its edges waver like fire; `grit` roughens them, in pixels. */
+    function flame(c, now, life, from, to, off, w, lick, grit) {
+      var L = [], Rt = [], n = path.length, run = 0;
+      for (var k = 0; k < n; k++) {
+        if (k) run += Math.hypot(path[k].x - path[k - 1].x, path[k].y - path[k - 1].y);
+        var f = (now - path[k].t) / life;
+        if (f < from) continue;
+        if (f > to) {
+          // a fast stroke leaves the points far apart: end the flame exactly where its life runs out, on a point
+          if (L.length) {
+            var pf = (now - path[k - 1].t) / life, q = (to - pf) / (f - pf);
+            var ex = path[k - 1].x + (path[k].x - path[k - 1].x) * q, ey = path[k - 1].y + (path[k].y - path[k - 1].y) * q;
+            L.push([ex, ey]); Rt.push([ex, ey]);
+          }
+          break;
+        }
+        var a = path[Math.max(0, k - 1)], b = path[Math.min(n - 1, k + 1)];
+        var dx = a.x - b.x, dy = a.y - b.y, len = Math.hypot(dx, dy) || 1, nx = -dy / len, ny = dx / len;
+        var u = (f - from) / (to - from), half = w * Math.pow(1 - u, 1.2), side = off * Math.pow(1 - u, 1.7);
+        var g = grit ? grit * Math.min(1, half / 4) : 0;   // the roughness dies out with the flame, so the tip stays a point
+        var hl = half * (lick ? 1 + lick * Math.sin(run / 8 - now * 0.013) : 1) + g * rough(run, w + 1, now);
+        var hr = half * (lick ? 1 + lick * Math.sin(run / 6 + 1.7 - now * 0.011) : 1) + g * rough(run, w + 9, now);
+        L.push([path[k].x + nx * (side + hl), path[k].y + ny * (side + hl)]);
+        Rt.push([path[k].x + nx * (side - hr), path[k].y + ny * (side - hr)]);
       }
-      hit.until = Math.max(hit.until, performance.now() + ms);
+      if (L.length < 2) return;
+      c.beginPath();
+      c.moveTo(L[0][0], L[0][1]);
+      for (var q = 1; q < L.length; q++) c.lineTo(L[q][0], L[q][1]);
+      for (q = Rt.length - 1; q >= 0; q--) c.lineTo(Rt[q][0], Rt[q][1]);
+      c.closePath(); c.fill();
     }
-    function sweep() {
-      var now = performance.now();
-      live.forEach(function (hit, key) { if (now >= hit.until) { hit.el.remove(); live.delete(key); } });
-      sweeping = live.size ? requestAnimationFrame(sweep) : 0;
+    /* A layer of the head: a round shape whose edge swells slowly in a few places and is torn in small bites. */
+    function blob(c, now, rad, swell, grit, seed) {
+      var n = Math.max(18, Math.round(rad * 1.6));
+      c.beginPath();
+      for (var k = 0; k < n; k++) {
+        var a = k / n * 6.2832;
+        var rr = rad * (1 + swell * (0.6 * Math.sin(a * 3 + seed + now * 0.004) + 0.4 * Math.sin(a * 5 - seed * 2 - now * 0.0055))) + grit * rough(k * 3, seed, now);
+        if (k) c.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); else c.moveTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr);
+      }
+      c.closePath(); c.fill();
     }
-    function trail() {
-      var size = cellSize(), c = Math.floor(tx / size), r = Math.floor(ty / size), key = c + "," + r;
-      if (key === lastKey) return;
-      lastKey = key;
-      light(c, r, 420 + Math.random() * 320);
-      [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(function (d) { if (Math.random() < 0.3) light(c + d[0], r + d[1], 220 + Math.random() * 280); });
-      if (!sweeping) sweeping = requestAnimationFrame(sweep);
+    function draw(now) {
+      raf = 0;
+      var dt = Math.min(48, now - (last || now)); last = now;
+      var k = 1 - Math.pow(0.001, dt / 110);
+      x += (tx - x) * k; y += (ty - y) * k;
+      show += ((inside ? 1 : 0) - show) * Math.min(1, dt / 120);
+      if (!path.length || Math.hypot(path[0].x - x, path[0].y - y) > 0.5) path.unshift({ x: x, y: y, t: now });
+      while (path.length && now - path[path.length - 1].t > BURN) path.pop();
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      lens.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      if (show > 0.01) {
+        var r = R * show, t = calm ? 0 : now;
+        // the lens: black and white where the comet has been (laid down four times, each shorter, so it is
+        // strongest just behind the head), then orange and yellow closer in
+        lens.fillStyle = GREY;
+        if (!calm) {
+          lens.globalAlpha = 0.5 * show;
+          flame(lens, now, BURN, 0, 1, 0, r * 2.9, 0, 4);
+          flame(lens, now, BURN, 0, 0.7, 0, r * 2.9, 0, 4);
+          flame(lens, now, BURN, 0, 0.45, 0, r * 2.9, 0, 4);
+          flame(lens, now, BURN, 0, 0.22, 0, r * 2.9, 0, 4);
+        }
+        lens.globalAlpha = 0.96 * show;
+        blob(lens, t, r * 3.3, 0.1, 4, 5);
+        lens.fillStyle = AMBER;
+        lens.globalAlpha = 0.72 * show;
+        if (!calm) flame(lens, now, BURN, 0, 0.5, r * 0.35, r * 1.55, 0, 3);
+        blob(lens, t, r * 2.3, 0.12, 3, 6);
+        lens.fillStyle = STRAW;
+        lens.globalAlpha = 0.75 * show;
+        if (!calm) flame(lens, now, BURN, 0, 0.3, -r * 0.3, r * 1.15, 0, 2.5);
+        blob(lens, t, r * 1.72, 0.1, 2.5, 7);
+        lens.globalAlpha = 1;
+        // the comet itself: red outside, with the tail's widest flames
+        ctx.fillStyle = RED;
+        if (!calm) {
+          flame(ctx, now, LIFE, 0, 1, 0, r * 1.02, 0.16, 2.6);
+          flame(ctx, now, LIFE, 0.02, 0.8, r * 0.8, r * 0.42, 0.2, 2.2);
+          flame(ctx, now, LIFE, 0.02, 0.72, -r * 0.84, r * 0.4, 0.2, 2.2);
+        }
+        blob(ctx, t, r * 1.34, 0.07, 2.2, 1);
+        if (!calm) {
+          ctx.fillStyle = RUST;                            // two dark licks inside the tail
+          flame(ctx, now, LIFE, 0.05, 0.86, r * 0.56, r * 0.08, 0, 0.8);
+          flame(ctx, now, LIFE, 0.05, 0.78, -r * 0.54, r * 0.07, 0, 0.8);
+        }
+        // gold inside the red; the tail is slimmer than the ball, so the ball stays a ball
+        ctx.fillStyle = SUN;
+        if (!calm) flame(ctx, now, LIFE, 0, 0.74, 0, r * 0.66, 0.12, 2);
+        blob(ctx, t, r * 0.98, 0.06, 1.6, 2);
+        ctx.fillStyle = GLOW;
+        if (!calm) flame(ctx, now, LIFE, 0, 0.52, 0, r * 0.4, 0.1, 1.5);
+        // and the pale core
+        ctx.fillStyle = CREAM;
+        if (!calm) flame(ctx, now, LIFE, 0, 0.32, 0, r * 0.17, 0, 1);
+        blob(ctx, t, r * 0.56, 0.05, 1, 3);
+      }
+      // over a scene the head keeps stirring; away from one, or with reduced motion, the drawing stops once it has settled
+      var settled = Math.abs(tx - x) < 0.1 && Math.abs(ty - y) < 0.1 && path.length < 2 && Math.abs((inside ? 1 : 0) - show) < 0.01;
+      if (settled && (calm || !inside)) last = 0; else kick();
     }
-    function tick() {
-      x += (tx - x) * 0.4; y += (ty - y) * 0.4;
-      orb.style.transform = "translate(" + (x - 12.5) + "px," + (y - 12.5) + "px)";
-      requestAnimationFrame(tick);
-    }
-    window.addEventListener("pointermove", function (e) {
+    function kick() { if (!raf) raf = requestAnimationFrame(draw); }
+    function place(e) {
+      if (e.pointerType && e.pointerType !== "mouse") return;
       tx = e.clientX; ty = e.clientY;
       if (!seen) { x = tx; y = ty; seen = true; }
-      orb.style.opacity = "1";
-      // no squares over screens and films: they would cover the work being shown
-      if (!calm && e.pointerType === "mouse" && !(e.target.closest && e.target.closest("img, video, .flow-frame, .lightbox"))) trail();
+      var was = inside;
+      inside = !!(e.target && e.target.closest && e.target.closest(SCENES)) && !e.target.closest(".lightbox");
+      if (inside && !was && show < 0.05) { x = tx; y = ty; path.length = 0; } // arrives where the pointer is, not from where it last left
+      kick();
+    }
+    size();
+    window.addEventListener("resize", function () { size(); kick(); });
+    window.addEventListener("pointermove", place, { passive: true });
+    // the page can scroll a scene away from under a resting pointer
+    window.addEventListener("scroll", function () {
+      if (!seen) return;
+      var el = document.elementFromPoint(tx, ty);
+      inside = !!(el && el.closest && el.closest(SCENES));
+      kick();
     }, { passive: true });
-    document.documentElement.addEventListener("mouseleave", function () { orb.style.opacity = "0"; });
-    requestAnimationFrame(tick);
+    document.documentElement.addEventListener("mouseleave", function () { inside = false; kick(); });
   })();
 
-  /* ---------- PixelRise: stage (fills a pinned screen) and strip (stepped edge) ---------- */
-  document.querySelectorAll("[data-rise]").forEach(function (root) {
-    var mode = root.dataset.rise;
-    var grid = mode === "stage" ? root.querySelector(".squares") : root;
-    var list = [], cols = 0, rows = 0, last = "";
-    function build() {
-      cols = colsFor(root);
-      var w = grid.clientWidth || window.innerWidth;
-      var h = mode === "stage" ? vh() : root.clientHeight;
-      var cell = w / cols;
-      rows = Math.max(1, Math.ceil(h / cell));
-      var sig = cols + "x" + rows;
-      if (sig === last) return;
-      last = sig;
-      grid.style.gridAutoRows = cell + "px";
-      list = cells(grid, cols, rows);
-    }
-    function on(c, y, p) {
-      var edge = rows - 1 - y;
-      var jitter = seed(c, edge, 4.1) * 1.25;
-      if (mode === "strip") return p >= (edge + jitter) / rows;
-      return p >= (edge + jitter) / (rows + 1.25);
-    }
-    onScroll(function () {
-      build();
-      var b = root.getBoundingClientRect(), h = vh();
-      var p = reduced ? 1 : mode === "stage" ? clamp((h * 0.9 - b.top) / (h * 0.9)) : clamp((h - b.top) / (h * 0.7));
-      for (var i = 0; i < list.length; i++) list[i].style.opacity = on(i % cols, Math.floor(i / cols), p) ? "1" : "0";
-    });
-  });
-
-  /* ---------- PixelGrid: black edge dissolve and cursor trail ---------- */
-  document.querySelectorAll("[data-grid]").forEach(function (el) {
-    var mode = el.dataset.grid, list = [], cols = 0, rows = 0, last = "";
-    function build() {
-      cols = colsFor(el);
-      var w = el.clientWidth || 1200, h = el.clientHeight || 700;
-      rows = Math.max(1, Math.round(h / (w / cols)));
-      el.style.gridTemplateRows = "repeat(" + rows + ", 1fr)";
-      var sig = cols + "x" + rows;
-      if (sig !== last) { last = sig; list = cells(el, cols, rows); }
-    }
-    if (mode === "edges") {
-      var stays = function (c, r) { return c < Math.round(seed(r, 1, 0) * 2.6) || c >= cols - Math.round(seed(r, 2, 0) * 2.6); };
-      onScroll(function () {
-        build();
-        var h = vh();
-        var p = reduced ? 1 : clamp((h * 0.8 - el.getBoundingClientRect().top) / (h * 0.8));
-        for (var i = 0; i < list.length; i++) {
-          var c = i % cols, r = Math.floor(i / cols);
-          list[i].style.opacity = stays(c, r) || p < 0.08 + seed(c * 31 + r, 3, 0) * 0.86 ? "1" : "0";
-        }
+  /* ---------- What I do: a heading's text shrinks into its bar as the heading comes to hold at the top ----------
+     Each heading is followed by an empty gap. --c is how much of that gap has gone under the heading (0 to 1);
+     the type size follows it in CSS. A held heading under the pointer opens again and pushes the ones below down. */
+  (function whatList() {
+    var heads = Array.prototype.slice.call(document.querySelectorAll(".what-head"));
+    if (!heads.length) return;
+    var list = heads[0].parentNode, held = window.matchMedia("(min-width: 900px) and (min-height: 620px)"), over = -1;
+    function update() {
+      if (!held.matches) { heads.forEach(function (h) { h.style.removeProperty("--c"); h.style.removeProperty("--shift"); h.classList.remove("on"); }); return; }
+      var cs = getComputedStyle(list), bar = parseFloat(cs.getPropertyValue("--bar")) || 64, grow = parseFloat(cs.getPropertyValue("--grow")) || 30, shift = 0;
+      heads.forEach(function (head, i) {
+        var gap = head.nextElementSibling.getBoundingClientRect();
+        var c = Math.max(0, Math.min(1, ((i + 1) * bar + shift - gap.top) / (gap.height || 1)));
+        head.style.setProperty("--c", c.toFixed(3));
+        head.style.setProperty("--shift", shift.toFixed(1) + "px");
+        head.classList.toggle("on", i === over);
+        if (i === over) shift += c * grow;
       });
-      return;
     }
-    build();
-    window.addEventListener("resize", build);
+    heads.forEach(function (head, i) {
+      head.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") { over = i; update(); } });
+    });
+    list.addEventListener("pointerleave", function () { over = -1; update(); });
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })();
+
+  /* ---------- Work: a row opens only while the pointer is on it (or it holds focus) ----------
+     A row that scrolls in under a resting pointer stays closed: only a pointer that has really moved opens one. */
+  (function workList() {
+    var rows = Array.prototype.slice.call(document.querySelectorAll(".wrow"));
+    if (!rows.length) return;
+    var list = rows[0].parentNode, timer = 0, mx = -1, my = -1;
+    function open(row) { rows.forEach(function (r) { r.classList.toggle("open", r === row); }); }
+    list.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse" || (e.clientX === mx && e.clientY === my)) return;
+      mx = e.clientX; my = e.clientY;
+      var row = e.target.closest ? e.target.closest(".wrow") : null;
+      if (!row || row.classList.contains("open")) return;
+      clearTimeout(timer);
+      timer = setTimeout(function () { open(row); }, 70); // a pointer crossing the list on its way elsewhere opens nothing
+    }, { passive: true });
+    list.addEventListener("pointerleave", function () { clearTimeout(timer); open(null); });
+    rows.forEach(function (row) { row.addEventListener("focus", function () { open(row); }); });
+    list.addEventListener("focusout", function (e) { if (!list.contains(e.relatedTarget)) open(null); });
+
+    /* A tag rides the pointer over the rows and says what a click does. */
     if (!finePointer) return;
-    var until = new Map(), raf = 0;
-    function light(i, ms) { if (i < 0 || i >= list.length) return; list[i].style.opacity = "1"; until.set(i, performance.now() + ms); }
-    function tick() {
-      var now = performance.now();
-      until.forEach(function (t, i) { if (now >= t) { list[i].style.opacity = "0"; until.delete(i); } });
-      raf = until.size ? requestAnimationFrame(tick) : 0;
+    var LOCK = '<svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg>';
+    var tag = document.createElement("div");
+    tag.className = "cursor-tag";
+    tag.setAttribute("aria-hidden", "true");
+    document.body.appendChild(tag);
+    var shown = null, px = -1, py = -1;
+    function show(row) {
+      if (row === shown) return;
+      shown = row;
+      if (row) tag.innerHTML = (row.hasAttribute("data-locked") ? LOCK : "") + "View case study";
+      tag.classList.toggle("on", !!row);
     }
     window.addEventListener("pointermove", function (e) {
-      var b = el.getBoundingClientRect();
-      if (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom) return;
-      var c = Math.floor(((e.clientX - b.left) / b.width) * cols), r = Math.floor(((e.clientY - b.top) / b.height) * rows);
-      light(c + r * cols, 450 + Math.random() * 350);
-      [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(function (d) {
-        var nc = c + d[0], nr = r + d[1];
-        if (nc >= 0 && nc < cols && nr >= 0 && nr < rows && Math.random() < 0.3) light(nc + nr * cols, 250 + Math.random() * 300);
-      });
-      if (!raf) raf = requestAnimationFrame(tick);
+      if (e.pointerType !== "mouse") return;
+      px = e.clientX; py = e.clientY;
+      var row = e.target.closest ? e.target.closest(".wrow") : null;
+      show(row);
+      if (row) tag.style.transform = "translate(" + (px + 18) + "px," + (py + 18) + "px)";
     }, { passive: true });
-  });
-
-  /* ---------- FocusRows: one-line titles, hover fill, per-band dissolve ---------- */
-  document.querySelectorAll("[data-focus]").forEach(function (root) {
-    var CELL = 72, MAX = 170, SHARE = 0.55;
-    var bands = Array.prototype.slice.call(root.querySelectorAll(".band"));
-    var titles = Array.prototype.slice.call(root.querySelectorAll(".frow-t"));
-    var rowsEls = Array.prototype.slice.call(root.querySelectorAll(".frow"));
-    var em = 12.4, all = [], last = "";
-    function gutter() { var w = window.innerWidth; return w < 810 ? 20 : w < 1200 ? 28 : 44; }
-    function pad() { var w = window.innerWidth; return w < 810 ? 40 : w < 1200 ? 56 : 72; }
-    function measure() {
-      var ctx = document.createElement("canvas").getContext("2d");
-      ctx.font = "500 100px " + getComputedStyle(document.body).getPropertyValue("--sans");
-      em = Math.max.apply(null, titles.map(function (t) { var s = t.textContent; return (ctx.measureText(s).width - s.length * 2) / 100; }));
-    }
-    function layout() {
-      var full = root.clientWidth, gut = gutter(), width = Math.max(1, full - gut * 2);
-      var compact = width < 768;
-      root.classList.toggle("compact", compact);
-      var room = compact ? width : width * SHARE - 24;
-      var size = Math.min(MAX, Math.floor((room / em) * 0.82));
-      var small = Math.max(12, Math.min(14, Math.round(width / 130)));
-      root.style.setProperty("--small", small + "px");
-      bands[0].style.height = bands[bands.length - 1].style.height = pad() + "px";
-      bands.slice(1, -1).forEach(function (b) { b.style.padding = "0 " + gut + "px"; });
-      titles.forEach(function (t) { t.style.fontSize = size + "px"; });
-      rowsEls.forEach(function (r) { r.style.padding = compact ? "" : Math.round(size * 0.4) + "px 0 " + Math.round(size * 0.5) + "px"; });
-      var cols = Math.max(4, Math.round(full / CELL));
-      var n = bands.length;
-      var spec = bands.map(function (b) { return Math.max(1, Math.round(b.offsetHeight / CELL)); });
-      var sig = cols + "|" + spec.join();
-      if (sig === last) return;
-      last = sig;
-      all = [];
-      bands.forEach(function (b, band) {
-        var grid = b.querySelector(".squares");
-        var rows = spec[band];
-        grid.style.gridTemplateRows = "repeat(" + rows + ", 1fr)";
-        var list = cells(grid, cols, rows);
-        list.forEach(function (cell, i) {
-          var c = i % cols, r = Math.floor(i / cols);
-          cell.dataset.t = String((((n - 1 - band) + (rows - 1 - r + 0.5) / rows) / n) * 0.5 + seed(c, band * 17 + r, 4.1) * 0.49);
-          all.push(cell);
-        });
-      });
-    }
-    measure();
-    layout();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); last = ""; layout(); queue(); });
-    window.addEventListener("resize", layout);
-    onScroll(function () {
-      var h = vh();
-      var p = reduced ? 1 : clamp((h - root.getBoundingClientRect().bottom) / (h * 0.75));
-      for (var i = 0; i < all.length; i++) all[i].style.opacity = p <= Number(all[i].dataset.t) ? "1" : "0";
-    });
-    rowsEls.forEach(function (r) {
-      r.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") r.classList.add("on"); });
-      r.addEventListener("pointerleave", function () { r.classList.remove("on"); });
-    });
-  });
+    // the page can move under a resting pointer: check what is under it again
+    window.addEventListener("scroll", function () {
+      if (px < 0) return;
+      var el = document.elementFromPoint(px, py);
+      show(el && el.closest ? el.closest(".wrow") : null);
+    }, { passive: true });
+    document.documentElement.addEventListener("mouseleave", function () { px = -1; show(null); });
+  })();
 
   /* ---------- Contact form (Web3Forms, as on the previous site) ---------- */
   var form = document.getElementById("contact-form");

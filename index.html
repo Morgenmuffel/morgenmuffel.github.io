@@ -7,7 +7,9 @@
 <meta name="description" content="I design how AI agents behave and the interfaces they act through. Senior design engineer in Berlin: agent behaviour, conversational flows and production front ends.">
 <meta property="og:title" content="Yulia Vilensky · Senior Design Engineer">
 <meta property="og:description" content="I design how AI agents behave and the interfaces they act through.">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Valley+Sans:wght@400..900&display=swap">
@@ -22,8 +24,8 @@
   <nav class="nav appear" data-mount style="--ay:-12px" aria-label="Main">
     <a class="hero-name link" href="/">Yulia Vilensky</a>
     <div class="nav-links micro">
+      <a class="link hide-sm" href="#what-i-do">What I do</a>
       <a class="link" href="#work">Work</a>
-      <a class="link hide-sm" href="#about">What I do</a>
       <a class="link nav-cta" href="#contact">Contact</a>
     </div>
   </nav>
@@ -35,7 +37,7 @@
   <h1 class="hero-statement reveal-words" id="hero-statement" data-mount>I design how AI agents behave and the interfaces they act through</h1>
   <div class="hero-base micro appear" data-mount>
     <span>Berlin · Open to remote across Europe</span>
-    <a class="link" href="#work">Scroll ↓</a>
+    <a class="link" href="#what-i-do">Scroll ↓</a>
   </div>
 </header>
 
@@ -50,96 +52,136 @@
 </div>
 
 <main>
+  <section class="what" id="what-i-do" aria-labelledby="what-title">
+    <h2 class="display rise" id="what-title"><span>WHAT I DO</span></h2>
+    <!-- each heading holds at the top once reached, one under the other, and its text shrinks into the bar;
+         a held heading opens again under the pointer -->
+    <div class="what-list" style="--n:5">
+      <div class="what-head" style="--i:0">
+        <span class="what-n" aria-hidden="true">01</span>
+        <h3 class="what-t">Agent behaviour</h3>
+        <p class="what-d">I write and fine-tune the prompts, tool contracts and conversational flows that govern how an agent asks, explains and recovers.</p>
+      </div>
+      <div class="what-gap" style="--i:0"></div>
+      <div class="what-head" style="--i:1">
+        <span class="what-n" aria-hidden="true">02</span>
+        <h3 class="what-t">Interfaces in production</h3>
+        <p class="what-d">I build the interface those conversations happen in, directly in the production codebase. My handoff is working code plus the API changes a feature needs.</p>
+      </div>
+      <div class="what-gap" style="--i:1"></div>
+      <div class="what-head" style="--i:2">
+        <span class="what-n" aria-hidden="true">03</span>
+        <h3 class="what-t">End-to-end product flows</h3>
+        <p class="what-d">From problem framing to shipped journeys, onboarding, activation and purchase, without a handoff in the middle.</p>
+      </div>
+      <div class="what-gap" style="--i:2"></div>
+      <div class="what-head" style="--i:3">
+        <span class="what-n" aria-hidden="true">04</span>
+        <h3 class="what-t">Design systems in code</h3>
+        <p class="what-d">Tokens, theming, component architecture, WCAG and motion, enforced in the repo so new work builds on the system instead of drifting from it.</p>
+      </div>
+      <div class="what-gap" style="--i:3"></div>
+      <div class="what-head" style="--i:4">
+        <span class="what-n" aria-hidden="true">05</span>
+        <h3 class="what-t">AI-native practice</h3>
+        <p class="what-d">Agentic coding tools every day, my own skills for repeating patterns, and code-generation recipes tied to the design system.</p>
+      </div>
+      <div class="what-gap" style="--i:4"></div>
+    </div>
+  </section>
+
+  <!-- the blue ground ends in one broad arc; three orbits draw across the edge as the page scrolls -->
+  <div class="turn" aria-hidden="true">
+    <svg viewBox="0 0 1440 360" preserveAspectRatio="none">
+      <defs><clipPath id="turn-ground"><path d="M0 0H1440V110C1090 300 350 300 0 110Z"/></clipPath></defs>
+      <g class="turn-lines under"><ellipse pathLength="1" cx="470" cy="70" rx="640" ry="190" transform="rotate(-7 470 70)"/><ellipse pathLength="1" cx="1130" cy="30" rx="430" ry="150" transform="rotate(-13 1130 30)"/><ellipse pathLength="1" cx="760" cy="150" rx="900" ry="120" transform="rotate(4 760 150)"/></g>
+      <path class="turn-fill" d="M0 0H1440V110C1090 300 350 300 0 110Z"/>
+      <g class="turn-lines over" clip-path="url(#turn-ground)"><ellipse pathLength="1" cx="470" cy="70" rx="640" ry="190" transform="rotate(-7 470 70)"/><ellipse pathLength="1" cx="1130" cy="30" rx="430" ry="150" transform="rotate(-13 1130 30)"/><ellipse pathLength="1" cx="760" cy="150" rx="900" ry="120" transform="rotate(4 760 150)"/></g>
+    </svg>
+  </div>
+
   <section class="work" id="work" aria-labelledby="work-title">
-    <h2 class="display reveal-words" id="work-title">WORK</h2>
+    <div class="work-head">
+      <h2 class="display rise" id="work-title"><span>WORK</span></h2>
+    </div>
     <div class="work-list">
 <!-- work:start -->
-      <a class="wrow" href="/work/design-test-enrich">
-        <div class="wrow-a"><p class="wrow-n">01</p><span class="btn-line micro">View case study <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></span></div>
-        <div class="wrow-cover"><img src="/assets/site/covers/design-test-enrich.webp" alt="" loading="lazy"><span class="lock-tag micro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg>Password protected</span></div>
-        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Design, Test, Enrich</h3><p class="micro">Interaction design for a complex, multi-state flow · Self-initiated</p></div><p>Building an enrichment workflow meant configuring it blind across three screens and learning whether it worked only after a full catalog run. I proposed one loop instead, then streamlined it around a single rule: every project starts from a file, and every new file is a job.</p></div>
+      <a class="wrow" href="/work/design-test-enrich" style="--ar:1.764" data-locked>
+        <div class="wrow-cover"><img src="/assets/site/covers/design-test-enrich.webp" width="3024" height="1714" alt="" loading="lazy"></div>
+        <div class="wrow-main">
+          <h3 class="wrow-title">Design, Test, Enrich</h3>
+          <div class="wrow-more"><div><p>Building an enrichment workflow meant configuring it blind across three screens and learning whether it worked only after a full catalog run. I proposed one loop instead, then streamlined it around a single rule: every project starts from a file, and every new file is a job.</p><span class="wrow-go micro">View case study <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></span></div></div>
+        </div>
+        <div class="wrow-meta micro"><p>Interaction design for a complex, multi-state flow · Self-initiated</p><p class="wrow-org">Dyver · 2025–now <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></p></div>
       </a>
-      <a class="wrow" href="/work/self-serve-activation">
-        <div class="wrow-a"><p class="wrow-n">02</p><span class="btn-line micro">View case study <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></span></div>
-        <div class="wrow-cover"><img src="/assets/site/covers/self-serve-activation.webp" alt="" loading="lazy"><span class="lock-tag micro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg>Password protected</span></div>
-        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Self-serve activation</h3><p class="micro">Discovery from evidence · Journey design · AI behaviour as interaction</p></div><p>As Dyver opened up beyond ops-led enterprise delivery, new customers had to reach a first enriched catalog without a person guiding them. They stopped early, and not for the reason everyone assumed.</p></div>
+      <a class="wrow" href="/work/self-serve-activation" style="--ar:1.764" data-locked>
+        <div class="wrow-cover"><img src="/assets/site/covers/self-serve-activation.webp" width="3024" height="1714" alt="" loading="lazy"></div>
+        <div class="wrow-main">
+          <h3 class="wrow-title">Self-serve activation</h3>
+          <div class="wrow-more"><div><p>As Dyver opened up beyond ops-led enterprise delivery, new customers had to reach a first enriched catalog without a person guiding them. They stopped early, and not for the reason everyone assumed.</p><span class="wrow-go micro">View case study <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></span></div></div>
+        </div>
+        <div class="wrow-meta micro"><p>Discovery from evidence · Journey design · AI behaviour as interaction</p><p class="wrow-org">Dyver · 2025–now <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></p></div>
       </a>
-      <a class="wrow" href="/work/customer-journeys">
-        <div class="wrow-a"><p class="wrow-n">03</p><span class="btn-line micro">View case study <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></span></div>
-        <div class="wrow-cover"><img src="/assets/site/covers/customer-journeys.webp" alt="" loading="lazy"><span class="lock-tag micro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg>Password protected</span></div>
-        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Customer journeys</h3><p class="micro">Audience and funnel strategy · Design judgment beyond product UI</p></div><p>One homepage spoke to customers who need enrichment in two different ways, and the one who wants to start alone, today, had no clear way in.</p></div>
+      <a class="wrow" href="/work/customer-journeys" style="--ar:1.902" data-locked>
+        <div class="wrow-cover"><img src="/assets/site/covers/customer-journeys.webp" width="1440" height="757" alt="" loading="lazy"></div>
+        <div class="wrow-main">
+          <h3 class="wrow-title">Customer journeys</h3>
+          <div class="wrow-more"><div><p>One homepage spoke to customers who need enrichment in two different ways, and the one who wants to start alone, today, had no clear way in.</p><span class="wrow-go micro">View case study <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></span></div></div>
+        </div>
+        <div class="wrow-meta micro"><p>Audience and funnel strategy · Design judgment beyond product UI</p><p class="wrow-org">Dyver · 2025–now <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></p></div>
       </a>
-      <a class="wrow" href="/work/design-system-in-code">
-        <div class="wrow-a"><p class="wrow-n">04</p><span class="btn-line micro">View case study <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></span></div>
-        <div class="wrow-cover"><img src="/assets/site/covers/design-system-in-code.webp" alt="" loading="lazy"><span class="lock-tag micro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg>Password protected</span></div>
-        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Design system in code</h3><p class="micro">Design-to-production · Design systems · AI-native practice</p></div><p>How one designer-engineer keeps a design system coherent when much of the code is generated: by enforcing it in the repository instead of checking against it afterwards.</p></div>
+      <a class="wrow" href="/work/design-system-in-code" style="--ar:1.929" data-locked>
+        <div class="wrow-cover"><img src="/assets/site/covers/design-system-in-code.webp" width="1512" height="784" alt="" loading="lazy"></div>
+        <div class="wrow-main">
+          <h3 class="wrow-title">Design system in code</h3>
+          <div class="wrow-more"><div><p>How one designer-engineer keeps a design system coherent when much of the code is generated: by enforcing it in the repository instead of checking against it afterwards.</p><span class="wrow-go micro">View case study <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></span></div></div>
+        </div>
+        <div class="wrow-meta micro"><p>Design-to-production · Design systems · AI-native practice</p><p class="wrow-org">Dyver · 2025–now <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" fill="none" stroke="currentColor"/><rect x="1" y="5" width="8" height="6.5" fill="currentColor"/></svg></p></div>
       </a>
-      <a class="wrow" href="/work/conversational-flows-ai-health-coach">
-        <div class="wrow-a"><p class="wrow-n">05</p><span class="btn-line micro">View case study</span></div>
-        <div class="wrow-cover"><img src="/assets/ai-coach-flow2.png" alt="" loading="lazy"></div>
-        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Designing Adaptive Conversational Flows for an AI Health Coach</h3><p class="micro">Conversational design · Behavioural science</p></div><p>Designing context-aware conversation patterns that adapt persuasion techniques to schedule stress</p></div>
+      <a class="wrow" href="/work/conversational-flows-ai-health-coach" style="--ar:3.015">
+        <div class="wrow-cover"><img src="/assets/ai-coach-flow2.png" width="1800" height="597" alt="" loading="lazy"></div>
+        <div class="wrow-main">
+          <h3 class="wrow-title">Designing Adaptive Conversational Flows for an AI Health Coach</h3>
+          <div class="wrow-more"><div><p>Designing context-aware conversation patterns that adapt persuasion techniques to schedule stress</p><span class="wrow-go micro">View case study <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></span></div></div>
+        </div>
+        <div class="wrow-meta micro"><p>Conversational design · Behavioural science</p><p class="wrow-org">Movebite · 2025</p></div>
       </a>
-      <a class="wrow" href="/work/multi-agent-calendar-scheduling">
-        <div class="wrow-a"><p class="wrow-n">06</p><span class="btn-line micro">View case study</span></div>
-        <div class="wrow-cover"><img src="/assets/MultiAgentFlow.png" alt="" loading="lazy"></div>
-        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Multi-Agent Architecture for Intelligent Calendar Scheduling</h3><p class="micro">Agentic AI architecture · Context engineering</p></div><p>Designing a 4-agent system from scratch: translating conversational flows into clean agent boundaries, typed delegation patterns, and state management for complex conversational AI</p></div>
+      <a class="wrow" href="/work/multi-agent-calendar-scheduling" style="--ar:1.452">
+        <div class="wrow-cover"><img src="/assets/MultiAgentFlow.png" width="1192" height="821" alt="" loading="lazy"></div>
+        <div class="wrow-main">
+          <h3 class="wrow-title">Multi-Agent Architecture for Intelligent Calendar Scheduling</h3>
+          <div class="wrow-more"><div><p>Designing a 4-agent system from scratch: translating conversational flows into clean agent boundaries, typed delegation patterns, and state management for complex conversational AI</p><span class="wrow-go micro">View case study <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></span></div></div>
+        </div>
+        <div class="wrow-meta micro"><p>Agentic AI architecture · Context engineering</p><p class="wrow-org">Movebite · 2025</p></div>
       </a>
-      <a class="wrow" href="/work/interactive-location-data-tool">
-        <div class="wrow-a"><p class="wrow-n">07</p><span class="btn-line micro">View case study</span></div>
-        <div class="wrow-cover"><img src="/assets/EnIn1pQJzUXfyRGR.png" alt="" loading="lazy"></div>
-        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">Interactive Data Tool for Property Developers</h3><p class="micro">Product discovery · Data visualisation</p></div><p>Led product discovery for an interactive data visualization tool that helps property developers analyze location data, predict prices, and make informed investment decisions.</p></div>
+      <a class="wrow" href="/work/interactive-location-data-tool" style="--ar:1.918">
+        <div class="wrow-cover"><img src="/assets/EnIn1pQJzUXfyRGR.png" width="1920" height="1001" alt="" loading="lazy"></div>
+        <div class="wrow-main">
+          <h3 class="wrow-title">Interactive Data Tool for Property Developers</h3>
+          <div class="wrow-more"><div><p>Led product discovery for an interactive data visualization tool that helps property developers analyze location data, predict prices, and make informed investment decisions.</p><span class="wrow-go micro">View case study <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></span></div></div>
+        </div>
+        <div class="wrow-meta micro"><p>Product discovery · Data visualisation</p><p class="wrow-org">ImmobilienScout24 · 2018–2019</p></div>
       </a>
 <!-- work:end -->
     </div>
   </section>
-
-  <section class="focus" id="about" data-focus aria-label="What I do">
-    <div class="band"><div class="squares" aria-hidden="true"></div></div>
-    <div class="band"><div class="squares" aria-hidden="true"></div>
-      <div class="frow"><span class="frow-n">[01]</span><h3 class="frow-t">Agent behaviour</h3><p class="frow-c">I write and fine-tune the prompts, tool contracts and conversational flows that govern how an agent asks, explains and recovers.</p></div>
-    </div>
-    <div class="band"><div class="squares" aria-hidden="true"></div>
-      <div class="frow"><span class="frow-n">[02]</span><h3 class="frow-t">Interfaces in production</h3><p class="frow-c">I build the interface those conversations happen in, directly in the production codebase. My handoff is working code plus the API changes a feature needs.</p></div>
-    </div>
-    <div class="band"><div class="squares" aria-hidden="true"></div>
-      <div class="frow"><span class="frow-n">[03]</span><h3 class="frow-t">End-to-end product flows</h3><p class="frow-c">From problem framing to shipped journeys, onboarding, activation and purchase, without a handoff in the middle.</p></div>
-    </div>
-    <div class="band"><div class="squares" aria-hidden="true"></div>
-      <div class="frow"><span class="frow-n">[04]</span><h3 class="frow-t">Design systems in code</h3><p class="frow-c">Tokens, theming, component architecture, WCAG and motion, enforced in the repo so new work builds on the system instead of drifting from it.</p></div>
-    </div>
-    <div class="band"><div class="squares" aria-hidden="true"></div>
-      <div class="frow last"><span class="frow-n">[05]</span><h3 class="frow-t">AI-native practice</h3><p class="frow-c">Agentic coding tools every day, my own skills for repeating patterns, and code-generation recipes tied to the design system.</p></div>
-    </div>
-    <div class="band"><div class="squares" aria-hidden="true"></div></div>
-  </section>
-
-  <section class="toolkit" id="toolkit" aria-labelledby="toolkit-title">
-    <h2 class="section-title" id="toolkit-title">TOOLKIT</h2>
-    <div class="tools">
-      <div class="tool"><h3>Design engineering</h3><p>React, TypeScript, Next.js, Tailwind and shadcn, design tokens, component architecture, WCAG, motion and micro-interactions</p></div>
-      <div class="tool"><h3>AI and conversational design</h3><p>Agentic and conversational flows, prompt design, agent harness, tool contracts, structured outputs, human-in-the-loop, behavioral science</p></div>
-      <div class="tool"><h3>AI-native workflow</h3><p>Claude Code, Codex, Cursor, custom skills, code-generation recipes, Figma MCP, Git worktrees</p></div>
-      <div class="tool"><h3>UX and product design</h3><p>Product discovery, user journeys, design systems, Figma variables and advanced prototyping, user research, data-driven iteration</p></div>
-      <div class="tool"><h3>Engineering and data</h3><p>Python, FastAPI, PydanticAI, SQL, LangChain, OpenAI API, Docker</p></div>
-    </div>
-  </section>
-
 </main>
 
 <div class="hills dark" aria-hidden="true">
   <svg class="land" viewBox="0 0 1440 200" preserveAspectRatio="none">
-    <path class="back" d="M0 200V118C150 70 330 52 520 92C700 130 860 150 1060 88C1220 38 1350 48 1440 84V200Z"/>
-    <path class="front" d="M0 200V150C200 96 420 168 640 150C860 132 1040 62 1240 108C1330 128 1400 150 1440 142V200Z"/>
+    <path class="back" d="M0 200V150C180 150 320 120 470 80C600 46 720 40 840 76C980 118 1120 150 1440 132V200Z"/>
+    <path class="front" d="M0 200V112C140 96 300 120 460 150C640 182 820 176 1000 140C1160 108 1320 84 1440 70V200Z"/>
   </svg>
-  <svg class="tree spruce" style="left:44.4%;bottom:25%" viewBox="0 0 40 70"><path d="M20 2 29 20H24L33 38H26L36 58H22V70H18V58H4L14 38H7L16 20H11Z"/></svg>
-  <svg class="tree spruce small" style="left:47.6%;bottom:25.4%" viewBox="0 0 40 70"><path d="M20 2 29 20H24L33 38H26L36 58H22V70H18V58H4L14 38H7L16 20H11Z"/></svg>
-  <svg class="tree bare" style="left:86.1%;bottom:46%" viewBox="0 0 60 80"><path d="M30 80V44M30 62 16 42 8 22M16 42 20 18M30 48 42 30 52 12M42 30 36 8M30 46 28 14"/></svg>
+  <svg class="tree spruce" style="left:20%;bottom:37%" viewBox="0 0 40 70"><path d="M20 2 29 20H24L33 38H26L36 58H22V70H18V58H4L14 38H7L16 20H11Z"/></svg>
+  <svg class="tree spruce small" style="left:23.2%;bottom:34.5%" viewBox="0 0 40 70"><path d="M20 2 29 20H24L33 38H26L36 58H22V70H18V58H4L14 38H7L16 20H11Z"/></svg>
+  <svg class="tree spruce small" style="left:84%;bottom:48%" viewBox="0 0 40 70"><path d="M20 2 29 20H24L33 38H26L36 58H22V70H18V58H4L14 38H7L16 20H11Z"/></svg>
 </div>
+
 <footer class="foot" id="contact" aria-labelledby="contact-title">
   <canvas class="valley" data-valley="night" aria-hidden="true"></canvas>
   <h2 class="foot-quote" id="contact-title" aria-label="Don’t panic. I’m your human in the loop.">
-    <span class="reveal-words">Don’t panic.</span>
-    <span class="reveal-words">I’m your human in the loop.</span>
+    <span class="rise"><span>Don’t panic.</span></span>
+    <span class="rise"><span>I’m your human in the loop.</span></span>
     <svg class="moon" viewBox="0 0 200 200" aria-hidden="true">
       <defs>
         <radialGradient id="moon-light" cx="40%" cy="36%" r="72%"><stop offset="0" stop-color="#F7EFD2"/><stop offset=".62" stop-color="#E9DDB1"/><stop offset="1" stop-color="#CFC193"/></radialGradient>
@@ -159,9 +201,8 @@
     <nav class="foot-nav" aria-label="Footer">
       <p class="micro">Site</p>
       <a href="#top">Home</a>
+      <a href="#what-i-do">What I do</a>
       <a href="#work">Work</a>
-      <a href="#about">What I do</a>
-      <a href="#toolkit">Toolkit</a>
     </nav>
     <div class="foot-col">
       <p class="micro">Elsewhere</p>

@@ -67,7 +67,9 @@ const HEAD = (title, description, extra = "") => `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Valley+Sans:wght@400..900&display=swap">
@@ -78,8 +80,8 @@ ${extra}<script async src="https://www.googletagmanager.com/gtag/js?id=G-FSBYY0W
 const NAV = `<nav class="nav appear" data-mount style="--ay:-12px" aria-label="Main">
     <a class="hero-name link" href="/">Yulia Vilensky</a>
     <div class="nav-links micro">
+      <a class="link hide-sm" href="/#what-i-do">What I do</a>
       <a class="link" href="/#work">Work</a>
-      <a class="link hide-sm" href="/#about">What I do</a>
       <a class="link nav-cta" href="#contact">Contact</a>
     </div>
   </nav>`;
@@ -103,8 +105,10 @@ const SKY = `<div class="cs-sky" aria-hidden="true">
     ${STREAK("s1")}${STREAK("s2")}${STREAK("s3")}${PUFF("p1")}${PUFF("p2")}
     <svg class="cs-birds" viewBox="0 0 68 30"><path d="M2 14q8-10 14 0q6-10 14 0M40 24q6-8 11 0q5-8 11 0"/></svg>
   </div>`;
-const FOOTER = ((/<div class="hills dark"[\s\S]*?<\/footer>/.exec(HOME) || [""])[0])
-  .replace(/href="#(?!top")/g, 'href="/#');
+// A case study ends as the home page does: the dark hills, then the night footer.
+const DARK_HILLS = (/<div class="hills dark"[^>]*>[\s\S]*?<\/div>/.exec(HOME) || [""])[0];
+const FOOT = (/<footer class="foot"[\s\S]*?<\/footer>/.exec(HOME) || [""])[0];
+const FOOTER = DARK_HILLS && FOOT ? (DARK_HILLS + "\n" + FOOT).replace(/href="#(?!top")/g, 'href="/#') : "";
 if (!HILLS || !FOOTER || !HERO_INFO) throw new Error("index.html: hills or footer markup not found");
 
 /* ---------- image sizes ----------
@@ -288,14 +292,21 @@ ${next ? `<a class="cs-next" href="/work/${next.slug}">
 `;
 }
 
+/* One row of the Work list: a small cover, the title and what I did. The summary and the full-size cover belong
+   to the open row (the first one, until the pointer or the keyboard picks another). */
+const GO = `<svg viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>`;
 function workRow(c, i) {
-  const n = String(i + 1).padStart(2, "0");
-  const cover = (c.cover ? `<img src="${c.cover}" alt="" loading="lazy">` : `<span class="micro">Screens to add</span>`)
-    + (c.protected ? `<span class="lock-tag micro">${LOCK}Password protected</span>` : "");
-  return `      <a class="wrow" href="/work/${c.slug}">
-        <div class="wrow-a"><p class="wrow-n">${n}</p><span class="btn-line micro">View case study${c.protected ? " " + LOCK : ""}</span></div>
+  const size = c.cover ? imgSize(at(c.cover.replace(/^\//, ""))) : null;
+  const dims = size ? ` width="${size[0]}" height="${size[1]}"` : "";
+  const ar = size ? (size[0] / size[1]).toFixed(3) : "1.778";
+  const cover = c.cover ? `<img src="${c.cover}"${dims} alt="" loading="lazy">` : "";
+  return `      <a class="wrow" href="/work/${c.slug}" style="--ar:${ar}"${c.protected ? " data-locked" : ""}>
         <div class="wrow-cover">${cover}</div>
-        <div class="wrow-c"><div class="wrow-head"><h3 class="wrow-title">${esc(c.listTitle)}</h3><p class="micro">${esc(c.capability)}</p></div><p>${esc(c.summary)}</p></div>
+        <div class="wrow-main">
+          <h3 class="wrow-title">${esc(c.listTitle)}</h3>
+          <div class="wrow-more"><div><p>${esc(c.summary)}</p><span class="wrow-go micro">View case study ${GO}</span></div></div>
+        </div>
+        <div class="wrow-meta micro"><p>${esc(c.capability)}</p><p class="wrow-org">${esc([c.company, c.year].filter(Boolean).join(" · "))}${c.protected ? " " + LOCK : ""}</p></div>
       </a>`;
 }
 

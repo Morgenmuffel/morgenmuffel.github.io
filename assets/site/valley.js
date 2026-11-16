@@ -588,7 +588,7 @@ function buildWorld(T) {
       B.add(st, new THREE.PlaneGeometry(1, 1), M(-900 + rnd() * 1900, 70 + rnd() * 640, -1200, s, s, s, 0, 0, Math.PI / 4));
     }
   } else {
-    for (const [x, y, z, w] of [[-330, 150, -820, 64], [80, 210, -900, 84], [340, 125, -800, 56]]) {
+    for (const [x, y, z, w] of [[-330, 150, -820, 64], [300, 178, -900, 76], [470, 135, -800, 56]]) {   // kept right of the intro text at every width
       const st = B.style(T.cloud, { fog: 0, lit: 0, glint: 0.2, range: [y - w * 0.14, y + w * 0.2] });
       for (const [ox, oy, sc] of [[0, 0, 1], [-0.6, -0.03, 0.62], [0.58, -0.02, 0.7], [0.15, 0.07, 0.6]])
         B.add(st, new THREE.IcosahedronGeometry(1, 3), M(x + ox * w, y + oy * w, z, w * sc * 0.62, w * sc * 0.15, w * sc * 0.3));
@@ -903,8 +903,11 @@ async function sign(el, hex, renderer) {
   tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), null);
   mesh.frustumCulled = false;
+  // where each line sits on the label: its left and right ends and its baseline, as fractions of the label (baseline from
+  // the bottom); and the height of a capital, so the scene can tell how deep a line stands in the ground
+  const lineBox = lines.map((l, i) => ({ x0: pad / c.width, x1: (pad + g.measureText(l).width) / c.width, base: 1 - (pad + px * 0.73 + lead * i) / c.height }));
   return {
-    mesh, tex, aspect: c.width / c.height,
+    mesh, tex, aspect: c.width / c.height, lines: lineBox, cap: px * 0.72 / c.height,
     col: signMat(tex, "gl_FragColor = vec4(uCol, 1.);", { uCol: u3(hex) }),
     data: signMat(tex, "gl_FragColor = vec4(0., 0., 900., clamp(vZ/uFar, 0., 1.));"),
   };
@@ -976,12 +979,18 @@ function mount(canvas) {
     const left = V3(pos.x, 0, pos.z).addScaledVector(f, D).addScaledVector(r, -span * edge);
     label.mesh.rotation.y = Math.atan2(-f.x, -f.z) + TURN;   // the left end stays put; the right end swings away
     const across = V3(1, 0, 0).applyQuaternion(label.mesh.quaternion), facing = V3(0, 0, 1).applyQuaternion(label.mesh.quaternion);
-    // it stands on the ground of its left part (the right end walks into the hill there and sinks into it)
+    // it stands on the ground of its left part, and no line may sink deeper than a fifth of a capital into the drawn
+    // ground under it (the right end walks into the hill and dips its feet in, no more)
     const hs = [];
     for (let k = 0; k <= 7; k++) hs.push(height(left.x + across.x * W * k / 12, left.z + across.z * W * k / 12));
     hs.sort((a, b) => a - b);
+    let bottom = Math.max(0.4, hs[5]) - 0.15;
+    for (const ln of label.lines) for (let k = 0; k <= 16; k++) {
+      const t = ln.x0 + (ln.x1 - ln.x0) * k / 16, gx = left.x + across.x * W * t, gz = left.z + across.z * W * t;
+      bottom = Math.max(bottom, ground(gx, gz) - 0.2 * label.cap * H - ln.base * H);
+    }
     label.mesh.scale.set(W, H, 1);
-    label.mesh.position.copy(left).addScaledVector(across, W / 2).setY(Math.max(0.4, hs[5]) - 0.15 + H / 2);
+    label.mesh.position.copy(left).addScaledVector(across, W / 2).setY(bottom + H / 2);
     // its shadow: from a light behind it and a little to the left, so the words lie on the grass just in front
     for (const m of [mats.col, mats.sea]) {
       const u = m.uniforms;

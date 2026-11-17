@@ -57,8 +57,9 @@ const THEMES = {
     wall: [C.blue, C.deep], roof: [C.red, C.rust], trim: [C.white, C.pale], pane: [C.sun, C.sun], paneLit: 0,
     stone: [C.white, C.pale], wood: ["#4F5A86", "#2C355C"],
     crowns: [[C.deep, C.navy], [C.blue, C.deep], [C.deep, C.navy], [C.deep, C.navy]], spruce: [C.deep, C.navy],
-    cloud: null, stars: [C.paper, C.paper], text: null,
-    view: { pos: [-44, 7, 38], tgt: [54, 18, -47], fov: 44 },
+    cloud: null, stars: [C.paper, C.paper], text: null, milky: C.pale,
+    // shiftFrom: on screens wider than this the picture slides right, keeping the range a fixed distance from the right edge
+    view: { pos: [-44, 7, 38], tgt: [54, 18, -47], fov: 44, shiftFrom: 1280 },
   },
 };
 const PAIRS = ["meadow", "rock", "hill", "wall", "roof", "trim", "pane", "stone", "wood", "spruce", "snow", "cloud", "stars"];
@@ -582,10 +583,16 @@ function buildWorld(T) {
 
   // sky: stars by night, a few clouds by day (the sun itself is painted in the sky, so it has no outline)
   if (T.stars) {
+    // scattered over a dome around the camera, not on one wall ahead of it: the night camera looks off to the right,
+    // and on a wide screen the sky reaches far past where a wall would end. Each star is a small diamond facing the camera.
     const st = B.style(T.stars, { lit: 0, fog: 0, id: 1 }); // same id as the sky, so stars get no outline
-    for (let k = 0; k < 120; k++) {
-      const s = 1.2 + rnd() * 2.6;
-      B.add(st, new THREE.PlaneGeometry(1, 1), M(-900 + rnd() * 1900, 70 + rnd() * 640, -1200, s, s, s, 0, 0, Math.PI / 4));
+    const eye = V3(...T.view.pos), az0 = Math.atan2(T.view.tgt[0] - eye.x, -(T.view.tgt[2] - eye.z)), up = V3(0, 1, 0);
+    const turn = new THREE.Matrix4().makeRotationZ(Math.PI / 4), R = 1300;
+    for (let k = 0; k < 300; k++) {
+      const az = az0 + (rnd() * 2 - 1) * 1.45, el = Math.asin(0.04 + rnd() * 0.62), s = 1.2 + rnd() * 2.6;
+      const at = V3(Math.sin(az) * Math.cos(el), Math.sin(el), -Math.cos(az) * Math.cos(el)).multiplyScalar(R).add(eye);
+      const m = new THREE.Matrix4().lookAt(eye, at, up).multiply(turn).scale(V3(s, s, s)).setPosition(at);
+      B.add(st, new THREE.PlaneGeometry(1, 1), m);
     }
   } else {
     for (const [x, y, z, w] of [[-330, 150, -820, 64], [300, 178, -900, 76], [470, 135, -800, 56]]) {   // kept right of the intro text at every width
@@ -651,7 +658,8 @@ const NOISE = `
   float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
   float h11(float n){ return fract(sin(n * 127.1) * 43758.5453); }
   float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.-2.*f);
-    return mix(mix(h21(i), h21(i+vec2(1.,0.)), f.x), mix(h21(i+vec2(0.,1.)), h21(i+vec2(1.,1.)), f.x), f.y); }`;
+    return mix(mix(h21(i), h21(i+vec2(1.,0.)), f.x), mix(h21(i+vec2(0.,1.)), h21(i+vec2(1.,1.)), f.x), f.y); }
+  float fbm(vec2 p){ return (0.5*vn(p) + 0.25*vn(p*2.03 + 1.7) + 0.125*vn(p*4.01 + 3.1) + 0.0625*vn(p*8.05 + 5.3)) / 0.9375; }`;
 /* How high the water has run up the land at a spot, and the beat it runs to (shared by the land, the outlines and the sea). */
 const TIDE = `
   float tideBeat(vec3 w, float t){ return sin(t*0.6 + 6.283*vn(w.xz*0.05)); }
@@ -817,15 +825,38 @@ const seaMat = (T, shore, sunDir) => new THREE.ShaderMaterial({
     }`,
 });
 const skyMat = (T, sunDir) => new THREE.ShaderMaterial({
-  uniforms: { uZen: u3(T.zenith), uMid: u3(T.mid), uHor: u3(T.horizon), uSunCol: u3(T.sunCol), uSunDeep: u3(T.sunDeep), uSun: { value: sunDir }, uSunset: { value: T.sunset } },
+  uniforms: { uZen: u3(T.zenith), uMid: u3(T.mid), uHor: u3(T.horizon), uSunCol: u3(T.sunCol), uSunDeep: u3(T.sunDeep), uSun: { value: sunDir }, uSunset: { value: T.sunset },
+    uMilky: u3(T.milky || "#000000"), uMilkyOn: { value: T.milky ? 1 : 0 }, uMoon: { value: new THREE.Vector2(0.3, 0.35) } },
   vertexShader: "varying vec3 vW; void main(){ vW=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }",
   fragmentShader: `
-    uniform vec3 uZen, uMid, uHor, uSunCol, uSunDeep, uSun; uniform float uSunset; varying vec3 vW; ${NOISE}
+    uniform vec3 uZen, uMid, uHor, uSunCol, uSunDeep, uSun, uMilky; uniform float uSunset, uMilkyOn; uniform vec2 uMoon; varying vec3 vW; ${NOISE}
     void main(){
       vec3 d = normalize(vW - cameraPosition);
       float e = max(d.y, 0.);
       vec3 col = mix(uHor, uMid, smoothstep(0., 0.2, e));                    // warm at the horizon, cooler and deeper overhead
       col = mix(col, uZen, smoothstep(0.14, 0.7, e));
+      if (uMilkyOn > 0.5) {
+        // the Milky Way: a faint band rising from behind the land to the right of the moon (uMoon: where its spine
+        // crosses the moon's height, measured from the page), leaning right as it climbs. Cloudy, split by a dark
+        // lane, full of fine stars.
+        float az = atan(d.x, -d.z) - uMoon.x, el = asin(clamp(d.y, -1., 1.));
+        az -= 6.2832*floor((az + 3.1416)/6.2832);
+        float u = az - (el - uMoon.y)*0.45;                                   // across the band, 0 on its straight line
+        u -= 0.09*(fbm(vec2(el*2.4, 4.)) - 0.45);                             // the spine wanders
+        float wd = 0.085*(0.6 + 0.8*fbm(vec2(el*1.7 + 8., 1.))) * (1. + 0.7*(1. - smoothstep(0., 0.35, el)));  // wider low down
+        vec2 q = vec2(u*8., el*7.);
+        q += 1.3*vec2(fbm(q*0.8 + 2.), fbm(q*0.8 + 7.)) - 0.6;                // swirl the clouds
+        float rise = smoothstep(0.0, 0.1, el) * (1. - 0.45*smoothstep(0.35, 0.85, el));
+        float body = exp(-pow(u/wd, 2.)) * rise, halo = exp(-pow(u/(wd*2.6), 2.)) * rise;
+        float clumps = smoothstep(0.28, 0.78, fbm(q*1.4));                    // bright knots and thin stretches
+        float rift = smoothstep(0.5, 0.68, fbm(q*2.2 + 11.)) * exp(-pow(u/(wd*0.55), 2.));   // ragged dark dust
+        float glow = body*(0.18 + 1.25*clumps)*(1. - 0.85*rift);
+        col = mix(col, uMilky, 0.06*halo);                                         // the faint glow around it
+        col = mix(col, mix(uMilky, vec3(0.94, 0.95, 1.), 0.5*clumps*body), clamp(0.34*glow, 0., 1.));
+        vec2 g = floor(vec2(az, el)*760.);                                         // a crowd of fine stars, thickest in the clouds
+        float star = step(0.994 - 0.045*clamp(glow, 0., 1.) - 0.006*halo, h21(g));
+        col += vec3(0.86, 0.9, 1.) * star * (0.3 + 0.7*h21(g + 7.)) * clamp(0.25*halo + glow*1.4, 0., 1.);
+      }
       if (uSunset > 0.5) {
         float az = atan(d.x, -d.z) - atan(uSun.x, -uSun.z), el = asin(clamp(d.y, -1., 1.)) - asin(uSun.y);
         float R = 0.055, k = acos(clamp(dot(d, uSun), -1., 1.))/R;            // k = 1 at the rim of the sun
@@ -912,6 +943,23 @@ async function sign(el, hex, renderer) {
     data: signMat(tex, "gl_FragColor = vec4(0., 0., 900., clamp(vZ/uFar, 0., 1.));"),
   };
 }
+
+/* The page's moon (an SVG in the heading) drawn into a texture, so the scene can hang the very same moon in its
+   sky, where the land can stand in front of it. */
+async function moonTexture(svg, px = 1024) {
+  try {
+    const copy = svg.cloneNode(true);
+    copy.removeAttribute("class"); copy.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    copy.setAttribute("width", px); copy.setAttribute("height", px);
+    const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(copy)], { type: "image/svg+xml" }));
+    const img = new Image(); img.src = url; await img.decode(); URL.revokeObjectURL(url);
+    const c = document.createElement("canvas"); c.width = c.height = px;
+    c.getContext("2d").drawImage(img, 0, 0, px, px);
+    const tex = new THREE.CanvasTexture(c); tex.generateMipmaps = true; tex.minFilter = THREE.LinearMipmapLinearFilter;
+    return tex;
+  } catch { return null; }
+}
+const MOON_Z = 700; // how deep the moon hangs: behind all the land, in front of the stars
 
 /* ---------- one canvas ---------- */
 function mount(canvas) {
@@ -1002,6 +1050,17 @@ function mount(canvas) {
   }
   if (heading) sign(heading, T.text, renderer).then((s) => { if (!s) return; label = s; scene.add(s.mesh); place(); draw(performance.now()); });
 
+  const moonEl = T.milky ? canvas.parentElement.querySelector(".moon") : null;
+  // the moon in the scene: always under the page's moon on screen (re-aimed every frame, so it holds still while
+  // the camera drifts and the land slides in front of it). The page's moon then goes invisible and only measures.
+  let moon = null; const moonAt = new THREE.Vector2(); let moonSize = 0;
+  if (moonEl) moonTexture(moonEl).then((tex) => {
+    if (!tex) return;
+    moon = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: tex, transparent: true, alphaTest: 0.02 }));
+    moon.frustumCulled = false; scene.add(moon);
+    canvas.parentElement.classList.add("moon-in-scene");
+    resize();
+  });
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
@@ -1016,6 +1075,21 @@ function mount(canvas) {
     camera.fov = T.view.fov + tall * 22;
     tgt.set(T.view.tgt[0] + tall * 14, T.view.tgt[1] + tall * 4, T.view.tgt[2]);
     camera.updateProjectionMatrix();
+    // a lens shift, not a turn: the whole picture slides sideways and nothing in it changes its angle
+    const shift = T.view.shiftFrom ? Math.max(0, w - T.view.shiftFrom) / w : 0;
+    camera.projectionMatrix.elements[8] = -shift;
+    camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+    // where the page's moon falls in this sky, so the Milky Way can rise beside it at every width
+    if (moonEl) {
+      const c = canvas.getBoundingClientRect(), m = moonEl.getBoundingClientRect(), tv = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      // the band crosses the moon's height well over to the right: three quarters of the way from the moon to the
+      // edge (on narrow screens that pushes it out of the picture, which is fine)
+      const nx = (m.right + 0.75 * (c.right - m.right) - c.left) / w * 2 - 1 - shift, ny = 1 - (m.top + m.height / 2 - c.top) / h * 2;
+      const yaw = Math.atan2(tgt.x - pos.x, -(tgt.z - pos.z)), pitch = Math.atan2(tgt.y - pos.y, Math.hypot(tgt.x - pos.x, tgt.z - pos.z));
+      mats.sky.uniforms.uMoon.value.set(yaw + Math.atan(nx * aspect * tv), pitch + Math.atan(ny * tv));
+      moonAt.set((m.left + m.width / 2 - c.left) / w * 2 - 1, 1 - (m.top + m.height / 2 - c.top) / h * 2);
+      moonSize = m.height / h * 2 * MOON_Z * tv;
+    }
     place();
     draw(performance.now());
   }
@@ -1034,10 +1108,18 @@ function mount(canvas) {
       camera.position.addScaledVector(fwd, -16 * sp); camera.position.y -= 2.5 * sp; look.y -= 9 * sp;
     }
     camera.lookAt(look);
+    if (moon) { // facing the screen, at a fixed depth, on the ray through the page's moon
+      camera.updateMatrixWorld();
+      const ray = V3(moonAt.x, moonAt.y, 0.5).unproject(camera).sub(camera.position), ahead = V3(0, 0, -1).applyQuaternion(camera.quaternion);
+      moon.position.copy(camera.position).addScaledVector(ray, MOON_Z / ray.dot(ahead));
+      moon.quaternion.copy(camera.quaternion); moon.scale.setScalar(moonSize);
+    }
     mats.sea.uniforms.uT.value = mats.col.uniforms.uT.value = mats.data.uniforms.uT.value = still ? 0 : t / 1000;
     sky.visible = true; land.material = mats.col; sea.material = mats.sea; if (label) label.mesh.material = label.col;
+    if (moon) moon.visible = true;
     renderer.setRenderTarget(rtC); renderer.setClearColor(blank, 1); renderer.render(scene, camera);
     sky.visible = false; land.material = sea.material = mats.data; if (label) label.mesh.material = label.data;
+    if (moon) moon.visible = false; // part of the sky for the outlines: only the land against it gets a line
     renderer.setRenderTarget(rtG); renderer.setClearColor(bg, 1); renderer.render(scene, camera);
     renderer.setRenderTarget(null); renderer.render(post, postCam);
     if (!shown) { shown = true; canvas.classList.add("on"); }
@@ -1050,6 +1132,7 @@ function mount(canvas) {
   const kick = () => { if (!raf && visible) raf = requestAnimationFrame(loop); };
 
   new ResizeObserver(resize).observe(canvas);
+  if (moonEl && document.fonts) document.fonts.ready.then(resize); // the moon is sized in the heading's ems
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; kick(); }).observe(canvas);
   document.addEventListener("visibilitychange", kick);
   if (!still) window.addEventListener("pointermove", (e) => {

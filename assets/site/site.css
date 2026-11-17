@@ -220,7 +220,11 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
    ems, so the two always meet; where it lies over the letters it inverts them (difference), dark on the moon. */
 .foot-quote { font-weight: 640; font-size: clamp(40px, 5.4vw, 84px); letter-spacing: -0.035em; line-height: 1; text-transform: uppercase; --rise: 30px; }
 .foot-quote > span { display: block; }
-.moon { position: absolute; left: 11.3em; top: -0.95em; width: 4.3em; height: 4.3em; max-width: none; mix-blend-mode: difference; pointer-events: none; }
+.moon { position: absolute; left: 11.3em; top: -0.95em; width: 4.3em; height: 4.3em; max-width: none; mix-blend-mode: difference; pointer-events: none; transition: opacity 1.2s var(--ease); }
+/* Once the scene has hung the same moon in its sky (behind the land), this one only marks the place; the heading
+   blends with the picture instead, so its letters still turn dark where they cross the moon. */
+.foot.moon-in-scene .moon { opacity: 0; }
+.foot.moon-in-scene .foot-quote { mix-blend-mode: difference; }
 /* One band along the bottom: three columns that start on the same line, each under a small label. */
 .foot-main { margin-top: auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(320px, 460px); gap: 40px; align-items: start; }
 .foot-main > * > p.micro { opacity: 0.72; margin-bottom: 12px; }
@@ -318,7 +322,7 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
   .foot { padding-top: 56px; gap: 40px; }
   .foot .valley { bottom: auto; height: 640px; -webkit-mask-image: linear-gradient(#000 74%, transparent); mask-image: linear-gradient(#000 74%, transparent); } /* the scene fills the top and fades into the dark below */
   .foot-quote { margin-bottom: 280px; } /* leaves a clear window onto the valley */
-  .foot-main { grid-template-columns: 1fr; gap: 32px; }
+  .foot-main { grid-template-columns: 1fr 1fr; gap: 32px 20px; } /* Site and Elsewhere side by side, the form below them */
   .foot-nav a { font-size: 28px; }
   .moon { left: 3.9em; top: -0.7em; }
   .foot .form > .half { grid-column: 1 / -1; }
@@ -419,6 +423,7 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 .cs-text code { font: 400 0.82em/1 var(--mono); background: var(--tint); padding: 0.15em 0.35em; overflow-wrap: anywhere; }
 .cs-text blockquote { margin: 40px 0; padding: 0; font-weight: 600; font-size: 30px; line-height: 1.12; letter-spacing: -0.02em; text-wrap: balance; }
 .cs-text blockquote cite { display: block; margin-top: 14px; font: 400 12px/1.35 var(--mono); text-transform: uppercase; font-style: normal; }
+.cs-text :is(p, li), figcaption { text-wrap: pretty; } /* no paragraph ends on one lonely word; leads and titles keep balance */
 .cs-text .lead { font-weight: 600; font-size: clamp(26px, 2.4vw, 34px); line-height: 1.12; letter-spacing: -0.02em; text-wrap: balance; }
 .cs-text .note { font-size: 14px; line-height: 1.45; color: var(--soft); }
 .cs-text pre.dialog { padding: 20px 22px; background: #fff; font: 400 13px/1.7 var(--mono); white-space: pre; overflow-x: auto; }
@@ -466,7 +471,7 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 /* No captions under pictures: the words stay for screen readers and show in the viewer */
 .cs-wide > figure > figcaption, .film figcaption { justify-self: start; max-width: 70ch; font-size: 15px; line-height: 1.4; font-weight: 500; }
 .routes figcaption { font-size: 15px; line-height: 1.4; font-weight: 500; }
-.routes figcaption b { color: var(--accent); }
+.routes figcaption b { color: var(--ink); } /* the phones sit on the light-blue display, where the accent fades to 2.2:1 */
 .shot { margin: 0; }
 .shot button { all: unset; display: block; cursor: zoom-in; }
 .shot button img { transition: transform 0.4s var(--ease-out); }

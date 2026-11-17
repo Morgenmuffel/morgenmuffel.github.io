@@ -241,11 +241,16 @@ function sealFragment(slug, cipher, used) {
   });
   html = html.replace(/<div class="video" data-video="(media\/[^"]+)" data-poster="(media\/[^"]+)"/g, (_, v, p) => {
     const mv = sealFile(v), mp = sealFile(p);
-    return `<div class="video" data-enc="${mv.url}" data-size="${mv.size < 1e6 ? Math.round(mv.size / 1e3) + " KB" : Math.round(mv.size / 1e6) + " MB"}" data-poster="${mp.url}" data-poster-type="${mp.type}"`;
+    return `<div class="video" data-enc="${mv.url}" data-size="${sizeLabel(mv.size)}" data-poster="${mp.url}" data-poster-type="${mp.type}"`;
   });
   if (/(src|data-video|data-poster)="media\//.test(html)) throw new Error(slug + ": unconverted media reference");
   return cipher.seal(Buffer.from(sectionize(html))).toString("base64");
 }
+const sizeLabel = (n) => n < 1e6 ? Math.round(n / 1e3) + " KB" : Math.round(n / 1e6) + " MB";
+
+/* A public study's recordings are plain files: the same player, given a URL instead of ciphertext. */
+const openMedia = (html) => html.replace(/<div class="video" data-video="(\/[^"]+)" data-poster="(\/[^"]+)"/g,
+  (_, v, p) => `<div class="video" data-src="${v}" data-size="${sizeLabel(statSync(at(v.slice(1))).size)}" data-poster="${p}"`);
 
 /* ---------- page ---------- */
 function casePage(c, next, sealed) {
@@ -254,15 +259,15 @@ function casePage(c, next, sealed) {
   const short = cut > 0 ? c.title.slice(0, cut) : c.title, claim = cut > 0 ? c.title.slice(cut + 2) : (c.outcome || ""); // no claim in the title: the study's stated outcome
   const facts = [["Company", c.company], ["Year", c.year], ["Role", c.role], ["Focus", c.capability]]
     .filter(([, v]) => v).map(([k, v]) => `<div><dt class="micro">${k}</dt><dd>${esc(v)}</dd></div>`).join("\n      ");
-  const raw = sealed ? "" : sizedSite(readFileSync(at("content/cases", c.slug + ".html"), "utf8").trim());
+  const raw = sealed ? "" : openMedia(sizedSite(readFileSync(at("content/cases", c.slug + ".html"), "utf8").trim()));
   // A body that opens on a film already leads with a picture, so the cover would only repeat it.
   const lead = c.cover && !/^<figure class="film"/.test(raw)
     ? sizedSite(`<figure class="cs-cover"${sealed ? " data-cover" : ""}>${cover(c, `<img src="${c.cover}" alt="${esc(short)}: the main screen">`)}</figure>\n`) : "";
   const body = sealed
     ? `<section class="cs-sec cs-gate" id="gate" hidden><div class="cs-row">
-    <div class="cs-head"><h2 class="cs-h">Unreleased work</h2></div>
+    <div class="cs-head"><h2 class="cs-h">Shared privately</h2></div>
     <div class="cs-text">
-      <p>This case study shows product work that is not public yet. Enter the password you received with my application, or <a href="#contact">ask me for it</a>.</p>
+      <p>This case study goes into the detail of ${c.company ? esc(c.company) + "’s" : "the"} product. Out of respect for a team in a competitive market, I share it privately. Enter the password you received with my application, or <a href="#contact">ask me for it</a>.</p>
       <form autocomplete="off">
         <label class="field"><span class="micro">Password</span><input name="password" type="password" autocomplete="current-password" required></label>
         <p class="gate-err" role="alert"></p>

@@ -258,7 +258,8 @@
   }
 
   var sealedEl = document.getElementById("sealed");
-  if (!sealedEl) { enhance(document); return; }
+  // a public study's recordings are plain files: the same player, loading them by URL
+  if (!sealedEl) { enhance(document); hydrate(document, function (url) { return Promise.resolve(url); }); return; }
 
   /* ---------- Decryption ---------- */
   var sealed = JSON.parse(sealedEl.textContent);
@@ -277,9 +278,9 @@
   function importKey(raw) { return crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]); }
   function open(key, bytes) { return crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes.slice(0, 12) }, key, bytes.slice(12)); }
 
-  function hydrate(key) {
+  function decrypting(key) {
     var cache = {};
-    var blobUrl = function (url, type) {
+    return function (url, type) {
       if (!cache[url]) {
         cache[url] = fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
           .then(function (buf) { return open(key, new Uint8Array(buf)); })
@@ -287,6 +288,10 @@
       }
       return cache[url];
     };
+  }
+
+  // blobUrl(url, type) resolves to something a <video> or <img> can load: a decrypted blob, or the URL itself
+  function hydrate(out, blobUrl) {
     // the same screen can appear twice in a journey (big and phone-sized): each file is decrypted once
     out.querySelectorAll("img[data-enc]").forEach(function (img) {
       blobUrl(img.dataset.enc, img.dataset.type).then(function (u) { img.src = u; });
@@ -300,7 +305,7 @@
         if (v._el) { if (!v._held) v._el.play().catch(function () {}); return; }
         if (v._loading) return;
         v._loading = true;
-        blobUrl(v.dataset.enc, "video/mp4").then(function (u) {
+        blobUrl(v.dataset.enc || v.dataset.src, "video/mp4").then(function (u) {
           var el = document.createElement("video");
           el.src = u; el.muted = true; el.loop = true; el.playsInline = true; el.preload = "auto";
           el.setAttribute("aria-label", v.dataset.label || "");
@@ -311,7 +316,7 @@
         }).catch(function () { v._loading = false; });
       });
     }, { rootMargin: "240px 0px" }) : null;
-    out.querySelectorAll(".video[data-enc]").forEach(function (v) {
+    out.querySelectorAll(".video[data-enc], .video[data-src]").forEach(function (v) {
       var poster = document.createElement("img");
       poster.alt = "";
       v.appendChild(poster);
@@ -341,7 +346,7 @@
       play.addEventListener("click", function () {
         play.disabled = true;
         play.querySelector(".play-txt").textContent = "Loading…";
-        blobUrl(v.dataset.enc, "video/mp4").then(function (u) {
+        blobUrl(v.dataset.enc || v.dataset.src, "video/mp4").then(function (u) {
           var el = document.createElement("video");
           el.src = u; el.controls = true; el.muted = true; el.playsInline = true;
           el.setAttribute("aria-label", v.dataset.label || "");
@@ -364,7 +369,7 @@
       out.hidden = false;
       gate.hidden = true;
       enhance(out);
-      hydrate(key);
+      hydrate(out, decrypting(key));
     });
   }
 

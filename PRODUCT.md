@@ -34,7 +34,7 @@ A designer who works across agent behaviour (prompts, tool contracts, conversati
 ## Brand Commitments
 
 - Name: Yulia Vilensky.
-- Dyver work shows unreleased product. It stays behind the password and is captured on staging with a 20-product sample catalog.
+- Dyver product studies stay behind the password: they go into the detail of a product in a competitive market, so they are shared privately (never call them unreleased or not public). They are captured on staging with a 20-product sample catalog. Customer journeys is about the public website and is open, its recordings in `assets/work/customer-journeys/`.
 
 ## Evidence on Hand
 

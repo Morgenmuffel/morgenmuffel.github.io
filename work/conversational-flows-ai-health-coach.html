@@ -71,9 +71,9 @@
 </header>
 <main class="cs-main">
   <figure class="cs-cover"><img src="/assets/ai-coach-flow2.png" width="1800" height="597" alt="Designing Adaptive Conversational Flows for an AI Health Coach: the main screen"></figure>
-<div class="cs-stages" style="--n:11">
-<header class="cs-bar" style="--i:0"><span class="cs-bar-n" aria-hidden="true">01</span><h2 class="cs-bar-name">Problem</h2><p class="cs-bar-t">The gap in workplace physical health.</p></header>
-<section class="cs-sec" id="s1" style="--i:0">
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">01</span><h2 class="cs-bar-name">Problem</h2><p class="cs-bar-t">The gap in workplace physical health.</p></header>
+<section class="cs-sec" id="s1">
 <div class="cs-row">
 <div class="cs-text">
 <h3>The gap in workplace physical health</h3>
@@ -88,8 +88,10 @@
 </div>
 </div>
 </section>
-<header class="cs-bar" style="--i:1"><span class="cs-bar-n" aria-hidden="true">02</span><h2 class="cs-bar-name">Approach</h2><p class="cs-bar-t">Research first: 15 interviews and 50+ surveys.</p></header>
-<section class="cs-sec" id="s2" style="--i:1">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">02</span><h2 class="cs-bar-name">Approach</h2><p class="cs-bar-t">Research first: 15 interviews and 50+ surveys.</p></header>
+<section class="cs-sec" id="s2">
 <div class="cs-row">
 <div class="cs-text">
 <h3>Research foundation</h3>
@@ -101,14 +103,18 @@
 </div>
 </div>
 </section>
-<header class="cs-bar" style="--i:2"><span class="cs-bar-n" aria-hidden="true">03</span><h2 class="cs-bar-name">Flow design methodology</h2><p class="cs-bar-t">Node types used in conversational flow design.</p></header>
-<section class="cs-sec" id="s3" style="--i:2">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">03</span><h2 class="cs-bar-name">Flow design methodology</h2><p class="cs-bar-t">Node types used in conversational flow design.</p></header>
+<section class="cs-sec" id="s3">
 <div class="cs-wide">
 <figure><img src="/assets/ai-coach-flow1.png" width="1894" height="446" alt="Node types in conversation flow design" loading="lazy"><figcaption>Node types used in conversational flow design</figcaption></figure>
 </div>
 </section>
-<header class="cs-bar" style="--i:3"><span class="cs-bar-n" aria-hidden="true">04</span><h2 class="cs-bar-name">Core intent mapping</h2><p class="cs-bar-t">Five core intents, from user research.</p></header>
-<section class="cs-sec" id="s4" style="--i:3">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">04</span><h2 class="cs-bar-name">Core intent mapping</h2><p class="cs-bar-t">Five core intents, from user research.</p></header>
+<section class="cs-sec" id="s4">
 <div class="cs-row">
 <div class="cs-text">
 <p>From user research and prototype testing, I mapped all user needs to 5 primary intents that would structure the conversational system.</p>
@@ -144,8 +150,10 @@
 </div>
 </div>
 </section>
-<header class="cs-bar" style="--i:4"><span class="cs-bar-n" aria-hidden="true">05</span><h2 class="cs-bar-name">Flow 1: Single break scheduling</h2><p class="cs-bar-t">Five minutes by default, alternatives in the same response.</p></header>
-<section class="cs-sec" id="s5" style="--i:4">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">05</span><h2 class="cs-bar-name">Flow 1: Single break scheduling</h2><p class="cs-bar-t">Five minutes by default, alternatives in the same response.</p></header>
+<section class="cs-sec" id="s5">
 <div class="cs-wide">
 <figure><img src="/assets/ai-coach-flow2.png" width="1800" height="597" alt="Single break scheduling flow" loading="lazy"></figure>
 </div>
@@ -161,8 +169,10 @@ Agent: "Your Design Review runs until 2:30 PM.
 </div>
 </div>
 </section>
-<header class="cs-bar" style="--i:5"><span class="cs-bar-n" aria-hidden="true">06</span><h2 class="cs-bar-name">Flow 2: Daily break scheduling</h2><p class="cs-bar-t">The whole adapted plan in a single response.</p></header>
-<section class="cs-sec" id="s6" style="--i:5">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">06</span><h2 class="cs-bar-name">Flow 2: Daily break scheduling</h2><p class="cs-bar-t">The whole adapted plan in a single response.</p></header>
+<section class="cs-sec" id="s6">
 <div class="cs-wide">
 <figure><img src="/assets/ai-coach-flow3.png" width="1800" height="610" alt="Daily break scheduling conversation pattern" loading="lazy"></figure>
 </div>
@@ -185,8 +195,10 @@ Agent: "Based on your pattern: 9:30 AM, 1:15 PM, 3:45 PM.
 </div>
 </div>
 </section>
-<header class="cs-bar" style="--i:6"><span class="cs-bar-n" aria-hidden="true">07</span><h2 class="cs-bar-name">Flow 3: Multi-day break scheduling</h2><p class="cs-bar-t">Break placement across several days of meetings.</p></header>
-<section class="cs-sec" id="s7" style="--i:6">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">07</span><h2 class="cs-bar-name">Flow 3: Multi-day break scheduling</h2><p class="cs-bar-t">Break placement across several days of meetings.</p></header>
+<section class="cs-sec" id="s7">
 <div class="cs-row">
 <div class="cs-text">
 <h3>Key design decisions:</h3>
@@ -212,8 +224,10 @@ Agent: "Planning Thu-Fri and Mon:
 </div>
 </div>
 </section>
-<header class="cs-bar" style="--i:7"><span class="cs-bar-n" aria-hidden="true">08</span><h2 class="cs-bar-name">Flow 4: Reschedule request</h2><p class="cs-bar-t">Move, cancel or change a break.</p></header>
-<section class="cs-sec" id="s8" style="--i:7">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">08</span><h2 class="cs-bar-name">Flow 4: Reschedule request</h2><p class="cs-bar-t">Move, cancel or change a break.</p></header>
+<section class="cs-sec" id="s8">
 <div class="cs-row">
 <div class="cs-text">
 <h3>Key design decisions:</h3>
@@ -237,8 +251,10 @@ Agent: "Current: 10 AM, 1 PM, 4 PM
 </div>
 </div>
 </section>
-<header class="cs-bar" style="--i:8"><span class="cs-bar-n" aria-hidden="true">09</span><h2 class="cs-bar-name">Flow 5: Query schedule (with proactive suggestions)</h2><p class="cs-bar-t">Information retrieval and a behaviour change opportunity.</p></header>
-<section class="cs-sec" id="s9" style="--i:8">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">09</span><h2 class="cs-bar-name">Flow 5: Query schedule (with proactive suggestions)</h2><p class="cs-bar-t">Information retrieval and a behaviour change opportunity.</p></header>
+<section class="cs-sec" id="s9">
 <div class="cs-row">
 <div class="cs-text">
 <h3>Key design decisions:</h3>
@@ -268,8 +284,10 @@ Agent: "Yesterday: 3 meetings, 3 breaks taken ✓
 </div>
 </div>
 </section>
-<header class="cs-bar" style="--i:9"><span class="cs-bar-n" aria-hidden="true">10</span><h2 class="cs-bar-name">Advanced patterns</h2><p class="cs-bar-t">Complex reference resolution and error recovery.</p></header>
-<section class="cs-sec" id="s10" style="--i:9">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">10</span><h2 class="cs-bar-name">Advanced patterns</h2><p class="cs-bar-t">Complex reference resolution and error recovery.</p></header>
+<section class="cs-sec" id="s10">
 <div class="cs-row">
 <div class="cs-text">
 <p>Complex reference resolution and error recovery patterns ensure robust, intelligent conversations.</p>
@@ -299,8 +317,10 @@ Agent: "I'm having trouble accessing your calendar.
 </div>
 </div>
 </section>
-<header class="cs-bar" style="--i:10"><span class="cs-bar-n" aria-hidden="true">11</span><h2 class="cs-bar-name">Flow coverage</h2><p class="cs-bar-t">7 flows designed.</p></header>
-<section class="cs-sec" id="s11" style="--i:10">
+</div>
+<div class="cs-stage">
+<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">11</span><h2 class="cs-bar-name">Flow coverage</h2><p class="cs-bar-t">7 flows designed.</p></header>
+<section class="cs-sec" id="s11">
 <div class="cs-row">
 <div class="cs-text">
 <div class="stats">

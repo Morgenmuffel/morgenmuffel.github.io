@@ -374,7 +374,7 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 
 /* A section is one row line: the heading on the left, held in view while its text is read; text on the right;
    journeys, films and big screens across the whole width. */
-.cs-sec { margin-top: clamp(96px, 9vw, 144px); scroll-margin-top: calc(var(--i, 0) * var(--bar-h, 0px)); --pin: calc((var(--i, 0) + 1) * var(--bar-h, 0px)); display: grid; row-gap: 56px; padding-top: 18px; border-top: 1px solid var(--ink); }
+.cs-sec { margin-top: clamp(96px, 9vw, 144px); scroll-margin-top: var(--bar-h, 0px); --pin: var(--bar-h, 0px); display: grid; row-gap: 56px; padding-top: 18px; border-top: 1px solid var(--ink); }
 .cs-row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start; }
 .cs-sec.cs-open { margin-top: 0; padding-top: 0; border-top: 0; --pin: 0px; }
 .cs-sec[hidden] { display: none; }
@@ -384,13 +384,7 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 .cs-head { grid-column: 1 / 5; padding-right: 24px; display: grid; gap: 16px; align-content: start; }
 .cs-sub { max-width: 26ch; font-size: 17px; line-height: 1.4; color: var(--soft); text-wrap: pretty; }
 .cs-text { grid-column: 5 / -1; font-size: 19px; line-height: 1.55; }
-.cs-cover + .cs-sec, .cs-cover + .cs-bar + .cs-sec { margin-top: clamp(72px, 7vw, 112px); }
-.case { --n-big: clamp(56px, 6.4vw, 96px); --h-big: clamp(30px, 3vw, 44px); --t-big: clamp(26px, 2.4vw, 34px); }
-.cs-bar { margin: clamp(96px, 9vw, 144px) 0 0; padding-top: 18px; border-top: 1px solid var(--ink); display: grid; gap: 14px; }
-.cs-bar-n { font: 400 var(--n-big)/0.9 var(--mono); letter-spacing: -0.06em; color: var(--meadow); }
-.cs-bar-name { font-weight: 600; font-size: var(--h-big); letter-spacing: -0.025em; line-height: 1; }
-.cs-bar-t { font-weight: 600; font-size: var(--t-big); letter-spacing: -0.02em; line-height: 1.12; text-wrap: balance; }
-.cs-stages > .cs-sec { margin-top: 28px; padding-top: 0; border-top: 0; }
+.cs-cover + .cs-sec, .cs-cover + .cs-stage > .cs-bar { margin-top: clamp(72px, 7vw, 112px); }
 /* The journey's title stands in the landscape, as the home headline does: sun yellow with the ink line round each
    letter, set between the far hill and the near one, which rises in front of its feet. No rule above it. */
 .cs-plain { --pin: 0px; --hills-h: clamp(110px, 17vw, 250px); --hill-far: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 200' preserveAspectRatio='none'%3E%3Cpath fill='%235F86FF' d='M0 200V118C150 70 330 52 520 92C700 130 860 150 1060 88C1220 38 1350 48 1440 84V200Z'/%3E%3Cpath fill='none' stroke='%23050505' vector-effect='non-scaling-stroke' d='M0 118C150 70 330 52 520 92C700 130 860 150 1060 88C1220 38 1350 48 1440 84'/%3E%3C/svg%3E"); --hill-near: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 200' preserveAspectRatio='none'%3E%3Cpath fill='%232448DC' d='M0 200V152C200 128 420 172 640 156C860 140 1040 104 1240 124C1330 134 1400 152 1440 146V200Z'/%3E%3Cpath fill='none' stroke='%23050505' vector-effect='non-scaling-stroke' d='M0 152C200 128 420 172 640 156C860 140 1040 104 1240 124C1330 134 1400 152 1440 146'/%3E%3C/svg%3E"); padding-top: 44px; border-top: 0; row-gap: 0; }
@@ -409,7 +403,7 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 .cs-bar-n { font: 400 var(--n-big)/0.9 var(--mono); letter-spacing: -0.06em; color: var(--meadow); }
 .cs-bar-name { font-weight: 600; font-size: var(--h-big); letter-spacing: -0.025em; line-height: 1; }
 .cs-bar-t { font-weight: 600; font-size: var(--t-big); letter-spacing: -0.02em; line-height: 1.12; text-wrap: balance; }
-.cs-stages > .cs-sec { margin-top: 28px; padding-top: 0; border-top: 0; }
+.cs-stage > .cs-sec { margin-top: 28px; padding-top: 0; border-top: 0; }
 .cs-wide { min-width: 0; }
 .cs-text > * { max-width: 40em; }
 .cs-text > * + * { margin-top: 18px; }
@@ -446,6 +440,8 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 .rule { padding: 22px 24px; background: #fff; display: grid; gap: 12px; font-size: 16px; }
 .rule > * + * { margin: 0; }
 .rule-src { font: 400 12px/1.35 var(--mono); text-transform: uppercase; color: var(--soft); }
+.cs-text > .table-wrap, .cs-text > .merge { max-width: none; }
+.cs-text figure figcaption { margin-top: 14px; max-width: 70ch; font-size: 15px; line-height: 1.4; font-weight: 500; }
 .merge { margin: 32px 0; }
 .merge-scroll { overflow-x: auto; }
 .merge svg { width: 100%; min-width: 560px; height: auto; font: 13px var(--sans); }
@@ -456,6 +452,8 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 .merge .m-new text { text-anchor: middle; fill: var(--ink); font-weight: 600; }
 .merge .m-new text.on { fill: var(--accent); }
 .merge .m-dest text { fill: var(--ink); font: 11px var(--mono); text-transform: uppercase; }
+.merge .m-head text { fill: var(--meadow); font: 500 11px var(--mono); text-transform: uppercase; }
+.merge .m-head .end { text-anchor: end; }
 
 /* Screens, figures and films: whole, never cropped, no outline */
 .cs-wide > figure { margin: 0; padding: clamp(14px, 3vw, 48px); background: var(--sky); display: grid; justify-items: center; gap: 16px; }
@@ -478,19 +476,47 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 .routes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .routes .shot { display: grid; gap: 14px; align-content: start; }
 .routes .shot img { width: 100%; height: auto; background: #fff; }
-.film .video { position: relative; width: 100%; aspect-ratio: 3024 / 1714; overflow: hidden; background: #fff; }
+.film .video { position: relative; width: 100%; aspect-ratio: var(--ar, 3024 / 1714); overflow: hidden; background: #fff; }
+/* Films side by side: short clips two across, phone recordings four across */
+.routes.clips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.routes.phones { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.routes .film { margin: 0; display: grid; gap: 14px; align-content: start; }
+.routes.phones .play-txt { display: none; }
+.film figcaption b { font: 500 12px/1 var(--mono); margin-right: 8px; }
 .film .video img, .film .video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-/* Play: one round control in the middle of the poster, the label beside it */
+/* Play: the whole poster starts the recording; the control sits in its lower left corner, off the picture's subject */
 .film { position: relative; }
-.film .play { position: absolute; inset: 0; margin: auto; width: max-content; height: max-content; display: grid; justify-items: center; gap: 22px; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; }
+.film .play { position: absolute; inset: 0; width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: flex-start; padding: clamp(10px, 1.4vw, 18px); border: 0; background: none; color: var(--ink); cursor: pointer; }
 .film .play:hover { transform: none; }
-.film .play:active { transform: scale(0.98); }
 .film .play:disabled { cursor: progress; }
-.play-dot { display: grid; place-items: center; width: clamp(84px, 9vw, 128px); aspect-ratio: 1; border-radius: 50%; background: var(--sun); color: var(--meadow); box-shadow: 0 0 0 10px rgba(245, 215, 94, 0.45), 0 0 0 24px rgba(245, 215, 94, 0.2); transition: background 0.25s var(--ease), color 0.25s var(--ease), transform 0.5s var(--ease-out); }
-.film .play:hover .play-dot { background: var(--meadow); color: var(--sun); transform: scale(1.08); }
-.play-dot svg { width: 26%; height: auto; margin-left: 6%; }
+.film .play:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.play-dot { flex: none; display: grid; place-items: center; width: 48px; height: 48px; background: var(--sun); color: var(--meadow); transition: background 0.2s var(--ease), color 0.2s var(--ease); }
+.film .play:hover .play-dot { background: var(--meadow); color: var(--sun); }
+.film .play:active .play-dot { background: var(--night); color: var(--sun); }
+.play-dot svg { width: 14px; height: auto; margin-left: 2px; }
+.play-txt { height: 48px; display: flex; align-items: center; padding: 0 16px; background: var(--meadow); color: #fff; font: 500 12px/1 var(--mono); text-transform: uppercase; white-space: nowrap; }
 .play-txt small { margin-left: 10px; font: inherit; color: var(--sun); }
-.play-txt { padding: 9px 12px; background: var(--meadow); color: #fff; font: 500 12px/1 var(--mono); text-transform: uppercase; }
+/* A short loop plays by itself while it is on screen; this stops and starts it */
+.loop-toggle { position: absolute; right: 10px; bottom: 10px; z-index: 1; padding: 8px 10px; border: 0; background: var(--meadow); color: #fff; font: 500 11px/1 var(--mono); text-transform: uppercase; cursor: pointer; opacity: 0; transition: opacity 0.2s var(--ease), background 0.2s var(--ease); }
+.video:hover .loop-toggle, .loop-toggle:focus-visible, .loop-toggle[aria-pressed="true"] { opacity: 1; }
+.loop-toggle:hover { background: #16276B; }
+.loop-toggle:active { background: var(--night); }
+.loop-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+@media (hover: none) { .loop-toggle { opacity: 1; } }
+/* Displays: a recording in its own panel, with what it shows beside it. The words take the heading's columns and
+   the panel the text's, so a run of them reads down the page like the sections do. */
+.shows { display: grid; gap: 24px; }
+.show { margin: 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start; }
+.show > figcaption { grid-column: 1 / 5; max-width: none; padding: 14px 24px 0 0; border-top: 1px solid var(--ink); display: grid; gap: 10px; align-content: start; justify-self: stretch; font-weight: 400; }
+.show > figcaption .micro { color: var(--meadow); font-weight: 500; }
+.show > figcaption h3 { margin-top: 6px; font-weight: 600; font-size: clamp(22px, 2vw, 28px); line-height: 1.12; letter-spacing: -0.02em; }
+.show > figcaption p { max-width: 34ch; font-size: 17px; line-height: 1.45; text-wrap: pretty; }
+.show-screen { grid-column: 5 / -1; min-width: 0; padding: clamp(14px, 2.4vw, 36px); background: var(--sky); }
+.show.full > figcaption { grid-column: 1 / -1; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding: 14px 0 20px; }
+.show.full > figcaption > * { grid-column: 1 / 5; }
+.show.full > figcaption p { grid-column: 5 / -1; grid-row: 1 / 3; align-self: end; max-width: 40em; }
+.show.full .show-screen { grid-column: 1 / -1; padding: clamp(18px, 3vw, 48px); }
+.show-screen .routes.phones { justify-content: space-between; grid-template-columns: repeat(4, minmax(0, 300px)); }
 .embed { width: 100%; }
 .ratio { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--ink); }
 .ratio iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
@@ -545,11 +571,12 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 .flow-m { display: none; }
 @media (min-width: 1024px) and (min-height: 600px) {
   .board { gap: 0; }
-  /* Section headings fold as they are scrolled past: the same number, name and title move into one row and get
-     smaller, following the scroll (--p runs 0 to 1), and the rows stack under the top edge. Nothing fades. */
+  /* A section's heading folds as its section is scrolled into: the same number, name and title move into one slim
+     row and get smaller, following the scroll (--p runs 0 to 1). The row holds at the top while its own section is
+     read and leaves with it, so only the section being read keeps a row there. Nothing fades. */
   .case { --bar-h: 56px; --c-fs: 20px; --c-top: 17px; --head-h: calc(18px + var(--n-big) * 0.9 + 14px + var(--h-big) + 44px); }
-  .cs-main:has(#s8) { --bar-h: 42px; --c-fs: 16px; --c-top: 12px; } /* a long study: slimmer rows, so the index leaves room to read */
-  .cs-bar { position: sticky; top: calc(var(--i) * var(--bar-h)); z-index: 6; display: block; height: var(--bar-h); margin-inline: calc(-1 * var(--gutter)); padding: 0; background: var(--canvas); --u: calc((100% - 2 * var(--gutter) + 24px) / 12); transition: background 0.2s var(--ease), color 0.2s var(--ease); }
+  .cs-stage { --th: calc(var(--t-big) * 2.24); --room: max(18px + var(--th) + 30px, 132px); } /* --th: the title's height, measured by case.js (two lines until then); --room: where the text starts under the rule */
+  .cs-bar { position: sticky; top: 0; z-index: 6; display: block; height: var(--bar-h); margin-inline: calc(-1 * var(--gutter)); padding: 0; background: var(--canvas); --u: calc((100% - 2 * var(--gutter) + 24px) / 12); transition: background 0.2s var(--ease), color 0.2s var(--ease); }
   .cs-bar > * { position: absolute; margin: 0; }
   .cs-bar-n { left: var(--gutter); top: calc(18px + (var(--c-top) - 17px) * var(--p, 0)); font-size: calc(var(--n-big) + (var(--c-fs) - var(--n-big)) * var(--p, 0)); }
   .cs-bar-name { left: calc(var(--gutter) + var(--u) * var(--p, 0)); top: calc((18px + var(--n-big) * 0.9 + 14px) * (1 - var(--p, 0)) + var(--c-top) * var(--p, 0)); font-size: calc(var(--h-big) + (var(--c-fs) - var(--h-big)) * var(--p, 0)); white-space: nowrap; }
@@ -558,12 +585,14 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
   .cs-bar.on { overflow: hidden; cursor: pointer; }
   .cs-bar.on::after { opacity: 1; }
   .cs-bar.on .cs-bar-t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cs-bar.on .cs-bar-name { max-width: calc(var(--u) * 3 - 24px); overflow: hidden; text-overflow: ellipsis; } /* a long name stops short of the title */
   .cs-bar.on:hover, .cs-bar.on:focus-visible { background: var(--ink); color: var(--canvas); outline: none; }
   .cs-bar.on:hover .cs-bar-n, .cs-bar.on:focus-visible .cs-bar-n { color: var(--accent); }
-  /* A row may not leave its wrapper's bottom edge. Each row carries a bottom margin as deep as the rows that stack
-     under it (taken back by its section), so the whole stack meets that edge at once and leaves as one piece. */
-  .cs-bar { margin-bottom: calc((var(--n) - 1 - var(--i)) * var(--bar-h)); }
-  .cs-stages > .cs-sec { margin-top: calc((var(--n) - 1 - var(--i)) * var(--bar-h) * -1); padding-top: calc(var(--head-h) - var(--bar-h)); }
+  /* the text starts right under the title; a section that opens on a picture starts under the whole heading */
+  .cs-stage > .cs-sec { margin-top: 0; padding-top: calc(var(--room) - var(--bar-h)); min-height: calc(var(--head-h) - var(--bar-h)); align-content: start; }
+  .cs-stage > .cs-sec:has(> .cs-wide:first-child) { padding-top: calc(max(var(--head-h), var(--room)) - var(--bar-h)); }
+  .cs-stage .cs-text { grid-column: 5 / -1; } /* beside the heading at every width where the heading folds */
+  .cs-stage > .cs-sec > .cs-row:first-child:not(:last-child) { min-height: calc(var(--head-h) - var(--room) - 56px); } /* a picture after a short text stays clear of the number and the name */
   /* every screen takes the same half-window of scrolling, and the page settles on the nearest one */
   html:has(.flow) { scroll-snap-type: y proximity; }
   .flow { height: calc(100vh - var(--pin, 0px) + (var(--n) - 1) * 50vh); height: calc(100svh - var(--pin, 0px) + (var(--n) - 1) * 50svh); }
@@ -637,6 +666,11 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
   .cs-sec { row-gap: 40px; }
   .cs-sec.cs-plain { row-gap: 0; }
   .cs-row { row-gap: 24px; }
+  .shows { gap: 40px; }
+  .show > figcaption, .show-screen, .show.full > figcaption > *, .show.full > figcaption p { grid-column: 1 / -1; grid-row: auto; }
+  .show > figcaption { padding-bottom: 18px; }
+  .show.full > figcaption { padding-bottom: 18px; row-gap: 10px; }
+  .show > figcaption p { max-width: 60ch; }
 }
 @media (max-width: 809px) {
   .cs-hero { min-height: 92svh; padding: 20px 18px 0; }
@@ -649,11 +683,12 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
   .cs-sec { margin-top: 80px; }
   .cs-text { font-size: 17px; }
   .cs-text blockquote { font-size: 23px; }
-  .routes { grid-template-columns: 1fr; }
+  .routes, .routes.clips { grid-template-columns: 1fr; }
+  .routes.phones, .show-screen .routes.phones { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat + .stat { padding-left: 0; border-left: 0; border-top: 1px solid var(--ink); }
   .stat { padding-right: 0; }
-  .film .play { gap: 16px; }
-  .play-dot { width: 64px; box-shadow: 0 0 0 6px rgba(245, 215, 94, 0.45), 0 0 0 14px rgba(245, 215, 94, 0.2); }
+  .play-dot, .play-txt { width: auto; height: 40px; } .play-dot { width: 40px; }
+  .play-txt { padding: 0 12px; font-size: 11px; }
   .cs-next { row-gap: 28px; }
   .cs-next-txt, .cs-next img { grid-column: 1 / -1; }
   .cs-next img { grid-row: 2; }

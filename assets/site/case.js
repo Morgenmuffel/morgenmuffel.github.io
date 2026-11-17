@@ -177,11 +177,21 @@
       stage.appendChild(flow);
       flows.push(state);
     });
-    track();
+    track(true);
   }
 
-  function pinTop(pin) { return parseFloat(getComputedStyle(pin).top) || 0; } // the folded section bars above the journey
-  // a section's bar shows once its heading has gone under the stack of bars
+  function pinTop(pin) { return parseFloat(getComputedStyle(pin).top) || 0; } // the folded section bar above the journey
+  // the text of a section starts right under its title, so each stage is told how tall its title is at full size
+  function measure() {
+    var list = document.querySelectorAll(".cs-bar");
+    for (var i = 0; i < list.length; i++) {
+      var b = list[i], t = b.querySelector(".cs-bar-t"), stage = b.parentNode;
+      if (!wide.matches) { stage.style.removeProperty("--th"); continue; }
+      b.style.setProperty("--p", 0); b.classList.remove("on"); b._p = -1;
+      stage.style.setProperty("--th", (t ? t.offsetHeight : 0) + "px");
+    }
+  }
+  // a section's heading folds into a bar as its text comes up under it
   function bars() {
     var list = document.querySelectorAll(".cs-bar");
     for (var i = 0; i < list.length; i++) {
@@ -208,7 +218,8 @@
   }
   document.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest(".cs-bar"); if (b) openBar(b); });
   document.addEventListener("keydown", function (e) { if (e.key === "Enter" && e.target.classList && e.target.classList.contains("cs-bar")) openBar(e.target); });
-  function track() {
+  function track(resized) {
+    if (resized === true) measure();
     bars();
     if (!wide.matches) return;
     var h = window.innerHeight;
@@ -235,8 +246,11 @@
   var queued = false;
   function queue() { if (!queued) { queued = true; requestAnimationFrame(function () { queued = false; track(); }); } }
   window.addEventListener("scroll", queue, { passive: true });
-  window.addEventListener("resize", queue);
-  if (wide.addEventListener) wide.addEventListener("change", queue);
+  var sized = false;
+  function resize() { if (!sized) { sized = true; requestAnimationFrame(function () { sized = false; track(true); }); } }
+  window.addEventListener("resize", resize);
+  if (wide.addEventListener) wide.addEventListener("change", resize);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
 
   function enhance(root) {
     buildFlows(root);
@@ -277,11 +291,47 @@
     out.querySelectorAll("img[data-enc]").forEach(function (img) {
       blobUrl(img.dataset.enc, img.dataset.type).then(function (u) { img.src = u; });
     });
+    // a short loop is fetched as it nears the window and plays, silent, only while it is on screen
+    var loops = !reduced && "IntersectionObserver" in window ? new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        v._seen = e.isIntersecting;
+        if (!v._seen) { if (v._el) v._el.pause(); return; }
+        if (v._el) { if (!v._held) v._el.play().catch(function () {}); return; }
+        if (v._loading) return;
+        v._loading = true;
+        blobUrl(v.dataset.enc, "video/mp4").then(function (u) {
+          var el = document.createElement("video");
+          el.src = u; el.muted = true; el.loop = true; el.playsInline = true; el.preload = "auto";
+          el.setAttribute("aria-label", v.dataset.label || "");
+          el.addEventListener("playing", function () { var p = v.querySelector("img"); if (p) p.remove(); }, { once: true });
+          v.insertBefore(el, v.firstChild);
+          v._el = el;
+          if (v._seen && !v._held) el.play().catch(function () {});
+        }).catch(function () { v._loading = false; });
+      });
+    }, { rootMargin: "240px 0px" }) : null;
     out.querySelectorAll(".video[data-enc]").forEach(function (v) {
       var poster = document.createElement("img");
       poster.alt = "";
       v.appendChild(poster);
       blobUrl(v.dataset.poster, v.dataset.posterType).then(function (u) { poster.src = u; });
+      if (loops && v.hasAttribute("data-loop")) {
+        var hold = document.createElement("button");
+        hold.type = "button"; hold.className = "loop-toggle"; hold.textContent = "Pause";
+        hold.setAttribute("aria-pressed", "false");
+        hold.setAttribute("aria-label", "Pause this recording");
+        hold.addEventListener("click", function () {
+          v._held = !v._held;
+          hold.textContent = v._held ? "Play" : "Pause";
+          hold.setAttribute("aria-pressed", v._held ? "true" : "false");
+          hold.setAttribute("aria-label", (v._held ? "Play" : "Pause") + " this recording");
+          if (v._el) { if (v._held) v._el.pause(); else v._el.play().catch(function () {}); }
+        });
+        v.appendChild(hold);
+        loops.observe(v);
+        return;
+      }
       var play = document.createElement("button");
       play.type = "button";
       play.className = "play";

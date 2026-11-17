@@ -173,13 +173,13 @@ function topLevel(html) {
   }
   return out;
 }
-const isWide = (n) => /^<(div class="(board|routes)|figure(?! class="merge"))/.test(n);
+const isWide = (n) => /^<(div class="(board|routes|shows)|figure(?! class="merge"))/.test(n);
 function sectionize(html) {
-  // Each h2 starts a numbered section. Before it goes a slim bar (number, name, title) that holds at the top of
-  // the window once its section has been scrolled past, so the read sections stack up as an index.
+  // Each h2 starts a numbered section. Its heading (number, name, title) folds into a slim bar that holds at the
+  // top of the window while its own section is being read, and leaves with it: one bar at a time, never a stack.
   // The title is the h2's data-title, or the lead sentence that opens the section.
   const two = (n) => String(n).padStart(2, "0"), plain = (h) => h.replace(/<[^>]+>/g, "").trim();
-  let out = "", open = false, staged = false, text = [], head = "", idx = 0; // staged: inside the wrapper the bars hold within
+  let out = "", open = false, staged = false, text = [], head = "", idx = 0; // staged: inside a stage, the wrapper its bar holds within
   const flush = () => {
     if (text.length || head) out += `<div class="cs-row">\n${head}${text.length ? `<div class="cs-text">\n${text.join("\n")}\n</div>\n` : ""}</div>\n`;
     text = []; head = "";
@@ -196,18 +196,17 @@ function sectionize(html) {
       const title = own || (lead ? plain(lead) : "");
       if (/^<div class="board/.test(nodes[k + 1] || "")) { // a heading straight over a journey announces it: no number, no bar
         out += (open ? "</section>\n" : "") + (staged ? "</div>\n" : "");
-        out = out.replace("__N__", idx); // how many headings stack here, so they can leave together
-        out += `<section class="cs-sec cs-plain" style="--i:${idx - 1}">\n`;
+        out += `<section class="cs-sec cs-plain">\n`;
         head = `<div class="cs-head"><h2 class="cs-h">${name}</h2>${own ? `<p class="cs-sub">${own}</p>` : ""}</div>\n`;
-        open = true; staged = false; // the stack of bars ends here and scrolls away with the sections
+        open = true; staged = false;
         return;
       }
       idx++;
       // the heading is one element in both states: number, name and title. Expanded it opens the section; once
       // the section is scrolled past it holds at the top as a bar, the same three pieces only smaller.
-      out += (open ? "</section>\n" : "") + (staged ? "" : `<div class="cs-stages" style="--n:__N__">\n`)
-        + `<header class="cs-bar" style="--i:${idx - 1}"><span class="cs-bar-n" aria-hidden="true">${two(idx)}</span><h2 class="cs-bar-name">${name}</h2>${title ? `<p class="cs-bar-t">${title}</p>` : ""}</header>\n`
-        + `<section class="cs-sec" id="s${idx}" style="--i:${idx - 1}">\n`;
+      out += (open ? "</section>\n" : "") + (staged ? "</div>\n" : "") + `<div class="cs-stage">\n`
+        + `<header class="cs-bar"><span class="cs-bar-n" aria-hidden="true">${two(idx)}</span><h2 class="cs-bar-name">${name}</h2>${title ? `<p class="cs-bar-t">${title}</p>` : ""}</header>\n`
+        + `<section class="cs-sec" id="s${idx}">\n`;
       staged = true;
       if (!own && lead) skip = k + 1; // the lead sentence is the title now, so it is not repeated in the text
       open = true;
@@ -217,7 +216,7 @@ function sectionize(html) {
     }
   });
   flush();
-  return (out + (open ? "</section>\n" : "") + (staged ? "</div>\n" : "")).replace("__N__", idx);
+  return out + (open ? "</section>\n" : "") + (staged ? "</div>\n" : "");
 }
 
 /* ---------- protected body ---------- */
@@ -239,7 +238,7 @@ function sealFragment(slug, cipher, used) {
   });
   html = html.replace(/<div class="video" data-video="(media\/[^"]+)" data-poster="(media\/[^"]+)"/g, (_, v, p) => {
     const mv = sealFile(v), mp = sealFile(p);
-    return `<div class="video" data-enc="${mv.url}" data-size="${Math.round(mv.size / 1e6)} MB" data-poster="${mp.url}" data-poster-type="${mp.type}"`;
+    return `<div class="video" data-enc="${mv.url}" data-size="${mv.size < 1e6 ? Math.round(mv.size / 1e3) + " KB" : Math.round(mv.size / 1e6) + " MB"}" data-poster="${mp.url}" data-poster-type="${mp.type}"`;
   });
   if (/(src|data-video|data-poster)="media\//.test(html)) throw new Error(slug + ": unconverted media reference");
   return cipher.seal(Buffer.from(sectionize(html))).toString("base64");

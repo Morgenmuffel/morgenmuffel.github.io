@@ -36,7 +36,8 @@
     "role": "Founding Design Engineer",
     "contents": "Context · Problem · Process · Proposal · Result",
     "protected": true,
-    "cover": "/assets/site/covers/customer-journeys.webp"
+    "cover": "/assets/site/covers/customer-journeys.webp",
+    "coverStill": "/assets/site/covers/customer-journeys-still.webp"
   },
   {
     "slug": "design-system-in-code",

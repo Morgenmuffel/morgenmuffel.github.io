@@ -154,6 +154,9 @@ const sized = (html, resolve) => html.replace(/<img\b([^>]*?)\ssrc="([^"]+)"([^>
 });
 const sizedSite = (html) => sized(html, (src) => at(src.replace(/^\//, "")));
 
+/* A cover that moves (an animated WebP) names a still of itself: people who ask for reduced motion get the still. */
+const cover = (c, img) => c.coverStill ? `<picture><source media="(prefers-reduced-motion: reduce)" srcset="${c.coverStill}">${img}</picture>` : img;
+
 /* ---------- body: split into sections ----------
    A body is a flat run of elements. Each h2 starts a section: the heading sits in the left columns,
    text runs in the right ones, and wide pieces (journeys, films, screens) take the full width. */
@@ -253,8 +256,8 @@ function casePage(c, next, sealed) {
     .filter(([, v]) => v).map(([k, v]) => `<div><dt class="micro">${k}</dt><dd>${esc(v)}</dd></div>`).join("\n      ");
   const raw = sealed ? "" : sizedSite(readFileSync(at("content/cases", c.slug + ".html"), "utf8").trim());
   // A body that opens on a film already leads with a picture, so the cover would only repeat it.
-  const cover = c.cover && !/^<figure class="film"/.test(raw)
-    ? sizedSite(`<figure class="cs-cover"${sealed ? " data-cover" : ""}><img src="${c.cover}" alt="${esc(short)}: the main screen"></figure>\n`) : "";
+  const lead = c.cover && !/^<figure class="film"/.test(raw)
+    ? sizedSite(`<figure class="cs-cover"${sealed ? " data-cover" : ""}>${cover(c, `<img src="${c.cover}" alt="${esc(short)}: the main screen">`)}</figure>\n`) : "";
   const body = sealed
     ? `<section class="cs-sec cs-gate" id="gate" hidden><div class="cs-row">
     <div class="cs-head"><h2 class="cs-h">Unreleased work</h2></div>
@@ -289,11 +292,11 @@ function casePage(c, next, sealed) {
   ${HILLS_CASE}
 </header>
 <main class="cs-main">
-  ${cover}${body}
+  ${lead}${body}
 </main>
 ${next ? `<a class="cs-next" href="/work/${next.slug}">
   <span class="cs-next-txt"><span class="cs-next-t">Next: ${esc(next.listTitle)}</span><svg class="cs-next-arrow" viewBox="0 0 40 24" aria-hidden="true"><path d="M0 12h37M27 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
-  ${next.cover ? sizedSite(`<img src="${next.cover}" alt="" loading="lazy">`) : ""}
+  ${next.cover ? sizedSite(cover(next, `<img src="${next.cover}" alt="" loading="lazy">`)) : ""}
 </a>\n` : ""}${FOOTER}
 <script src="/assets/site/site.js" defer></script>
 <script src="/assets/site/case.js" defer></script>
@@ -310,9 +313,9 @@ function workRow(c, i) {
   const size = c.cover ? imgSize(at(c.cover.replace(/^\//, ""))) : null;
   const dims = size ? ` width="${size[0]}" height="${size[1]}"` : "";
   const ar = size ? (size[0] / size[1]).toFixed(3) : "1.778";
-  const cover = c.cover ? `<img src="${c.cover}"${dims} alt="" loading="lazy">` : "";
+  const pic = c.cover ? cover(c, `<img src="${c.cover}"${dims} alt="" loading="lazy">`) : "";
   return `      <a class="wrow" href="/work/${c.slug}" style="--ar:${ar}"${c.protected ? " data-locked" : ""}>
-        <div class="wrow-cover">${cover}</div>
+        <div class="wrow-cover">${pic}</div>
         <div class="wrow-main">
           <h3 class="wrow-title">${esc(c.listTitle)}</h3>
           <div class="wrow-more"><div><p>${esc(c.summary)}</p><span class="wrow-go micro">View case study ${GO}</span></div></div>

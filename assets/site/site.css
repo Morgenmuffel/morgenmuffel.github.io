@@ -29,6 +29,7 @@ body {
 }
 ::selection { background: var(--select); color: var(--ink); }
 img, video, svg { display: block; max-width: 100%; }
+picture { display: contents; } /* a wrapper that only chooses the file: the image stays the layout's child */
 a { color: inherit; }
 h1, h2, h3, h4, p { margin: 0; }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }

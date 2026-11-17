@@ -400,7 +400,7 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
 .cs-plain .cs-band::before { background: var(--hill-far) 0 0 / 100% 100% no-repeat; z-index: 0; transform: none; }
 .cs-plain .cs-band .board::before { content: ""; position: absolute; left: 0; right: 0; bottom: calc(100% - 2px); height: var(--hills-h); background: var(--hill-near) 0 0 / 100% 100% no-repeat; z-index: 2; pointer-events: none; }
 .case { --n-big: clamp(56px, 6.4vw, 96px); --h-big: clamp(30px, 3vw, 44px); --t-big: clamp(26px, 2.4vw, 34px); }
-.cs-bar { margin: clamp(96px, 9vw, 144px) 0 0; padding-top: 18px; border-top: 1px solid var(--ink); display: grid; gap: 14px; }
+.cs-bar { margin: clamp(72px, 7vw, 112px) 0 0; padding-top: 18px; border-top: 1px solid var(--ink); display: grid; gap: 14px; }
 .cs-bar-n { font: 400 var(--n-big)/0.9 var(--mono); letter-spacing: -0.06em; color: var(--meadow); }
 .cs-bar-name { font-weight: 600; font-size: var(--h-big); letter-spacing: -0.025em; line-height: 1; }
 .cs-bar-t { font-weight: 600; font-size: var(--t-big); letter-spacing: -0.02em; line-height: 1.12; text-wrap: balance; }
@@ -575,8 +575,8 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
   /* A section's heading folds as its section is scrolled into: the same number, name and title move into one slim
      row and get smaller, following the scroll (--p runs 0 to 1). The row holds at the top while its own section is
      read and leaves with it, so only the section being read keeps a row there. Nothing fades. */
-  .case { --bar-h: 56px; --c-fs: 20px; --c-top: 17px; --head-h: calc(18px + var(--n-big) * 0.9 + 14px + var(--h-big) + 44px); }
-  .cs-stage { --th: calc(var(--t-big) * 2.24); --room: max(18px + var(--th) + 30px, 132px); } /* --th: the title's height, measured by case.js (two lines until then); --room: where the text starts under the rule */
+  .case { --bar-h: 56px; --c-fs: 20px; --c-top: 17px; --head-h: calc(18px + var(--n-big) * 0.9 + 14px + var(--h-big) + 20px); --gap: clamp(56px, 5vw, 80px); }
+  .cs-stage { --th: calc(var(--t-big) * 2.24); --room: calc(18px + var(--th) + 26px); } /* --th: the title's height, measured by case.js (two lines until then); --room: where the text starts under the rule */
   .cs-bar { position: sticky; top: 0; z-index: 6; display: block; height: var(--bar-h); margin-inline: calc(-1 * var(--gutter)); padding: 0; background: var(--canvas); --u: calc((100% - 2 * var(--gutter) + 24px) / 12); transition: background 0.2s var(--ease), color 0.2s var(--ease); }
   .cs-bar > * { position: absolute; margin: 0; }
   .cs-bar-n { left: var(--gutter); top: calc(18px + (var(--c-top) - 17px) * var(--p, 0)); font-size: calc(var(--n-big) + (var(--c-fs) - var(--n-big)) * var(--p, 0)); }
@@ -589,6 +589,10 @@ body:not(.case) main { z-index: auto; } /* no layer of its own on the home page,
   .cs-bar.on .cs-bar-name { max-width: calc(var(--u) * 3 - 24px); overflow: hidden; text-overflow: ellipsis; } /* a long name stops short of the title */
   .cs-bar.on:hover, .cs-bar.on:focus-visible { background: var(--ink); color: var(--canvas); outline: none; }
   .cs-bar.on:hover .cs-bar-n, .cs-bar.on:focus-visible .cs-bar-n { color: var(--accent); }
+  /* A bar holds while its stage is in view, so the space before the next section belongs to this stage: the bar
+     leaves only when the next section's rule has come up right under it, and that section starts to fold */
+  .cs-stage + .cs-stage > .cs-bar { margin-top: 0; }
+  .cs-stage:has(+ .cs-stage) > .cs-sec { padding-bottom: var(--gap); } /* on the section, not the stage: a sticky bar stops at its stage's content edge, so padding there would send it off early */
   /* the text starts right under the title; a section that opens on a picture starts under the whole heading */
   .cs-stage > .cs-sec { margin-top: 0; padding-top: calc(var(--room) - var(--bar-h)); min-height: calc(var(--head-h) - var(--bar-h)); align-content: start; }
   .cs-stage > .cs-sec:has(> .cs-wide:first-child) { padding-top: calc(max(var(--head-h), var(--room)) - var(--bar-h)); }
